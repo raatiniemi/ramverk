@@ -65,10 +65,6 @@ namespace Net\TheDeveloperBlog\Ramverk
 				));
 			}
 
-			// Setup the default exception template.
-			$config->set('exception.template', '%directory.core.template%/exception.php');
-			$config->set('context', 'web');
-
 			// Verify that the application directory have been supplied.
 			if(!$config->has('directory.application')) {
 				// TODO: Better specify the Exception-object.
@@ -103,9 +99,18 @@ namespace Net\TheDeveloperBlog\Ramverk
 			$config->set('directory.core.library', '%directory.core%/library');
 			$config->set('directory.core.template', '%directory.core%/template');
 
+			// Setup the default configurations, if already supplied these
+			// won't override the others.
+			$config->set('context', 'web');
+			$config->set('exception.template', '%directory.core.template%/exception.php');
+
+			// Retrieve the application profile and context.
+			$profile = $config->get('profile');
+			$context = $config->get('context');
+
 			// Instansiate the cache and parser for the factory.
-			$cache = new Handler\Cache($config->get('profile'));
-			$parser = new Handler\Parser($config->get('profile'), $config);
+			$cache = new Handler\Cache($profile);
+			$parser = new Handler\Parser($config, $profile, $context);
 
 			// Instansiate the configuration handler factory.
 			$factory = new Handler\Factory($config, $cache, $parser);
@@ -132,20 +137,20 @@ namespace Net\TheDeveloperBlog\Ramverk
 				$filename = '%directory.application.config%/autoload.xml';
 
 				// Attempt to load the application autoload classes.
-				$data = $this->_factory->callHandler('Autoload', $filename);
-				if(empty($data)) {
+				$autoloads = $this->_factory->callHandler('Autoload', $filename);
+				if(empty($autoloads)) {
 					$filename = '%directory.core.config%/autoload.xml';
 
 					// Attempt to load the core autoload classes.
-					$data = $this->_factory->callHandler('Autoload', $filename);
-					if(empty($data)) {
+					$autoloads = $this->_factory->callHandler('Autoload', $filename);
+					if(empty($autoloads)) {
 						throw new Exception(sprintf(
 							'The configuration file "%s" returned an empty array.',
 							$filename
 						));
 					}
 				}
-				$this->_autoloads = $data;
+				$this->_autoloads = $autoloads;
 			}
 
 			// Due to the use of namespaces, the separator have to be dubbled
@@ -153,26 +158,32 @@ namespace Net\TheDeveloperBlog\Ramverk
 			$name = str_replace('\\', '\\\\', $name);
 
 			// Check if the class is available within the list of autoloaded
-			// classes. If it exists, include it and return true. If it don't
-			// exists we can only return false. Since we're prepending the
-			// autoloader we can't throw an exception since it might prevent
-			// another autoloader of finding the file.
+			// classes. If it exists, include it and return true.
 			if(isset($this->_autoloads[$name])) {
 				require $this->_autoloads[$name];
 
 				return TRUE;
-			}	
+			}
+
+			// If it don't exists we can only return false. Since we're
+			// prepending the autoloader we can't throw an exception since it
+			// might prevent another autoloader of finding the file.
 			return FALSE;
 		}
 
-		public function getController($context = 'web')
+		public function getController()
 		{
 			if($this->_controller === NULL) {
-				$this->_config->set('context', $context);
+				$filename = '%directory.application.config%/routing.xml';
 
 				// TODO: Instansiate the controller with routing configuration etc.
-				$filename = '%directory.application.config%/routing.xml';
-				$routing = $factory->callHandler('Routing', $filename);
+				$routing = $this->_factory->callHandler('Routing', $filename);
+				if(empty($routing)) {
+					throw new Exception(sprintf(
+						'The configuration file "%s" returned an empty array.',
+						$filename
+					));
+				}
 			}
 			return $this->_controller;
 		}
