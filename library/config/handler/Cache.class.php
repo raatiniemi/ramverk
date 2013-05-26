@@ -7,7 +7,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 	use Net\TheDeveloperBlog\Ramverk;
 
 	/**
-	 * Handles configuration caching.
+	 * Handles caching of configuration data from handlers.
 	 *
 	 * @package Ramverk
 	 * @subpackage Config

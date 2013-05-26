@@ -6,7 +6,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 
 	/**
-	 * Container for configuration.
+	 * Configuration container.
 	 * 
 	 * @package Ramverk
 	 * @subpackage Config
@@ -76,6 +76,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Expand configuration directives.
+		 * @param string $value Configuration value.
+		 * @return string Configuration value with expanded directives.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function expandDirectives($value)
@@ -95,6 +97,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Callback function for the expand directives-method.
+		 * @return string Configuration value with expanded directives.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 *
 		 * @todo Refactor when using PHP 5.4.

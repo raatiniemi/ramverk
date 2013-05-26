@@ -6,6 +6,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 
 	/**
+	 * Base exception.
+	 *
 	 * @package Ramverk
 	 * @subpackage Exception
 	 *

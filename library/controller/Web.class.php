@@ -6,8 +6,10 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 // +--------------------------------------------------------------------------+
 
 	/**
+	 * Controller for web requests.
+	 *
 	 * @package Ramverk
-	 * @subpackage Core
+	 * @subpackage Controller
 	 *
 	 * @copyright (c) 2013, Authors
 	 * @copyright (c) 2013, The Developer Blog
@@ -15,9 +17,6 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 	 */
 	class Web
 	{
-		public function delegate()
-		{
-		}
 	}
 }
 // End of file: Web.class.php

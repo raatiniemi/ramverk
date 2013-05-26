@@ -6,8 +6,10 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 
 	/**
+	 * Base controller.
+	 *
 	 * @package Ramverk
-	 * @subpackage Core
+	 * @subpackage Controller
 	 *
 	 * @copyright (c) 2013, Authors
 	 * @copyright (c) 2013, The Developer Blog
@@ -15,6 +17,10 @@ namespace Net\TheDeveloperBlog\Ramverk
 	 */
 	abstract class Controller
 	{
+		/**
+		 * Delegate the controller.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
 		abstract public function delegate();
 	}
 }

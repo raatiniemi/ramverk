@@ -19,16 +19,22 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 	class Parser
 	{
 		/**
+		 * Configuration container.
+		 * @var Net\TheDeveloperBlog\Ramverk\Config
+		 */
+		protected $_config;
+
+		/**
 		 * Application profile.
 		 * @var string
 		 */
 		protected $_profile;
 
 		/**
-		 * Configuration container.
-		 * @var Net\TheDeveloperBlog\Ramverk\Config
+		 * Application context.
+		 * @var string
 		 */
-		protected $_config;
+		protected $_context;
 
 		/**
 		 * Configuration items found that match the current context.
@@ -44,14 +50,16 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 
 		/**
 		 * Initialize the configuration parser.
-		 * @param string $profile Application profile.
 		 * @param Net\TheDeveloperBlog\Ramverk\Config $config Configuration container.
+		 * @param string $profile Application profile.
+		 * @param string $context Application context.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function __construct($profile, Ramverk\Config $config)
+		public function __construct(Ramverk\Config $config, $profile, $context)
 		{
-			$this->_profile = $profile;
 			$this->_config = $config;
+			$this->_profile = $profile;
+			$this->_context = $context;
 
 			// Initialize variables used while parsing.
 			$this->_items = array();
@@ -164,6 +172,11 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 				if($node->nodeType === XML_ELEMENT_NODE && $node->localName === 'configuration') {
 					if($node->hasAttribute('profile')) {
 						if($node->getAttribute('profile') !== $this->_profile) {
+							continue;
+						}
+					}
+					if($node->hasAttribute('context')) {
+						if($node->getAttribute('context') !== $this->_context) {
 							continue;
 						}
 					}

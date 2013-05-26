@@ -83,13 +83,14 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 			}
 
 			// Generate the cachename, and prepend the absolute cache directory.
-			$cachename = $this->_config->expandDirectives(
-				"%directory.application.cache%/{$this->_cache->generateName($filename)}"
-			);
+			$cachename = $this->_config->expandDirectives(sprintf(
+				'%s/%s', '%directory.application.cache%',
+				$this->_cache->generateName($filename)
+			));
 
 			// Check if the configuration file is available from the cache.
-			// There's no need to load and instansiate the handler if we don't
-			// really need to.
+			// There's no need to load and instansiate the configuration handler
+			// if we don't really need to.
 			if($this->_cache->isModified($filename, $cachename)) {
 				// Check if the specified handler is available.
 				if(!$this->hasHandler($name)) {
