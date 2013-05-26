@@ -1,10 +1,9 @@
 <?php
-namespace Net\TheDeveloperBlog
+namespace Net\TheDeveloperBlog\Ramverk
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk;
 	use Net\TheDeveloperBlog\Ramverk\Config\Handler;
 
 	/**
@@ -15,7 +14,7 @@ namespace Net\TheDeveloperBlog
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 	 */
-	final class Ramverk
+	final class Core
 	{
 		/**
 		 * Classes available for autoloading.
@@ -46,7 +45,7 @@ namespace Net\TheDeveloperBlog
 		 * @param Net\TheDeveloperBlog\Ramverk\Config $config Configuration container.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function __construct(Ramverk\Config $config)
+		public function __construct(Config $config)
 		{
 			// Register the framework autoload-method.
 			spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
@@ -59,17 +58,21 @@ namespace Net\TheDeveloperBlog
 			// Verify that the application profile have been supplied.
 			if(!$config->has('profile')) {
 				// TODO: Better specify the Exception-object.
-				throw new Ramverk\Exception(sprintf(
+				throw new Exception(sprintf(
 					'No application profile have been supplied. Add the '.
 					'"%s"-directive to the configuration container.',
 					'profile'
 				));
 			}
 
+			// Setup the default exception template.
+			$config->set('exception.template', '%directory.core.template%/exception.php');
+			$config->set('context', 'web');
+
 			// Verify that the application directory have been supplied.
 			if(!$config->has('directory.application')) {
 				// TODO: Better specify the Exception-object.
-				throw new Ramverk\Exception(sprintf(
+				throw new Exception(sprintf(
 					'No application directory have been supplised. Add the '.
 					'"%s"-directive to the configuration container.',
 					'directory.application'
@@ -88,7 +91,7 @@ namespace Net\TheDeveloperBlog
 			// Verify that the core directory have been supplied.
 			if(!$config->has('directory.core')) {
 				// TODO: Better specify the Exception-object.
-				throw new Ramverk\Exception(sprintf(
+				throw new Exception(sprintf(
 					'No core directory have been supplied. Add the '.
 					'"%s"-directive to the configuration container.',
 					'directory.core'
@@ -99,9 +102,6 @@ namespace Net\TheDeveloperBlog
 			$config->set('directory.core.config', '%directory.core%/config');
 			$config->set('directory.core.library', '%directory.core%/library');
 			$config->set('directory.core.template', '%directory.core%/template');
-
-			// Setup the default exception template.
-			$config->set('exception.template', '%directory.core.template%/exception.php');
 
 			// Instansiate the cache and parser for the factory.
 			$cache = new Handler\Cache($config->get('profile'));
@@ -119,14 +119,15 @@ namespace Net\TheDeveloperBlog
 		}
 
 		/**
-		 * Handles autoloading of classes.
-		 * @param string $name Full name of the class to load.
+		 * Handle autoloading of library classes.
+		 * @param string $name Name of class to autoload, with namespace.
+		 * @throws Net\TheDeveloperBlog\Ramverk\Exception If no autoload items are available.
 		 * @return boolean True if class was loaded, otherwise false.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function autoload($name)
 		{
-			// Check if the available autoload classes have been loaded.
+			// Check if the classes available for autoloading have been loaded.
 			if($this->_autoloads === NULL) {
 				$filename = '%directory.application.config%/autoload.xml';
 
@@ -138,7 +139,7 @@ namespace Net\TheDeveloperBlog
 					// Attempt to load the core autoload classes.
 					$data = $this->_factory->callHandler('Autoload', $filename);
 					if(empty($data)) {
-						throw new Ramverk\Exception(sprintf(
+						throw new Exception(sprintf(
 							'The configuration file "%s" returned an empty array.',
 							$filename
 						));
@@ -177,5 +178,5 @@ namespace Net\TheDeveloperBlog
 		}
 	}
 }
-// End of file: Ramverk.class.php
-// Location: library/core/Ramverk.class.php
+// End of file: Core.class.php
+// Location: library/core/Core.class.php
