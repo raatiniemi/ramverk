@@ -1,0 +1,21 @@
+<configurations>
+	<configuration>
+		<autoloads>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Action">%directory.core.library%/action/Action.class.php</autoload>
+
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config">%directory.core.library%/config/Config.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Cache">%directory.core.library%/config/handler/Cache.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Parser">%directory.core.library%/config/handler/Parser.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Factory">%directory.core.library%/config/handler/Factory.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\IHandler">%directory.core.library%/config/handler/IHandler.interface.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Autoload">%directory.core.library%/config/handler/Autoload.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Routing">%directory.core.library%/config/handler/Routing.class.php</autoload>
+
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Controller">%directory.core.library%/controller/Controller.class.php</autoload>
+
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Exception">%directory.core.library%/exception/Exception.class.php</autoload>
+
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\View">%directory.core.library%/view/View.class.php</autoload>
+		</autoloads>
+	</configuration>
+</configurations>
