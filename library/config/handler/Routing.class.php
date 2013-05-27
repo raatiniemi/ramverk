@@ -26,10 +26,20 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 		public function execute(\DOMDocument $document, Ramverk\Config $config)
 		{
 			$routes = array();
-			foreach($document->getElementsByTagName('routes') as $route) {
-				// TODO: Parse the routes.
+			foreach($document->getElementsByTagName('route') as $route) {
+				// $routes[] = $this->parseRoute($route);
 			}
 			return $routes;
+		}
+
+		/**
+		 * Parse the route configuration.
+		 * @param DOMElement $route Element with route configuration.
+		 * @return array Parsed route.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		private function parseRoute(\DOMElement $config)
+		{
 		}
 	}
 }
