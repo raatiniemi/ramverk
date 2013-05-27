@@ -51,7 +51,9 @@ namespace Net\TheDeveloperBlog\Ramverk
 			spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
 
 			// TODO: Register the default exception handler.
+			// $this->exception
 			// TODO: Register the default error handler.
+			// $this->error
 
 			if(!$config->has('profile')) {
 				// TODO: Better specify the Exception-object.
@@ -73,7 +75,10 @@ namespace Net\TheDeveloperBlog\Ramverk
 		 */
 		private function setupDirectories()
 		{
-			if(!$this->getConfig()->has('directory.application')) {
+			$config = $this->getConfig();
+
+
+			if(!$config->has('directory.application')) {
 				// TODO: Better specify the Exception-object.
 				throw new Exception(sprintf(
 					'No application directory have been supplied.'
@@ -81,13 +86,13 @@ namespace Net\TheDeveloperBlog\Ramverk
 			}
 
 			// Setup the default application directory structure.
-			$this->getConfig()->set('directory.application.cache', '%directory.application%/cache');
-			$this->getConfig()->set('directory.application.config', '%directory.application%/config');
-			$this->getConfig()->set('directory.application.library', '%directory.application%/library');
-			$this->getConfig()->set('directory.application.module', '%directory.application%/module');
-			$this->getConfig()->set('directory.application.template', '%directory.application%/template');
+			$config->set('directory.application.cache', '%directory.application%/cache');
+			$config->set('directory.application.config', '%directory.application%/config');
+			$config->set('directory.application.library', '%directory.application%/library');
+			$config->set('directory.application.module', '%directory.application%/module');
+			$config->set('directory.application.template', '%directory.application%/template');
 
-			if(!$this->getConfig()->has('directory.core')) {
+			if(!$config->has('directory.core')) {
 				// TODO: Better specify the Exception-object.
 				throw new Exception(sprintf(
 					'No core directory have been supplied.'
@@ -95,9 +100,9 @@ namespace Net\TheDeveloperBlog\Ramverk
 			}
 
 			// Setup the default core directory structure.
-			$this->getConfig()->set('directory.core.config', '%directory.core%/config');
-			$this->getConfig()->set('directory.core.library', '%directory.core%/library');
-			$this->getConfig()->set('directory.core.template', '%directory.core%/template');
+			$config->set('directory.core.config', '%directory.core%/config');
+			$config->set('directory.core.library', '%directory.core%/library');
+			$config->set('directory.core.template', '%directory.core%/template');
 		}
 
 		/**
@@ -183,21 +188,26 @@ namespace Net\TheDeveloperBlog\Ramverk
 				$context = $this->getConfig()->get('context');
 
 				// Instansiate the cache and parser for the factory.
-				$cache = new Handler\Cache($profile);
-				$parser = new Handler\Parser($this->_config, $profile, $context);
+				$cache = new Handler\Cache($profile, $context);
+				$parser = new Handler\Parser($this->getConfig(), $profile, $context);
 
 				// Instansiate the configuration handler factory.
-				$this->_handlerFactory = new Handler\Factory($this->_config, $cache, $parser);
+				$this->_handlerFactory = new Handler\Factory($this->getConfig(), $cache, $parser);
 			}
 			return $this->_handlerFactory;
 		}
 
+		/**
+		 * Get the context controller.
+		 * @return Net\TheDeveloperBlog\Ramverk\Controller Context controller.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
 		public function getController()
 		{
 			if($this->_controller === NULL) {
 				$filename = '%directory.application.config%/routing.xml';
 
-				$routing = $this->_handlerFactory->callHandler('Routing', $filename);
+				$routing = $this->getHandlerFactory()->callHandler('Routing', $filename);
 				if(empty($routing)) {
 					// TODO: Better specify the Exception-object.
 					throw new Exception(sprintf(
@@ -207,7 +217,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 				}
 
 				$base = 'Net\\TheDeveloperBlog\\Ramverk\\Controller';
-				$context = ucfirst($this->_config->get('context'));
+				$context = ucfirst($this->getConfig()->get('context'));
 				$controller = "{$base}\\{$context}";
 
 				if(!class_exists($controller)) {
@@ -222,12 +232,12 @@ namespace Net\TheDeveloperBlog\Ramverk
 				if(!$reflection->isSubclassOf($base)) {
 					// TODO: Better specify the Exception-object.
 					throw new Exception(sprintf(
-						'Context controller "%s" do not extend the base controller.',
-						$controller
+						'Controller for context "%s" do not extend the base controller.',
+						$context
 					));
 				}
 
-				$arguments = array($this->_config, $routing);
+				$arguments = array($this->getConfig(), $routing);
 				$this->_controller = $reflection->newInstanceArgs($arguments);
 			}
 			return $this->_controller;

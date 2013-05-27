@@ -25,13 +25,21 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 		protected $_profile;
 
 		/**
+		 * Application context.
+		 * @var string
+		 */
+		protected $_context;
+
+		/**
 		 * Initialize the configuration cache.
 		 * @param string $profile Application profile.
+		 * @param string $context Application context.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function __construct($profile)
+		public function __construct($profile, $context)
 		{
 			$this->_profile = $profile;
+			$this->_context = $context;
 		}
 
 		/**
@@ -43,8 +51,14 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 		public function generateName($filename)
 		{
 			// Build the name for the cache file in the following format:
-			// configurationfile_profile_sha1(filename).php
-			return sprintf('%s_%s_%s.php', basename($filename), $this->_profile, sha1($filename));
+			// configurationfile_profile_context_sha1(filename).php
+			return sprintf(
+				'%s_%s_%s_%s.php',
+				basename($filename),
+				$this->_profile,
+				$this->_context,
+				sha1($filename)
+			);
 		}
 
 		/**
@@ -95,15 +109,18 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 		 */
 		public function write($cachename, array $data)
 		{
-			// TODO: Create directory if it don't exists.
 			$directory = dirname($cachename);
 
+			// Check if the cache directory exists. If it doesn't
+			// attempt to create it.
 			if(!is_dir($directory)) {
-				// TODO: Better specify the Exception-object.
-				throw new Ramverk\Exception(sprintf(
-					'Cache directory "%s" do not exists.',
-					$directory
-				));
+				if(!mkdir($directory, 0777, TRUE)) {
+					// TODO: Better specify the Exception-object.
+					throw new Ramverk\Exception(sprintf(
+						'Cache directory "%s" do not exists and can not be created.',
+						$directory
+					));
+				}
 			}
 
 			// Build the content of the cache file. The file should should
