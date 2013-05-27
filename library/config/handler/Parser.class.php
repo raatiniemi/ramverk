@@ -111,6 +111,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 			// Loop through the nodes and import them into the parsed document.
 			foreach($nodes as $node) {
 				if(($item = $parsedDocument->importNode($node, TRUE)) === FALSE) {
+					// TODO: Better specify the Exception-object.
 					throw new Ramverk\Exception(sprintf(
 						'Unable to import configuration node in "%s".',
 						$document->documentURI

@@ -27,6 +27,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 		{
 			$routes = array();
 			foreach($document->getElementsByTagName('routes') as $route) {
+				// TODO: Parse the routes.
 			}
 			return $routes;
 		}
