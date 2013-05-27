@@ -4,6 +4,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
+	use Net\TheDeveloperBlog\Ramverk;
 
 	/**
 	 * Controller for web requests.
@@ -15,8 +16,14 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 	 */
-	class Web
+	class Web extends Ramverk\Controller
 	{
+		public function dispatch()
+		{
+			echo '<pre>';
+			var_dump($this->_routing);
+			echo '</pre>';
+		}
 	}
 }
 // End of file: Web.class.php
