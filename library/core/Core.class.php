@@ -61,6 +61,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 					'No application profile have been supplied.'
 				));
 			}
+
 			$config->set('exception.template', '%directory.core.template%/exception.php');
 			$config->set('context', 'web');
 			$this->_config = $config;
@@ -76,7 +77,6 @@ namespace Net\TheDeveloperBlog\Ramverk
 		private function setupDirectories()
 		{
 			$config = $this->getConfig();
-
 
 			if(!$config->has('directory.application')) {
 				// TODO: Better specify the Exception-object.
