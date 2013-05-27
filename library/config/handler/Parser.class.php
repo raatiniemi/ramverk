@@ -166,11 +166,16 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 
 			// Loop through the child nodes of the configurations element.
 			// Retrieve the configuration items.
-			// 
-			// The item will be included if the application profile matches
-			// or if the item do not have a specified profile.
 			foreach($documentElement->childNodes as $node) {
 				if($node->nodeType === XML_ELEMENT_NODE && $node->localName === 'configuration') {
+					// For a configuration item to be included it have to match
+					// a few conditions. If neither the profile or context
+					// attributes have been defined, the item will be included.
+					//
+					// If the item have either of the attributes and value
+					// matches the respective values, the item will be included.
+					//
+					// Any other scenario it'll be ignored.
 					if($node->hasAttribute('profile')) {
 						if($node->getAttribute('profile') !== $this->_profile) {
 							continue;
