@@ -73,12 +73,21 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 			// Get the absolute path for the configuration file.
 			$filename = $this->_config->expandDirectives($filename);
 
+			// Check that the configuration directive exists.
+			if(!is_dir(dirname($filename))) {
+				// TODO: Better specify the Exception-object.
+				throw new Ramverk\Exception(sprintf(
+					'Configuration "%s" directive to not exists.',
+					dirname($filename)
+				));
+			}
+
 			// Check that the configuration file do exists and is readable.
 			if(!file_exists($filename) || !is_readable($filename)) {
 				// TODO: Better specify the Exception-object.
 				throw new Ramverk\Exception(sprintf(
 					'The specified configuration file "%s" do not exists.',
-					$filename
+					basename($filename)
 				));
 			}
 
