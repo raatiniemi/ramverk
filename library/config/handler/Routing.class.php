@@ -27,7 +27,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 		{
 			$routes = array();
 			foreach($document->getElementsByTagName('route') as $route) {
-				// $routes[] = $this->parseRoute($route);
+				$routes[] = $this->parseRoute($route);
 			}
 			return $routes;
 		}
@@ -38,8 +38,32 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 		 * @return array Parsed route.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		private function parseRoute(\DOMElement $config)
+		private function parseRoute(\DOMElement $route)
 		{
+			$config = array();
+
+			// Loop through each of the required attributes.
+			$required = array('name', 'pattern', 'module', 'action');
+			foreach($required as $attribute) {
+				if(!$route->hasAttribute($attribute)) {
+					// TODO: Better specify the Exception-object.
+					throw new Ramverk\Exception(sprintf(
+						'Route is missing required "%s"-attribute.',
+						$attribute
+					));
+				}
+				$config[$attribute] = $route->getAttribute($attribute);
+			}
+
+			if($route->hasAttribute('method')) {
+				$config['method'] = $route->getAttribute('method');
+			}
+
+			if($route->hasAttribute('output-type')) {
+				$config['output-type'] = $route->getAttribute('output-type');
+			}
+
+			return $config;
 		}
 	}
 }
