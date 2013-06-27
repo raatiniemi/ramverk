@@ -59,8 +59,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 				$config['method'] = $route->getAttribute('method');
 			}
 
-			if($route->hasAttribute('output-type')) {
-				$config['output-type'] = $route->getAttribute('output-type');
+			if($route->hasAttribute('outputType')) {
+				$config['outputType'] = $route->getAttribute('outputType');
 			}
 
 			return $config;
