@@ -6,6 +6,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 
 	/**
+	 * Handles routing.
+	 *
 	 * @package Ramverk
 	 * @subpackage Routing
 	 *
@@ -15,6 +17,32 @@ namespace Net\TheDeveloperBlog\Ramverk
 	 */
 	class Routing
 	{
+		/**
+		 * Available routes.
+		 * @var array
+		 */
+		protected $_routes;
+
+		/**
+		 * Initialize routing handler.
+		 * @param array $routes Available routes.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function __construct(array $routes)
+		{
+			$this->_routes = $routes;
+
+			// Initialize route parsing.
+			$this->parseRoutes();
+		}
+
+		/**
+		 * Parse the available routes.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		protected function parseRoutes()
+		{
+		}
 	}
 }
 // End of file: Routing.class.php
