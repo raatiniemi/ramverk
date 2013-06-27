@@ -25,17 +25,17 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Available routes.
-		 * @var array
+		 * @var Net\TheDeveloperBlog\Ramverk\Routing
 		 */
 		protected $_routing;
 
 		/**
 		 * Initialize the controller.
 		 * @param Net\TheDeveloperBlog\Ramverk\Config $config Configuration container.
-		 * @param array $routing Available routes.
+		 * @param Net\TheDeveloperBlog\Ramverk\Routing $routing Available routes.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function __construct(Config $config, array $routing)
+		public function __construct(Config $config, Routing $routing)
 		{
 			$this->_config = $config;
 			$this->_routing = $routing;

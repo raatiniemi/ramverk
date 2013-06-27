@@ -16,6 +16,8 @@
 
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Exception">%directory.core.library%/exception/Exception.class.php</autoload>
 
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Routing">%directory.core.library%/routing/Routing.class.php</autoload>
+
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\View">%directory.core.library%/view/View.class.php</autoload>
 		</autoloads>
 	</configuration>

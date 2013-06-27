@@ -205,21 +205,13 @@ namespace Net\TheDeveloperBlog\Ramverk
 		public function getController()
 		{
 			if($this->_controller === NULL) {
-				$filename = '%directory.application.config%/routing.xml';
-
-				$routing = $this->getHandlerFactory()->callHandler('Routing', $filename);
-				if(empty($routing)) {
-					// TODO: Better specify the Exception-object.
-					throw new Exception(sprintf(
-						'The configuration file "%s" returned an empty array.',
-						$filename
-					));
-				}
-
+				// Retrieve the information for the context Controller.
 				$base = 'Net\\TheDeveloperBlog\\Ramverk\\Controller';
 				$context = ucfirst($this->getConfig()->get('context'));
 				$controller = "{$base}\\{$context}";
 
+				// Verify that the context Controller actually exists before
+				// doing anything else with/for it.
 				if(!class_exists($controller)) {
 					// TODO: Better specify the Exception-object.
 					throw new Exception(sprintf(
@@ -236,6 +228,18 @@ namespace Net\TheDeveloperBlog\Ramverk
 						$context
 					));
 				}
+
+				$filename = '%directory.application.config%/routing.xml';
+				$routes = $this->getHandlerFactory()->callHandler('Routing', $filename);
+				if(empty($routes)) {
+					// TODO: Better specify the Exception-object.
+					throw new Exception(sprintf(
+						'The configuration file "%s" returned an empty array.',
+						$filename
+					));
+				}
+
+				$routing = new Routing($routes);
 
 				$arguments = array($this->getConfig(), $routing);
 				$this->_controller = $reflection->newInstanceArgs($arguments);
