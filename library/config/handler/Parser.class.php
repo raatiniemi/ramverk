@@ -11,7 +11,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 	 *
 	 * @package Ramverk
 	 * @subpackage Config
-	 * 
+	 *
 	 * @copyright (c) 2013, Authors
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
@@ -121,13 +121,13 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 				// DOM_NO_MODIFICATION_ALLOWED_ERR
 				// Raised if this node is readonly or if the previous
 				// parent of the node being inserted is readonly.
-				// 
+				//
 				// DOM_HIERARCHY_REQUEST_ERR
 				// Raised if this node is of a type that does not allow
 				// children of the type of the newnode node, or if the
 				// node to append is one of this node's ancestors or
 				// this node itself.
-				// 
+				//
 				// DOM_WRONG_DOCUMENT_ERR
 				// Raised if newnode was created from a different document
 				// than the one that created this node.
@@ -160,7 +160,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 			// Check if the current document has a parent document. If it does,
 			// parse that document first. This way we'll be able to override
 			// parent configurations from the child configuration.
-			// 
+			//
 			// It will put the configuration items in the correct order.
 			$this->parseParentDocument($document);
 
@@ -208,7 +208,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 
 				// We have to check if the parent document already have been
 				// imported, prevents infinite loops.
-				// 
+				//
 				// No need to check if the configuration document is attempting
 				// to include itself, exception will be thrown next loop.
 				if(in_array($parent, $this->_parentDocuments)) {

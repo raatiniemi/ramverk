@@ -7,10 +7,10 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 	/**
 	 * Configuration container.
-	 * 
+	 *
 	 * @package Ramverk
 	 * @subpackage Config
-	 * 
+	 *
 	 * @copyright (c) 2013, Authors
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
