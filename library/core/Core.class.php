@@ -216,9 +216,9 @@ namespace Net\TheDeveloperBlog\Ramverk
 			// controller has yet not been instansiated, instansiate it.
 			if($this->_controller === NULL) {
 				// Retrieve the information for the context Controller.
-				$base = 'Net\\TheDeveloperBlog\\Ramverk\\Controller';
+				$baseController = 'Net\\TheDeveloperBlog\\Ramverk\\Controller';
 				$context = ucfirst($this->getConfig()->get('context'));
-				$controller = "{$base}\\{$context}";
+				$controller = "{$baseController}\\{$context}";
 
 				// Verify that the context Controller actually exists before
 				// attempting to instantiating it.
@@ -230,11 +230,34 @@ namespace Net\TheDeveloperBlog\Ramverk
 					));
 				}
 
-				$reflection = new \ReflectionClass($controller);
-				if(!$reflection->isSubclassOf($base)) {
+				$controllerReflection = new \ReflectionClass($controller);
+				if(!$controllerReflection->isSubclassOf($baseController)) {
 					// TODO: Better specify the Exception-object.
 					throw new Exception(sprintf(
 						'Controller for context "%s" do not extend the base controller.',
+						$context
+					));
+				}
+
+				// Build the name for the context Request.
+				$baseRequest = 'Net\\TheDeveloperBlog\\Ramverk\\Request';
+				$request = "{$baseRequest}\\{$context}";
+
+				// Verify that the context Request actually exists before
+				// attempting to instansiating it.
+				if(!class_exists($request)) {
+					// TODO: Better specify the Exception-object.
+					throw new Exception(sprintf(
+						'Request for context "%s" do not exists.',
+						$context
+					));
+				}
+
+				$requestReflection = new \ReflectionClass($request);
+				if(!$requestReflection->isSubclassOf($baseRequest)) {
+					// TODO: Better specify the Exception-object.
+					throw new Exception(sprintf(
+						'Request for context "%s" do not extend the base request.',
 						$context
 					));
 				}
@@ -251,11 +274,11 @@ namespace Net\TheDeveloperBlog\Ramverk
 				}
 
 				// Instansiate the routing with the available routes.
-				$routing = new Routing($routes);
+				$routing = new Routing($requestReflection->newInstance(), $routes);
 
 				// Create a new controller instance with real arguments.
 				$arguments = array($this->getConfig(), $routing);
-				$this->_controller = $reflection->newInstanceArgs($arguments);
+				$this->_controller = $controllerReflection->newInstanceArgs($arguments);
 			}
 			return $this->_controller;
 		}

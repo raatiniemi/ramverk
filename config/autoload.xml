@@ -18,6 +18,9 @@
 
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Routing">%directory.core.library%/routing/Routing.class.php</autoload>
 
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Request">%directory.core.library%/request/Request.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Request\\Web">%directory.core.library%/request/Web.class.php</autoload>
+
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\View">%directory.core.library%/view/View.class.php</autoload>
 		</autoloads>
 	</configuration>
