@@ -24,6 +24,28 @@ namespace Net\TheDeveloperBlog\Ramverk\Routing
 		 */
 		protected function parseRoutes()
 		{
+			// Retrieve the request URI.
+			$uri = $this->_request->getRequestURI();
+
+			// Loop through each of the available routes and check if the
+			// routes' pattern match the request URI.
+			foreach($this->_routes as $route) {
+				if(preg_match('#('.$route['pattern'].')#', $uri)) {
+					// TODO: Implement support for prepending other routes.
+					// TODO: Handle retrieval of arguments from the URI.
+
+					// When we find the we're looking for, retrieve the name
+					// of the module and action.
+					$this->_module = $route['module'];
+					$this->_action = $route['action'];
+
+					// Since we've already found which route we were looking
+					// for we can break free from the foreach-loop.
+					break;
+				}
+			}
+
+			// TODO: How to handle 404 pages.
 		}
 	}
 }

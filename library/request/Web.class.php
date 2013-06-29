@@ -18,6 +18,10 @@ namespace Net\TheDeveloperBlog\Ramverk\Request
 	 */
 	class Web extends Ramverk\Request
 	{
+		public function getRequestURI()
+		{
+			return isset($_GET['uri']) ? trim($_GET['uri'], '/') : '';
+		}
 	}
 }
 // End of file: Web.class.php
