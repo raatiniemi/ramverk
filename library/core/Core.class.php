@@ -63,8 +63,10 @@ namespace Net\TheDeveloperBlog\Ramverk
 				));
 			}
 
-			// Setup the default exception template.
+			// Setup default configurations. If these already have been
+			// supplied they won't be rewritten.
 			$config->set('exception.template', '%directory.core.template%/exception.php');
+			$config->set('context', 'web');
 			$this->_config = $config;
 
 			$this->setupDirectories();
@@ -205,18 +207,18 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Retrieve the context controller.
-		 * @param string $context Context for the controller.
 		 * @return Net\TheDeveloperBlog\Ramverk\Controller Context controller.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function getController($context)
+		public function getController()
 		{
 			// Check if the controller already have been instansiated. If the
 			// controller has yet not been instansiated, instansiate it.
 			if($this->_controller === NULL) {
 				// Retrieve the information for the context Controller.
 				$base = 'Net\\TheDeveloperBlog\\Ramverk\\Controller';
-				$controller = sprintf('%s\\%s', $base, ucfirst($context));
+				$context = ucfirst($this->getConfig()->get('context'));
+				$controller = "{$base}\\{$context}";
 
 				// Verify that the context Controller actually exists before
 				// attempting to instantiating it.
