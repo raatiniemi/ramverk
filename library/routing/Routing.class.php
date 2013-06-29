@@ -6,7 +6,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 
 	/**
-	 * Handles routing.
+	 * Base functionality for handling routing.
 	 *
 	 * @package Ramverk
 	 * @subpackage Routing
@@ -15,7 +15,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 	 */
-	class Routing
+	abstract class Routing
 	{
 		/**
 		 * Handles requests.
@@ -79,9 +79,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 		 * Parse the available routes.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		protected function parseRoutes()
-		{
-		}
+		abstract protected function parseRoutes();
 	}
 }
 // End of file: Routing.class.php
