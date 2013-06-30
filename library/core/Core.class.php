@@ -4,7 +4,9 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
+	use Net\TheDeveloperBlog\Ramverk\Configuration;
 	use Net\TheDeveloperBlog\Ramverk\Config\Handler;
+	use Net\TheDeveloperBlog\Ramverk\Loader;
 
 	/**
 	 * @package Ramverk
@@ -16,11 +18,10 @@ namespace Net\TheDeveloperBlog\Ramverk
 	 */
 	final class Core
 	{
-		/**
-		 * Classes available for autoloading.
-		 * @var array
-		 */
-		private $_autoloads;
+		// +------------------------------------------------------------------+
+		// | Trait use-directives.                                            |
+		// +------------------------------------------------------------------+
+		use Loader\Autoload;
 
 		/**
 		 * Configuration container.
@@ -45,7 +46,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 		 * @param Net\TheDeveloperBlog\Ramverk\Config $config Configuration container.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function __construct(Config $config)
+		public function __construct(Configuration\Container $config)
 		{
 			// Register and prepend the method for handling class autoloading.
 			spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
@@ -62,26 +63,44 @@ namespace Net\TheDeveloperBlog\Ramverk
 					'No application profile have been supplied.'
 				));
 			}
-
-			// Setup default configurations. If these already have been
-			// supplied they won't be rewritten.
-			$config->set('exception.template', '%directory.core.template%/exception.php');
-			$config->set('context', 'web');
 			$this->_config = $config;
 
-			$this->setupDirectories();
+			// Setup default configurations and register the configuration handlers.
+			$this->setupDefaults();
 			$this->registerConfigurationHandlers();
 		}
 
 		/**
-		 * Setup the default directory structure for both application and core.
+		 * Setup default configurations.
+		 * If configurations already have been supplied, the previous values will be used.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function setupDefaults()
+		{
+			// Setup the default directory structure.
+			$this->setupDirectories();
+
+			// Get the configuration container.
+			$config = $this->getConfig();
+
+			// Setup the default exception template and context.
+			$config->set('exception.template', '%directory.core.template%/exception.php');
+			$config->set('context', 'web');
+		}
+
+		/**
+		 * Setup default directory structure.
+		 * If directories already have been supplied the previous path will be used.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		private function setupDirectories()
 		{
+			// Get the configuration container.
 			$config = $this->getConfig();
 
-			// Verify that we have the base path for the application directory.
+			// -- Application directory structure.
+
+			// Check that a base application directory have been supplied.
 			if(!$config->has('directory.application')) {
 				// TODO: Better specify the Exception-object.
 				throw new Exception(sprintf(
@@ -89,14 +108,16 @@ namespace Net\TheDeveloperBlog\Ramverk
 				));
 			}
 
-			// Setup the default application directory structure.
+			// Setup the default directory structure for the application.
 			$config->set('directory.application.cache', '%directory.application%/cache');
 			$config->set('directory.application.config', '%directory.application%/config');
 			$config->set('directory.application.library', '%directory.application%/library');
 			$config->set('directory.application.module', '%directory.application%/module');
 			$config->set('directory.application.template', '%directory.application%/template');
 
-			// Verify that we have the base path for the framework directory.
+			// -- Core directory structure.
+
+			// Check that a base core directory have been supplied.
 			if(!$config->has('directory.core')) {
 				// TODO: Better specify the Exception-object.
 				throw new Exception(sprintf(
@@ -104,72 +125,28 @@ namespace Net\TheDeveloperBlog\Ramverk
 				));
 			}
 
-			// Setup the default core directory structure.
+			// Setup the default directory structure for the core.
 			$config->set('directory.core.config', '%directory.core%/config');
 			$config->set('directory.core.library', '%directory.core%/library');
 			$config->set('directory.core.template', '%directory.core%/template');
 		}
 
 		/**
-		 * Registers the configuration handlers.
+		 * Register the configuration handlers.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 *
+		 * @todo Register the rest of the configuration handlers.
 		 */
 		private function registerConfigurationHandlers()
 		{
-			$namespace = 'Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler';
+			// Namespace for the configuration handlers.
+			$namespace = 'Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler';
 
-			// TODO: Register the rest of the configuration handlers.
+			// Register the handlers with the handler factory.
 			$factory = $this->getHandlerFactory();
 			$factory->registerHandler('Autoload', "{$namespace}\\Autoload");
 			$factory->registerHandler('Module', "{$namespace}\\Module");
 			$factory->registerHandler('Routing', "{$namespace}\\Routing");
-		}
-
-		/**
-		 * Handle autoloading of classes within the library.
-		 * @param string $name Name of class to autoload, with namespace.
-		 * @throws Net\TheDeveloperBlog\Ramverk\Exception If no autoload items are available.
-		 * @return boolean True if class was loaded, otherwise false.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
-		 */
-		public function autoload($name)
-		{
-			// Check if the autoload classes have been loaded.
-			if($this->_autoloads === NULL) {
-				$factory = $this->getHandlerFactory();
-
-				// First attempt to load the applications autoload configurations.
-				// If that fails, load the framework autoload configuration.
-				$autoloads = $factory->callHandler('Autoload', '%directory.application.config%/autoload.xml');
-				if(empty($autoloads)) {
-					$autoloads = $factory->callHandler('Autoload', '%directory.core.config%/autoload.xml');
-					if(empty($autoloads)) {
-						// TODO: Better specify the Exception-object.
-						throw new Exception(sprintf(
-							'The configuration file "%s" returned an empty array.',
-							$filename
-						));
-					}
-				}
-				$this->_autoloads = $autoloads;
-			}
-
-			// Due to the use of namespaces, the separator have to be dubbled
-			// to be able to match the array key.
-			$name = str_replace('\\', '\\\\', $name);
-
-			// Check if the class is available within the list of autoloaded
-			// classes. If it exists, include it and return true.
-			if(isset($this->_autoloads[$name])) {
-				require $this->_autoloads[$name];
-
-				return TRUE;
-			}
-
-			// If it don't exists we can only return false. Since we're
-			// prepending the autoloader we can't throw an exception since it
-			// might prevent another autoloader of finding the file.
-			return FALSE;
 		}
 
 		/**
