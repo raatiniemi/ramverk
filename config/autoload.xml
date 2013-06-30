@@ -3,7 +3,13 @@
 		<autoloads>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Action">%directory.core.library%/action/Action.class.php</autoload>
 
-			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config">%directory.core.library%/config/Config.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Container">%directory.core.library%/configuration/Container.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\IUtility">%directory.core.library%/configuration/IUtility.interface.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Utility">%directory.core.library%/configuration/Utility.trait.php</autoload>
+
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Data\\Container">%directory.core.library%/data/Container.class.php</autoload>
+
+
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Cache">%directory.core.library%/config/handler/Cache.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Parser">%directory.core.library%/config/handler/Parser.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Factory">%directory.core.library%/config/handler/Factory.class.php</autoload>
