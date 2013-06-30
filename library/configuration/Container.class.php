@@ -22,7 +22,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 	 */
-	class Container extends Data\Container implements IUtility
+	class Container extends Data\Container
 	{
 		// +------------------------------------------------------------------+
 		// | Trait use-directives.                                            |
@@ -71,7 +71,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		}
 
 		/**
-		 * Retrieve the configuration container, used by Utility-trait.
+		 * Get the configuration container, used by Utility-trait.
 		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
@@ -81,5 +81,5 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		}
 	}
 }
-// End of file: Config.class.php
-// Location: library/config/Config.class.php
+// End of file: Container.class.php
+// Location: library/configuration/Container.class.php
