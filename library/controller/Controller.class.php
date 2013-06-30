@@ -18,6 +18,12 @@ namespace Net\TheDeveloperBlog\Ramverk
 	abstract class Controller
 	{
 		/**
+		 * Application core.
+		 * @var Net\TheDeveloperBlog\Ramverk\Core
+		 */
+		protected $_core;
+
+		/**
 		 * Configuration container.
 		 * @var Net\TheDeveloperBlog\Ramverk\Config
 		 */
@@ -31,12 +37,14 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Initialize the controller.
+		 * @param Net\TheDeveloperBlog\Ramverk\Core $core Application core.
 		 * @param Net\TheDeveloperBlog\Ramverk\Config $config Configuration container.
 		 * @param Net\TheDeveloperBlog\Ramverk\Routing $routing Available routes.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function __construct(Config $config, Routing $routing)
+		public function __construct(Core $core, Config $config, Routing $routing)
 		{
+			$this->_core = $core;
 			$this->_config = $config;
 			$this->_routing = $routing;
 		}

@@ -9,6 +9,7 @@
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Factory">%directory.core.library%/config/handler/Factory.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\IHandler">%directory.core.library%/config/handler/IHandler.interface.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Autoload">%directory.core.library%/config/handler/Autoload.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Module">%directory.core.library%/config/handler/Module.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Routing">%directory.core.library%/config/handler/Routing.class.php</autoload>
 
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Controller">%directory.core.library%/controller/Controller.class.php</autoload>

@@ -33,6 +33,21 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 				));
 			}
 
+			$handlerFactory = $this->_core->getHandlerFactory();
+
+			// Load the module configurations.
+			$filename = "{$directory}/config/module.xml";
+			$module = $handlerFactory->callHandler('Module', $filename);
+
+			$filename = "{$directory}/config/autoload.xml";
+			if(file_exists($filename)) {
+				$autoload = $handlerFactory->callHandler('Autoload', $filename);
+
+				// TODO: Merge the configurations.
+			}
+
+			// TODO: Use trait.
+
 			// TODO: Read the module configuration.
 			// We need the module namespace, autoloads etc.
 			// $this->_moduleNamespace.

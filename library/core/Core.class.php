@@ -121,6 +121,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 			// TODO: Register the rest of the configuration handlers.
 			$factory = $this->getHandlerFactory();
 			$factory->registerHandler('Autoload', "{$namespace}\\Autoload");
+			$factory->registerHandler('Module', "{$namespace}\\Module");
 			$factory->registerHandler('Routing', "{$namespace}\\Routing");
 		}
 
@@ -291,7 +292,9 @@ namespace Net\TheDeveloperBlog\Ramverk
 				$routing['arguments'] = array($request['reflection']->newInstance(), $routes);
 				$routing['instance'] = $routing['reflection']->newInstanceArgs($routing['arguments']);
 
-				$controller['arguments'] = array($this->getConfig(), $routing['instance']);
+				// Temporarily include the core as an argument. Need to be able
+				// to merge autoload configurations.
+				$controller['arguments'] = array($this, $this->getConfig(), $routing['instance']);
 				$this->_controller = $controller['reflection']->newInstanceArgs($controller['arguments']);
 			}
 			return $this->_controller;
