@@ -7,9 +7,6 @@
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\IUtility">%directory.core.library%/configuration/IUtility.interface.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Utility">%directory.core.library%/configuration/Utility.trait.php</autoload>
 
-			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Data\\Container">%directory.core.library%/data/Container.class.php</autoload>
-
-
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Cache">%directory.core.library%/config/handler/Cache.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Parser">%directory.core.library%/config/handler/Parser.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Config\\Handler\\Factory">%directory.core.library%/config/handler/Factory.class.php</autoload>
@@ -20,6 +17,8 @@
 
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Controller">%directory.core.library%/controller/Controller.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Controller\\Web">%directory.core.library%/controller/Web.class.php</autoload>
+
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Data\\Container">%directory.core.library%/data/Container.class.php</autoload>
 
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Exception">%directory.core.library%/exception/Exception.class.php</autoload>
 
