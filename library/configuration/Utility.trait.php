@@ -26,21 +26,11 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		/**
 		 * Expands configuration directives.
 		 * @param string $value String with configuration directives to expand.
-		 * @throws Net\TheDeveloperBlog\Ramverk\Exception If object do not implement Net\TheDeveloperBlog\Ramverk\Configuration\IUtility
 		 * @return string String with configuration directives expanded.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function expandDirectives($value)
 		{
-			// We have to check that the object context do implements the
-			// IUtility-interface (which ensures that the requires methods exists).
-			if(!$this instanceof IUtility) {
-				throw new Ramverk\Exception(sprintf(
-					'Class "%s" do not implement the "%s\\IUtility" interface.',
-					get_class($this), __NAMESPACE__
-				));
-			}
-
 			do {
 				$oldValue = $value;
 
@@ -57,6 +47,13 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 
 			return $value;
 		}
+
+		/**
+		 * Get the configuration container.
+		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		abstract public function getConfig();
 	}
 }
 // End of file: Utility.trait.php
