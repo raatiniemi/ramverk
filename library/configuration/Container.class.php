@@ -60,6 +60,17 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		}
 
 		/**
+		 * Check whether a configuration directive exists or not.
+		 * @param string $name Name of the directive.
+		 * @return boolean True if the directive exists, otherwise false.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function has($name)
+		{
+			return $this->hasIndex($name);
+		}
+
+		/**
 		 * Retrieve the configuration container, used by Utility-trait.
 		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
