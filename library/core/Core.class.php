@@ -1,4 +1,9 @@
 <?php
+// +--------------------------------------------------------------------------+
+// | This file is a part of the Ramverk project by The Developer Blog.        |
+// | Copyright (c) 2013, Authors                                              |
+// | Copyright (c) 2013, The Developer Blog                                   |
+// +--------------------------------------------------------------------------+
 namespace Net\TheDeveloperBlog\Ramverk
 {
 // +--------------------------------------------------------------------------+
@@ -49,6 +54,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 		public function __construct(Configuration\Container $config)
 		{
 			// Register and prepend the method for handling class autoloading.
+			$this->_autoloadFile = '%directory.application.config%/autoload.xml';
 			spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
 
 			// TODO: Register the default exception handler.

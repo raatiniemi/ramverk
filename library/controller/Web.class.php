@@ -1,4 +1,9 @@
 <?php
+// +--------------------------------------------------------------------------+
+// | This file is a part of the Ramverk project by The Developer Blog.        |
+// | Copyright (c) 2013, Authors                                              |
+// | Copyright (c) 2013, The Developer Blog                                   |
+// +--------------------------------------------------------------------------+
 namespace Net\TheDeveloperBlog\Ramverk\Controller
 {
 // +--------------------------------------------------------------------------+
@@ -58,7 +63,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 
 		public function dispatch()
 		{
-			$this->initializeModule($this->_routing->getModule());
+			//$this->initializeModule($this->_routing->getModule());
 
 			// $httpMethod = $_SERVER['REQUEST_METHOD'] === 'POST' ? 'POST' : 'GET';
 			//

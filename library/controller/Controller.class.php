@@ -1,9 +1,15 @@
 <?php
+// +--------------------------------------------------------------------------+
+// | This file is a part of the Ramverk project by The Developer Blog.        |
+// | Copyright (c) 2013, Authors                                              |
+// | Copyright (c) 2013, The Developer Blog                                   |
+// +--------------------------------------------------------------------------+
 namespace Net\TheDeveloperBlog\Ramverk
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
+	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
 	 * Base controller.
@@ -25,7 +31,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Configuration container.
-		 * @var Net\TheDeveloperBlog\Ramverk\Config
+		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Container
 		 */
 		protected $_config;
 
@@ -38,11 +44,11 @@ namespace Net\TheDeveloperBlog\Ramverk
 		/**
 		 * Initialize the controller.
 		 * @param Net\TheDeveloperBlog\Ramverk\Core $core Application core.
-		 * @param Net\TheDeveloperBlog\Ramverk\Config $config Configuration container.
+		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
 		 * @param Net\TheDeveloperBlog\Ramverk\Routing $routing Available routes.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function __construct(Core $core, Config $config, Routing $routing)
+		public function __construct(Core $core, Configuration\Container $config, Routing $routing)
 		{
 			$this->_core = $core;
 			$this->_config = $config;

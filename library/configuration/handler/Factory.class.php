@@ -1,4 +1,9 @@
 <?php
+// +--------------------------------------------------------------------------+
+// | This file is a part of the Ramverk project by The Developer Blog.        |
+// | Copyright (c) 2013, Authors                                              |
+// | Copyright (c) 2013, The Developer Blog                                   |
+// +--------------------------------------------------------------------------+
 namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 {
 // +--------------------------------------------------------------------------+
@@ -19,6 +24,11 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	 */
 	class Factory
 	{
+		// +------------------------------------------------------------------+
+		// | Trait use-directives.                                            |
+		// +------------------------------------------------------------------+
+		use Configuration\Utility;
+
 		/**
 		 * Stores name => class for the available configuration handlers.
 		 * @var array
@@ -72,13 +82,13 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		public function callHandler($name, $filename)
 		{
 			// Get the absolute path for the configuration file.
-			$filename = $this->_config->expandDirectives($filename);
+			$filename = $this->expandDirectives($filename);
 
 			// Check that the configuration directive exists.
 			if(!is_dir(dirname($filename))) {
 				// TODO: Better specify the Exception-object.
 				throw new Ramverk\Exception(sprintf(
-					'Configuration "%s" directive to not exists.',
+					'Configuration "%s" directory do not exists.',
 					dirname($filename)
 				));
 			}
@@ -93,8 +103,9 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 			}
 
 			// Generate the cachename, and prepend the absolute cache directory.
-			$cachename = $this->_config->expandDirectives(sprintf(
-				'%s/%s', '%directory.application.cache%',
+			$cachename = $this->expandDirectives(sprintf(
+				'%s/%s',
+				'%directory.application.cache%',
 				$this->_cache->generateName($filename)
 			));
 
@@ -238,6 +249,16 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 			// Register the configuration handler.
 			$this->_availableHandlers[$name] = $class;
 			return TRUE;
+		}
+
+		/**
+		 * Get the configuration container, used by Utility-trait.
+		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function getConfig()
+		{
+			return $this->_config;
 		}
 	}
 }
