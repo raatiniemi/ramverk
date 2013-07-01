@@ -11,7 +11,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 
 	/**
-	 * Base action.
+	 * Base for handling controller actions.
 	 *
 	 * @package Ramverk
 	 * @subpackage Action

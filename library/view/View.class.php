@@ -11,7 +11,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 
 	/**
-	 * Base view.
+	 * Base for handling controller views.
 	 *
 	 * @package Ramverk
 	 * @subpackage View
