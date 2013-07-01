@@ -1,16 +1,17 @@
 <?php
-namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
+namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Net\TheDeveloperBlog\Ramverk;
+	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
 	 * Factory for instansiating configuration handlers.
 	 *
 	 * @package Ramverk
-	 * @subpackage Config
+	 * @subpackage Configuration
 	 *
 	 * @copyright (c) 2013, Authors
 	 * @copyright (c) 2013, The Developer Blog
@@ -32,30 +33,30 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 
 		/**
 		 * Configuration container.
-		 * @var Net\TheDeveloperBlog\Ramverk\Config
+		 * @var Net\TheDeveloperBlog\Ramverk\Configuration
 		 */
 		protected $_config;
 
 		/**
 		 * Handles configuration caching.
-		 * @var Net\TheDeveloperBlog\Ramverk\Config\Cache
+		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Cache
 		 */
 		protected $_cache;
 
 		/**
 		 * Configuration parser.
-		 * @var Net\TheDeveloperBlog\Ramverk\Config\Parser
+		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Parser
 		 */
 		protected $_parser;
 
 		/**
 		 * Initialize the configuration handler factory.
-		 * @param Net\TheDeveloperBlog\Ramverk\Config $config Configuration container.
-		 * @param Net\TheDeveloperBlog\Ramverk\Config\Handler\Cache $cache Handles configuration caching.
-		 * @param Net\TheDeveloperBlog\Ramverk\Config\Handler\Parser $parser Configuration parser.
+		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
+		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Handler\Cache $cache Handles configuration caching.
+		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Handler\Parser $parser Configuration parser.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function __construct(Ramverk\Config $config, Cache $cache, Parser $parser)
+		public function __construct(Configuration\Container $config, Cache $cache, Parser $parser)
 		{
 			$this->_config = $config;
 			$this->_cache = $cache;

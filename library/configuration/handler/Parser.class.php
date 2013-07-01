@@ -1,16 +1,17 @@
 <?php
-namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
+namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Net\TheDeveloperBlog\Ramverk;
+	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
 	 * Handles configuration parsing.
 	 *
 	 * @package Ramverk
-	 * @subpackage Config
+	 * @subpackage Configuration
 	 *
 	 * @copyright (c) 2013, Authors
 	 * @copyright (c) 2013, The Developer Blog
@@ -20,7 +21,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 	{
 		/**
 		 * Configuration container.
-		 * @var Net\TheDeveloperBlog\Ramverk\Config
+		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Container
 		 */
 		protected $_config;
 
@@ -50,12 +51,12 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 
 		/**
 		 * Initialize the configuration parser.
-		 * @param Net\TheDeveloperBlog\Ramverk\Config $config Configuration container.
+		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
 		 * @param string $profile Application profile.
 		 * @param string $context Application context.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function __construct(Ramverk\Config $config, $profile, $context)
+		public function __construct(Configuration\Container $config, $profile, $context)
 		{
 			$this->_config = $config;
 			$this->_profile = $profile;

@@ -5,7 +5,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
-	use Net\TheDeveloperBlog\Ramverk\Config\Handler;
+	use Net\TheDeveloperBlog\Ramverk\Configuration\Handler;
 	use Net\TheDeveloperBlog\Ramverk\Loader;
 
 	/**
@@ -25,13 +25,13 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Configuration container.
-		 * @var Net\TheDeveloperBlog\Ramverk\Config
+		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Container
 		 */
 		private $_config;
 
 		/**
 		 * Configuration handler factory.
-		 * @var Net\TheDeveloperBlog\Ramverk\Config\Handler\Factory
+		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Handler\Factory
 		 */
 		private $_handlerFactory;
 
@@ -143,7 +143,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 			$namespace = 'Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler';
 
 			// Register the handlers with the handler factory.
-			$factory = $this->getHandlerFactory();
+			$factory = $this->getConfigurationHandlerFactory();
 			$factory->registerHandler('Autoload', "{$namespace}\\Autoload");
 			$factory->registerHandler('Module', "{$namespace}\\Module");
 			$factory->registerHandler('Routing', "{$namespace}\\Routing");
@@ -164,7 +164,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 		 * @return Net\TheDeveloperBlog\Ramverk\Config\Handler\Factory Configuration handler factory.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function getHandlerFactory()
+		public function getConfigurationHandlerFactory()
 		{
 			// Check if the handler factory already have been instansiated. If
 			// the handler factory has yet not been instansiated, instansiate it.
@@ -237,7 +237,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 				}
 
 				$filename = '%directory.application.config%/routing.xml';
-				$routes = $this->getHandlerFactory()->callHandler('Routing', $filename);
+				$routes = $this->getConfigurationHandlerFactory()->callHandler('Routing', $filename);
 				if(empty($routes)) {
 					// TODO: Better specify the Exception-object.
 					throw new Exception(sprintf(

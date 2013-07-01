@@ -1,5 +1,5 @@
 <?php
-namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
+namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
@@ -10,7 +10,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 	 * Handles caching of configuration data from handlers.
 	 *
 	 * @package Ramverk
-	 * @subpackage Config
+	 * @subpackage Configuration
 	 *
 	 * @copyright (c) 2013, Authors
 	 * @copyright (c) 2013, The Developer Blog

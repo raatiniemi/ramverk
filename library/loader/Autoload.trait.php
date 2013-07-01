@@ -53,7 +53,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 				// Get the autoload configuration file.
 				if(($filename = $this->_autoloadFile) === NULL) {
 					// TODO: Better specify the Exception-object.
-					throw new Exception(sprintf(
+					throw new Ramverk\Exception(sprintf(
 						'No autoload file have been supplied for class "%s".',
 						get_class($this)
 					));
@@ -63,7 +63,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 				$autoload = $factory->callHandler('Autoload', $filename);
 				if(empty($autoload)) {
 					// TODO: Better specify the Exception-object.
-					throw new Exception(sprintf(
+					throw new Ramverk\Exception(sprintf(
 						'The configuration file "%s" returned an empty array.',
 						$filename
 					));

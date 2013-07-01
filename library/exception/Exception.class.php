@@ -4,6 +4,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
+	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
 	 * Base exception.
@@ -20,10 +21,10 @@ namespace Net\TheDeveloperBlog\Ramverk
 		/**
 		 * Render the exception message with template.
 		 * @param Exception $e Thrown exception.
-		 * @param Net\TheDeveloperBlog\Ramverk\Config $config Configuration container.
+		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public static function render(\Exception $e, Config $config)
+		public static function render(\Exception $e, Configuration\Container $config)
 		{
 			echo $e->getMessage();
 			exit($e->getCode());

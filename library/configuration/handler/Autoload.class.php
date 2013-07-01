@@ -1,14 +1,14 @@
 <?php
-namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
+namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk;
+	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
 	 * @package Ramverk
-	 * @subpackage Config
+	 * @subpackage Configuration
 	 *
 	 * @copyright (c) 2013, Authors
 	 * @copyright (c) 2013, The Developer Blog
@@ -19,11 +19,11 @@ namespace Net\TheDeveloperBlog\Ramverk\Config\Handler
 		/**
 		 * Execute the configuration handler.
 		 * @param DOMDocument $document XML document with configuration data.
-		 * @param Net\TheDeveloperBlog\Ramverk\Config $config Configuration container.
+		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
 		 * @return array Retrieved configuration data.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function execute(\DOMDocument $document, Ramverk\Config $config)
+		public function execute(\DOMDocument $document, Configuration\Container $config)
 		{
 			$autoloads = array();
 			foreach($document->getElementsByTagName('autoload') as $autoload) {
