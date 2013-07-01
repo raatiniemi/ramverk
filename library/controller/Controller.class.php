@@ -36,23 +36,15 @@ namespace Net\TheDeveloperBlog\Ramverk
 		protected $_config;
 
 		/**
-		 * Available routes.
-		 * @var Net\TheDeveloperBlog\Ramverk\Routing
-		 */
-		protected $_routing;
-
-		/**
 		 * Initialize the controller.
 		 * @param Net\TheDeveloperBlog\Ramverk\Core $core Application core.
 		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
-		 * @param Net\TheDeveloperBlog\Ramverk\Routing $routing Available routes.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function __construct(Core $core, Configuration\Container $config, Routing $routing)
+		public function __construct(Core $core, Configuration\Container $config)
 		{
 			$this->_core = $core;
 			$this->_config = $config;
-			$this->_routing = $routing;
 		}
 
 		/**
