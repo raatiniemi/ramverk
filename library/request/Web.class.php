@@ -12,7 +12,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Request
 	use Net\TheDeveloperBlog\Ramverk;
 
 	/**
-	 * Handles web based requests.
+	 * Functionality for handling web based requests.
 	 *
 	 * @package Ramverk
 	 * @subpackage Request
@@ -23,10 +23,6 @@ namespace Net\TheDeveloperBlog\Ramverk\Request
 	 */
 	class Web extends Ramverk\Request
 	{
-		public function getRequestURI()
-		{
-			return isset($_GET['uri']) ? trim($_GET['uri'], '/') : '';
-		}
 	}
 }
 // End of file: Web.class.php
