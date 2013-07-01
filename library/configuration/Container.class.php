@@ -38,7 +38,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		 */
 		public function set($name, $value)
 		{
-			return $this->setValueWithIndex($name, $value);
+			return $this->setItem($name, $value);
 		}
 
 		/**
@@ -52,8 +52,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		{
 			$value = $default;
 
-			if($this->hasIndex($name)) {
-				$value = $this->getValueByIndex($name);
+			if($this->hasItem($name)) {
+				$value = $this->getItem($name);
 			}
 
 			return $value;
@@ -67,7 +67,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		 */
 		public function has($name)
 		{
-			return $this->hasIndex($name);
+			return $this->hasItem($name);
 		}
 
 		/**

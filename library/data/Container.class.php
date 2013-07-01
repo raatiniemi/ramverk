@@ -12,7 +12,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 	use Net\TheDeveloperBlog\Ramverk;
 
 	/**
-	 * Container for working with index => value based items.
+	 * Container for working with KeyValue based items.
 	 *
 	 * @package Ramverk
 	 * @subpackage Data
@@ -24,7 +24,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 	class Container
 	{
 		/**
-		 * Contained values, stored in a index => value fashion.
+		 * Contained items.
 		 * @var array
 		 */
 		protected $_container;
@@ -40,18 +40,18 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 		}
 
 		/**
-		 * Set value with container index.
-		 * @param string $index Container index.
-		 * @param mixed $value Container value.
-		 * @return boolean True if index have been set, otherwise false.
+		 * Set container item.
+		 * @param string $name Name of container item.
+		 * @param mixed $value Value of container item.
+		 * @return boolean True if item have been set, otherwise false.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function setValueWithIndex($index, $value)
+		public function setItem($name, $value)
 		{
-			// Check if the index already exists, we can't override
-			// already existing indexes/values.
-			if(!$this->hasIndex($index)) {
-				$this->_container[$index] = $value;
+			// Check if the item already exists, we shouldn't override
+			// already existing items.
+			if(!$this->hasItem($name)) {
+				$this->_container[$name] = $value;
 
 				return TRUE;
 			}
@@ -59,26 +59,26 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 		}
 
 		/**
-		 * Get value of container index.
-		 * @param string $index Container index.
-		 * @return mixed|NULL Container value or NULL if index do not exists.
+		 * Get container item.
+		 * @param string $name Name of the container item.
+		 * @return mixed Value of container item or NULL if item do not exists.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function getValueByIndex($index)
+		public function getItem($name)
 		{
-			return $this->hasIndex($index) ? $this->_container[$index] : NULL;
+			return $this->hasItem($name) ? $this->_container[$name] : NULL;
 		}
 
 		/**
-		 * Check whether a container index exists or not.
-		 * @param string $index Container index.
-		 * @return boolean True if index exists, otherwise false.
+		 * Check whether a container item exists.
+		 * @param string $name Name of the container item.
+		 * @return boolean True if the item exists, otherwise false.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function hasIndex($index)
+		public function hasItem($name)
 		{
-			return array_key_exists($index, $this->_container)
-				&& isset($this->_container[$index]);
+			return array_key_exists($name, $this->_container)
+				&& isset($this->_container[$name]);
 		}
 	}
 }
