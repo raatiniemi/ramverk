@@ -20,25 +20,27 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	 * @copyright (c) 2013, Authors
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 *
+	 * @todo Migrate most of the functionality to a more generic caching class.
 	 */
 	class Cache
 	{
 		/**
-		 * Application profile.
+		 * Profile for the application.
 		 * @var string
 		 */
 		protected $_profile;
 
 		/**
-		 * Application context.
+		 * Context for the application.
 		 * @var string
 		 */
 		protected $_context;
 
 		/**
-		 * Initialize the configuration cache.
-		 * @param string $profile Application profile.
-		 * @param string $context Application context.
+		 * Initialize the cache for configuration handlers.
+		 * @param string $profile Profile for the application.
+		 * @param string $context Context for the application.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function __construct($profile, $context)
@@ -67,10 +69,10 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		}
 
 		/**
-		 * Check whether or not the cache file should be updated.
+		 * Check whether the cache file should be updated.
 		 * @param string $filename Absolute path to the configuration file.
 		 * @param string $cachename Absolute path to the cache file.
-		 * @return boolean Whether or not the cache file should be updated.
+		 * @return boolean True if the cache file should be updated, otherwise false.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function isModified($filename, $cachename)
@@ -79,13 +81,15 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		}
 
 		/**
-		 * Reads the configuration data from the cache file.
+		 * Read data from the cache file.
 		 * @param string $cachename Absolute path to the cache file.
 		 * @return array Array with the configuration data, or NULL.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function read($cachename)
 		{
+			// Before attempting to read the cache file we have to check that
+			// it exists and is readable (permission issues).
 			if(is_readable($cachename)) {
 				$data = require($cachename);
 
@@ -147,4 +151,4 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	}
 }
 // End of file: Cache.class.php
-// Location: library/config/handler/Cache.class.php
+// Location: library/configuration/handler/Cache.class.php
