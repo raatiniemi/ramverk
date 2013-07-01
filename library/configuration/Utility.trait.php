@@ -38,9 +38,9 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 				// directive with the actual value.
 				$value = preg_replace_callback(
 					'/\%([a-z0-9\.]+)\%/i',
-					array($this, function($matches) {
+					function($matches) {
 						return $this->getConfig()->get($matches[1], $matches[0]);
-					}),
+					},
 					$value
 				);
 			} while($oldValue != $value);
