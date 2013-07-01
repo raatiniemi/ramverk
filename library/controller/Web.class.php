@@ -12,7 +12,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 	use Net\TheDeveloperBlog\Ramverk;
 
 	/**
-	 * Controller for web requests.
+	 * Functionality for the web based controller.
 	 *
 	 * @package Ramverk
 	 * @subpackage Controller
@@ -23,43 +23,43 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 	 */
 	class Web extends Ramverk\Controller
 	{
-		// TODO: Move initializeModule to parent controller.
-		protected function initializeModule($name)
-		{
-			// Assemble and expand the module directory.
-			$directory = "%directory.application.module%/{$name}";
-			$directory = $this->_config->expandDirectives($directory);
+		// // TODO: Move initializeModule to parent controller.
+		// protected function initializeModule($name)
+		// {
+		// 	// Assemble and expand the module directory.
+		// 	$directory = "%directory.application.module%/{$name}";
+		// 	$directory = $this->_config->expandDirectives($directory);
 
-			// Verify that the module directory actually exists.
-			if(!is_dir($directory)) {
-				throw new Ramverk\Exception(sprintf(
-					'Module "%s" do not exists.',
-					$name
-				));
-			}
+		// 	// Verify that the module directory actually exists.
+		// 	if(!is_dir($directory)) {
+		// 		throw new Ramverk\Exception(sprintf(
+		// 			'Module "%s" do not exists.',
+		// 			$name
+		// 		));
+		// 	}
 
-			$handlerFactory = $this->_core->getHandlerFactory();
+		// 	$handlerFactory = $this->_core->getHandlerFactory();
 
-			// Load the module configurations.
-			$filename = "{$directory}/config/module.xml";
-			$module = $handlerFactory->callHandler('Module', $filename);
+		// 	// Load the module configurations.
+		// 	$filename = "{$directory}/config/module.xml";
+		// 	$module = $handlerFactory->callHandler('Module', $filename);
 
-			$filename = "{$directory}/config/autoload.xml";
-			if(file_exists($filename)) {
-				$autoload = $handlerFactory->callHandler('Autoload', $filename);
+		// 	$filename = "{$directory}/config/autoload.xml";
+		// 	if(file_exists($filename)) {
+		// 		$autoload = $handlerFactory->callHandler('Autoload', $filename);
 
-				// TODO: Merge the configurations.
-			}
+		// 		// TODO: Merge the configurations.
+		// 	}
 
-			// TODO: Use trait.
+		// 	// TODO: Use trait.
 
-			// TODO: Read the module configuration.
-			// We need the module namespace, autoloads etc.
-			// $this->_moduleNamespace.
+		// 	// TODO: Read the module configuration.
+		// 	// We need the module namespace, autoloads etc.
+		// 	// $this->_moduleNamespace.
 
-			// TODO: Controller autoloader for module classes?
-			// Or merge config with core autoloader.
-		}
+		// 	// TODO: Controller autoloader for module classes?
+		// 	// Or merge config with core autoloader.
+		// }
 
 		public function dispatch()
 		{

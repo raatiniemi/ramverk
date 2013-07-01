@@ -275,8 +275,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 				// Temporarily include the core as an argument. Need to be able
 				// to merge autoload configurations.
-				$controller['arguments'] = array($this, $this->getConfig(), $routing['instance']);
-				$this->_controller = $controller['reflection']->newInstanceArgs($controller['arguments']);
+				#$controller['arguments'] = array($this, $this->getConfig(), $routing['instance']);
+				$this->_controller = $controller['reflection']->newInstance();
 			}
 			return $this->_controller;
 		}
