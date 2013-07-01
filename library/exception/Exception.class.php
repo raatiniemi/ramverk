@@ -12,7 +12,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
-	 * Base exception.
+	 * Base for framework exceptions.
 	 *
 	 * @package Ramverk
 	 * @subpackage Exception
@@ -28,6 +28,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 		 * @param Exception $e Thrown exception.
 		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 *
+		 * @todo How to implement configuration utilities when method is static.
 		 */
 		public static function render(\Exception $e, Configuration\Container $config)
 		{
