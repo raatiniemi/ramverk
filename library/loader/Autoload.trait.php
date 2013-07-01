@@ -77,8 +77,19 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 			// to be able to match the array index.
 			$name = str_replace('\\', '\\\\', $name);
 
-			//
+			// Check if the class exists within our autoload configurations.
 			if(isset($this->_autoload[$name])) {
+				// Before attempting to include the file, we have to check that
+				// it actually exists otherwise we'll get errors.
+				if(file_exists($this->_autoload[$name])) {
+					// TODO: Better specify the Exception-object.
+					throw new Ramverk\Exception(sprintf(
+						'Class "%s" is specified within autoload '.
+						'configuration but do not exists.',
+						$name
+					));
+				}
+
 				// Since autoload is not triggered unless the class do not
 				// exists there is no need for require_once, or other checks.
 				require $this->_autoload[$name];
@@ -90,6 +101,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 			//
 			// E.g. if the module autoloader do not finds the item because it
 			// is located within the core autoload items.
+			//
+			// Do not trigger a new autoload-chain with the controll.
 			return class_exists($name, FALSE);
 		}
 
