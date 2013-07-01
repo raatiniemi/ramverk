@@ -252,7 +252,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 					));
 				}
 
-				$routing['base'] = "{$namespace}\\Routing";
+				$routing['base'] = "{$request['base']}\\Routing";
 				$routing['name'] = "{$routing['base']}\\{$context}";
 
 				if(!class_exists($routing['name'])) {
@@ -271,9 +271,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 						$context
 					));
 				}
-
-				$routing['arguments'] = array($request['reflection']->newInstance(), $routes);
-				$routing['instance'] = $routing['reflection']->newInstanceArgs($routing['arguments']);
+				$routing['instance'] = $routing['reflection']->newInstanceArgs($routes);
 
 				// Temporarily include the core as an argument. Need to be able
 				// to merge autoload configurations.
