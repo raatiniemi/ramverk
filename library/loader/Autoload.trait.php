@@ -81,7 +81,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 			if(isset($this->_autoload[$name])) {
 				// Before attempting to include the file, we have to check that
 				// it actually exists otherwise we'll get errors.
-				if(file_exists($this->_autoload[$name])) {
+				if(!file_exists($this->_autoload[$name])) {
 					// TODO: Better specify the Exception-object.
 					throw new Ramverk\Exception(sprintf(
 						'Class "%s" is specified within autoload '.
