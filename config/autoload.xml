@@ -6,13 +6,14 @@
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Container">%directory.core.library%/configuration/Container.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Utility">%directory.core.library%/configuration/Utility.trait.php</autoload>
 
-			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler\\Cache">%directory.core.library%/configuration/handler/Cache.class.php</autoload>
-			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler\\Parser">%directory.core.library%/configuration/handler/Parser.class.php</autoload>
-			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler\\Factory">%directory.core.library%/configuration/handler/Factory.class.php</autoload>
-			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler\\IHandler">%directory.core.library%/configuration/handler/IHandler.interface.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler">%directory.core.library%/configuration/handler/Handler.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler\\Autoload">%directory.core.library%/configuration/handler/Autoload.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler\\Module">%directory.core.library%/configuration/handler/Module.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler\\Routing">%directory.core.library%/configuration/handler/Routing.class.php</autoload>
+
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler\\Cache">%directory.core.library%/configuration/handler/Cache.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler\\Parser">%directory.core.library%/configuration/handler/Parser.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler\\Factory">%directory.core.library%/configuration/handler/Factory.class.php</autoload>
 
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Controller">%directory.core.library%/controller/Controller.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Controller\\Web">%directory.core.library%/controller/Web.class.php</autoload>

@@ -4,15 +4,14 @@
 // | Copyright (c) 2013, Authors                                              |
 // | Copyright (c) 2013, The Developer Blog                                   |
 // +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
+namespace Net\TheDeveloperBlog\Ramverk\Configuration
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
-	 * Interface for configuration handlers.
+	 * Base functionality for configuration handlers.
 	 *
 	 * @package Ramverk
 	 * @subpackage Configuration
@@ -21,17 +20,32 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 	 */
-	interface IHandler
+	abstract class Handler
 	{
+		/**
+		 * Configuration container.
+		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Container
+		 */
+		protected $_config;
+
+		/**
+		 * Initialize the configuration handler.
+		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function __construct(Container $config)
+		{
+			$this->_config = $config;
+		}
+
 		/**
 		 * Execute the configuration handler.
 		 * @param DOMDocument $document XML document with configuration data.
-		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
 		 * @return array Retrieved configuration data.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function execute(\DOMDocument $document, Configuration\Container $config);
+		abstract public function execute(\DOMDocument $document);
 	}
 }
-// End of file: IHandler.interface.php
-// Location: library/config/handler/IHandler.interface.php
+// End of file: Handler.class.php
+// Location: library/configuration/handler/Handler.class.php
