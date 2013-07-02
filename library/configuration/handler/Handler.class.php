@@ -22,6 +22,11 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 	 */
 	abstract class Handler
 	{
+		// +------------------------------------------------------------------+
+		// | Trait use-directives.                                            |
+		// +------------------------------------------------------------------+
+		use Utility;
+
 		/**
 		 * Configuration container.
 		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Container
@@ -36,6 +41,16 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		public function __construct(Container $config)
 		{
 			$this->_config = $config;
+		}
+
+		/**
+		 * Get the configuration container, used by Utility-trait.
+		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function getConfig()
+		{
+			return $this->_config;
 		}
 
 		/**

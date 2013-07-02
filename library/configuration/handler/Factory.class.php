@@ -189,21 +189,21 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 			// a few things before instansiating the class.
 			$reflection = new \ReflectionClass($handler);
 
-			// The handler have to implement the IHandler interface.
-			$interface = __NAMESPACE__ . '\\IHandler';
-			if(!$reflection->implementsInterface($interface)) {
+			// The handler have to extend the Handler base.
+			$base = __NAMESPACE__;
+			if(!$reflection->isSubclassOf($base)) {
 				// TODO: Better specify the Exception-object.
 				throw new Ramverk\Exception(sprintf(
-					'The configuration handler "%s" do not implement the '.
-					'"%s"-interface.',
-					$handler,
-					$interface
+					'The configuration handler "%s" do not extend the base '.
+					'configuration handler.',
+					$handler
 				));
 			}
 
 			// Everything seems good to go, instansiate the handler.
-			// TODO: Do the constructor need anything?
-			$this->_handlers[$handler] = $reflection->newInstance();
+			$this->_handlers[$handler] = $reflection->newInstanceArgs(array(
+				$this->getConfig()
+			));
 		}
 
 		/**

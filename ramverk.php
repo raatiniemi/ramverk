@@ -24,7 +24,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 	require __DIR__ . '/library/configuration/handler/Cache.class.php';
 	require __DIR__ . '/library/configuration/handler/Parser.class.php';
 	require __DIR__ . '/library/configuration/handler/Factory.class.php';
-	require __DIR__ . '/library/configuration/handler/IHandler.interface.php';
+	require __DIR__ . '/library/configuration/handler/Handler.class.php';
 	require __DIR__ . '/library/configuration/handler/Autoload.class.php';
 
 	require __DIR__ . '/library/exception/Exception.class.php';

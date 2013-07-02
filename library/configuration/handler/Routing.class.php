@@ -13,6 +13,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
+	 * Handler for routing configuration.
+	 *
 	 * @package Ramverk
 	 * @subpackage Configuration
 	 *
@@ -20,16 +22,15 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 	 */
-	class Routing implements IHandler
+	class Routing extends Configuration\Handler
 	{
 		/**
 		 * Execute the configuration handler.
 		 * @param DOMDocument $document XML document with configuration data.
-		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
 		 * @return array Retrieved configuration data.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function execute(\DOMDocument $document, Configuration\Container $config)
+		public function execute(\DOMDocument $document)
 		{
 			$routes = array();
 			foreach($document->getElementsByTagName('route') as $route) {
@@ -74,4 +75,4 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	}
 }
 // End of file: Routing.class.php
-// Location: library/config/handler/Routing.class.php
+// Location: library/configuration/handler/Routing.class.php

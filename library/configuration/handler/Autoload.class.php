@@ -12,6 +12,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
+	 * Handler for autoload configuration.
+	 *
 	 * @package Ramverk
 	 * @subpackage Configuration
 	 *
@@ -19,16 +21,15 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 	 */
-	class Autoload implements IHandler
+	class Autoload extends Configuration\Handler
 	{
 		/**
 		 * Execute the configuration handler.
 		 * @param DOMDocument $document XML document with configuration data.
-		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
 		 * @return array Retrieved configuration data.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function execute(\DOMDocument $document, Configuration\Container $config)
+		public function execute(\DOMDocument $document)
 		{
 			$autoloads = array();
 			foreach($document->getElementsByTagName('autoload') as $autoload) {
@@ -42,11 +43,11 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 				}
 
 				$name = $autoload->getAttribute('name');
-				$autoloads[$name] = $config->expandDirectives($autoload->nodeValue);
+				$autoloads[$name] = $this->expandDirectives($autoload->nodeValue);
 			}
 			return $autoloads;
 		}
 	}
 }
 // End of file: Autoload.class.php
-// Location: library/config/handler/Autoload.class.php
+// Location: library/configuration/handler/Autoload.class.php
