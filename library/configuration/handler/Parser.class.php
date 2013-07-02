@@ -13,7 +13,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
-	 * Handles configuration parsing.
+	 * Handles parsing of data from configuration handlers.
 	 *
 	 * @package Ramverk
 	 * @subpackage Configuration
@@ -24,6 +24,11 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	 */
 	class Parser
 	{
+		// +------------------------------------------------------------------+
+		// | Trait use-directives.                                            |
+		// +------------------------------------------------------------------+
+		use Configuration\Utility;
+
 		/**
 		 * Configuration container.
 		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Container
@@ -31,19 +36,19 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		protected $_config;
 
 		/**
-		 * Application profile.
+		 * Profile for the application.
 		 * @var string
 		 */
 		protected $_profile;
 
 		/**
-		 * Application context.
+		 * Context for the application.
 		 * @var string
 		 */
 		protected $_context;
 
 		/**
-		 * Configuration items found that match the current context.
+		 * Configuration items found that match current context and profile.
 		 * @var array
 		 */
 		protected $_items;
@@ -55,10 +60,10 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		protected $_parentDocuments;
 
 		/**
-		 * Initialize the configuration parser.
+		 * Initialize the parser for configuration handlers.
 		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
-		 * @param string $profile Application profile.
-		 * @param string $context Application context.
+		 * @param string $profile Profile for the application.
+		 * @param string $context Context for the application.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function __construct(Configuration\Container $config, $profile, $context)
@@ -73,18 +78,33 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		}
 
 		/**
-		 * Execute the document parsing.
-		 * @param DOMDocument $document Document to parse.
-		 * @return DOMDocument Parsed document.
+		 * Execute parsing of the configuration document.
+		 * @param DOMDocument $document Configuration document to parse.
+		 * @return DOMDocument Parsed configuration document.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function execute(\DOMDocument $document)
 		{
+			// Initialize the document parsing.
 			$this->parse($document);
 
+			// Using reflections to give the handler the same object type
+			// as the factory gave the parser.
+			$documentReflection = new \ReflectionClass(get_class($document));
+
+			// Instansiate the document with the encoding and version.
+			$parsedDocument = $documentReflection->newInstanceArgs(array(
+				$document->version,
+				$document->encoding
+			));
+
+			// Create the root node for the parsed document.
+			$configurationElement = $parsedDocument->createElement('configuration');
+			$parsedDocument->appendChild($configurationElement);
+
 			// Loop through each of the saved configuration items and retrieve
-			// the child element nodes. Since there're different elements, we
-			// can't specify the element name.
+			// their child elements, if available. Since there are different
+			// element names, we cant specify the element name.
 			$nodes = array();
 			foreach($this->_items as $item) {
 				if($item->hasChildNodes()) {
@@ -96,25 +116,9 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 				}
 			}
 
-			// Using reflection because we'd want to give the handler
-			// the same object type that the factory want to parse.
-			$documentReflection = new \ReflectionClass(get_class($document));
-
-			// Instansiate and load the parent configuration document,
-			// with the version and encoding from the first document.
-			$parsedDocument = $documentReflection->newInstanceArgs(array(
-				$document->version,
-				$document->encoding
-			));
-			$configurationElement = $parsedDocument->createElement('configuration');
-
-			// Rebuild the configuration document. Only keep one configuration
-			// item with all of the matched (profile etc.) configurations. This
-			// way we won't have to loop through multiple configurations within
-			// the handler.
-			$parsedDocument->appendChild($configurationElement);
-
-			// Loop through the nodes and import them into the parsed document.
+			// Loop though the nodes and import them to the parsed configuration
+			// document. Only the items that matched the profile and context of
+			// the application will be available for import.
 			foreach($nodes as $node) {
 				if(($item = $parsedDocument->importNode($node, TRUE)) === FALSE) {
 					// TODO: Better specify the Exception-object.
@@ -124,6 +128,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 					));
 				}
 
+				// TODO: Handle DOM exceptions.
 				// DOM_NO_MODIFICATION_ALLOWED_ERR
 				// Raised if this node is readonly or if the previous
 				// parent of the node being inserted is readonly.
@@ -152,8 +157,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 */
 		protected function parse(\DOMDocument $document)
 		{
-			// Run some quick validation of the document. Every document has
-			// to have a configurations element as root.
+			// Run some quick validation of the document. Every valid document
+			// have a configurations element as root.
 			$documentElement = $document->documentElement;
 			if($documentElement->tagName !== 'configurations') {
 				// TODO: Better specify the Exception-object.
@@ -163,60 +168,56 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 				);
 			}
 
-			// Check if the current document has a parent document. If it does,
-			// parse that document first. This way we'll be able to override
-			// parent configurations from the child configuration.
-			//
-			// It will put the configuration items in the correct order.
+			// Check if the document has a parent document. If it does, we'd
+			// want to process that document first. This way the configuration
+			// items will be placed in the right order and we'll be able to
+			// override parent configurations within the child configuration.
 			$this->parseParentDocument($document);
 
-			// Loop through the child nodes of the configurations element.
-			// Retrieve the configuration items.
+			// Loop through each of the child nodes for the configurations element.
+			// We'd only want to retrieve the configuration nodes.
 			foreach($documentElement->childNodes as $node) {
 				if($node->nodeType === XML_ELEMENT_NODE && $node->localName === 'configuration') {
-					// For a configuration item to be included it have to match
-					// a few conditions. If neither the profile or context
-					// attributes have been defined, the item will be included.
+					// There are a few conditions that the item have to match
+					// in order for it to be included. First of, if neither the
+					// profile or context attributes have been defined, the
+					// item will be included (these are consider general items).
 					//
-					// If the item have either of the attributes and value
-					// matches the respective values, the item will be included.
-					//
-					// Any other scenario it'll be ignored.
+					// If the item have either of the attributes and their
+					// values matches the respective values, the item will be
+					// included. Any other scenario the item will be ignored.
 					if($node->hasAttribute('profile')) {
 						if($node->getAttribute('profile') !== $this->_profile) {
 							continue;
 						}
 					}
+
 					if($node->hasAttribute('context')) {
 						if($node->getAttribute('context') !== $this->_context) {
 							continue;
 						}
 					}
+
 					$this->_items[] = $node;
 				}
 			}
 		}
 
 		/**
-		 * Check if the document has a parent document, include and parse it.
+		 * Initialize parsing of parent document, if available.
 		 * @param DOMDocument $document Current document being parsed.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		protected function parseParentDocument(\DOMDocument $document)
 		{
-			// Check if the current document has a parent document that needs
-			// to be included and parsed.
+			// Check if the document has a parent document.
 			$documentElement = $document->documentElement;
 			if($documentElement->hasAttribute('parent')) {
-				$parent = $this->_config->expandDirectives(
-					$documentElement->getAttribute('parent')
-				);
+				// Attempt to expand the parent document URI.
+				$parent = $this->expandDirectives($documentElement->getAttribute('parent'));
 
-				// We have to check if the parent document already have been
-				// imported, prevents infinite loops.
-				//
-				// No need to check if the configuration document is attempting
-				// to include itself, exception will be thrown next loop.
+				// To prevent infinite loops of parent document we haven to
+				// check if the new parent document already have been included.
 				if(in_array($parent, $this->_parentDocuments)) {
 					// TODO: Better specify the Exception-object.
 					throw new Ramverk\Exception(sprintf(
@@ -226,7 +227,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 					));
 				}
 
-				// Verify that the parent document actually exists.
+				// Check that the parent document actually exists, and is readable.
 				if(!file_exists($parent) || !is_readable($parent)) {
 					// TODO: Better specify the Exception-object.
 					throw new Ramverk\Exception(sprintf(
@@ -234,15 +235,15 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 						$parent
 					));
 				}
-				// Save the parent URI, will prevent infinite loops.
+				// Save the parent URI, prevents infinite loops.
 				$this->_parentDocuments[] = $parent;
 
-				// Using reflection because we'd want to give the handler
-				// the same object type that the factory want to parse.
+				// Using reflections to give the handler the same object type
+				// as the factory gave the parser.
 				$documentReflection = new \ReflectionClass(get_class($document));
 
-				// Instansiate and load the parent configuration document,
-				// with the version and encoding from the first document.
+				// Instansiate the document with the encoding and version. And,
+				// load the parent document.
 				$parentDocument = $documentReflection->newInstanceArgs(array(
 					$document->version,
 					$document->encoding
@@ -252,6 +253,16 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 				// Parse the parent document and retrieve the items.
 				$this->parse($parentDocument);
 			}
+		}
+
+		/**
+		 * Get the configuration container, used by Utility-trait.
+		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function getConfig()
+		{
+			return $this->_config;
 		}
 	}
 }
