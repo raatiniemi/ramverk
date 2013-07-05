@@ -14,6 +14,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 	use Net\TheDeveloperBlog\Ramverk\Loader;
 
 	/**
+	 * Initialize the core functionality.
+	 *
 	 * @package Ramverk
 	 * @subpackage Core
 	 *
@@ -35,83 +37,67 @@ namespace Net\TheDeveloperBlog\Ramverk
 		private $_config;
 
 		/**
-		 * Configuration handler factory.
-		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Handler\Factory
+		 * Application context.
+		 * @var Net\TheDeveloperBlog\Ramverk\Core\Context
 		 */
-		private $_handlerFactory;
-
-		/**
-		 * Application controller.
-		 * @var Net\TheDeveloperBlog\Ramverk\Controller
-		 */
-		private $_controller;
+		private $_context;
 
 		/**
 		 * Initialize the ramverk core.
-		 * @param Net\TheDeveloperBlog\Ramverk\Config $config Configuration container.
+		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function __construct(Configuration\Container $config)
+		public function __construct(Configuration\Container $config, $profile=NULL, $context=NULL)
 		{
-			// Register and prepend the method for handling class autoloading.
+			// Check if the application profile is set, otherwise use the default.
+			$profile = $profile !== NULL ? $profile : $config->get('profile.default', 'development');
+			$config->set('profile', $profile);
+
+			// Check if the application context is set, otherwise use the default.
+			$context = $context !== NULL ? $context : $config->get('context.default', 'web');
+			$config->set('context', $context);
+
+			// Set the default exception template. If the template already have
+			// been specified, the specified template will not be replaced.
+			$config->set('exception.template', '%directory.core.template%/exception.php');
+			$this->_config = $config;
+
+			// TODO: Instansiate the context.
+			$this->_context = new Core\Context($this->getConfig());
+
+			// Register the autoloader for the framework core.
 			$this->_autoloadFile = '%directory.application.config%/autoload.xml';
 			spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
 
-			// TODO: Register the default exception handler.
-			// $this->exception
-			// TODO: Register the default error handler.
-			// $this->error
-
-			// Verify that the application profile have been supplied.
-			if(!$config->has('profile')) {
-				// TODO: Better specify the Exception-object.
-				throw new Exception(sprintf(
-					'No application profile have been supplied.'
-				));
-			}
-			$this->_config = $config;
-
-			// Setup default configurations and register the configuration handlers.
-			$this->setupDefaults();
+			// Setup the default directories and register the configuration handlers.
+			$this->setupDirectories($config);
 			$this->registerConfigurationHandlers();
 		}
 
 		/**
-		 * Setup default configurations.
-		 * If configurations already have been supplied, the previous values will be used.
+		 * Setup the default directory structure.
+		 * If directories already have been specified, the directories will not be replaced.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function setupDefaults()
+		private function setupDirectories($config)
 		{
-			// Setup the default directory structure.
-			$this->setupDirectories();
+			// -- Core directory structure.
+			// Check that a base core directory have been supplied.
+			if(!$config->has('directory.core')) {
+				// TODO: Better specify the Exception-object.
+				throw new Exception('No core directory have been supplied.');
+			}
 
-			// Get the configuration container.
-			$config = $this->getConfig();
-
-			// Setup the default exception template and context.
-			$config->set('exception.template', '%directory.core.template%/exception.php');
-			$config->set('context', 'web');
-		}
-
-		/**
-		 * Setup default directory structure.
-		 * If directories already have been supplied the previous path will be used.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
-		 */
-		private function setupDirectories()
-		{
-			// Get the configuration container.
-			$config = $this->getConfig();
+			// Setup the default directory structure for the core.
+			$config->set('directory.core.config', '%directory.core%/config');
+			$config->set('directory.core.library', '%directory.core%/library');
+			$config->set('directory.core.template', '%directory.core%/template');
 
 			// -- Application directory structure.
-
 			// Check that a base application directory have been supplied.
 			if(!$config->has('directory.application')) {
 				// TODO: Better specify the Exception-object.
-				throw new Exception(sprintf(
-					'No application directory have been supplied.'
-				));
+				throw new Exception('No application directory have been supplied.');
 			}
 
 			// Setup the default directory structure for the application.
@@ -120,32 +106,15 @@ namespace Net\TheDeveloperBlog\Ramverk
 			$config->set('directory.application.library', '%directory.application%/library');
 			$config->set('directory.application.module', '%directory.application%/module');
 			$config->set('directory.application.template', '%directory.application%/template');
-
-			// -- Core directory structure.
-
-			// Check that a base core directory have been supplied.
-			if(!$config->has('directory.core')) {
-				// TODO: Better specify the Exception-object.
-				throw new Exception(sprintf(
-					'No core directory have been supplied.'
-				));
-			}
-
-			// Setup the default directory structure for the core.
-			$config->set('directory.core.config', '%directory.core%/config');
-			$config->set('directory.core.library', '%directory.core%/library');
-			$config->set('directory.core.template', '%directory.core%/template');
 		}
 
 		/**
 		 * Register the configuration handlers.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
-		 *
-		 * @todo Register the rest of the configuration handlers.
 		 */
 		private function registerConfigurationHandlers()
 		{
-			// Namespace for the configuration handlers.
+			// Base namespace for the configuration handlers.
 			$namespace = 'Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler';
 
 			// Register the handlers with the handler factory.
@@ -156,8 +125,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 		}
 
 		/**
-		 * Retrieve the configuration container.
-		 * @return Net\TheDeveloperBlog\Ramverk\Config Configuration container.
+		 * Get the configuration container, used by Utility-trait.
+		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function getConfig()
@@ -166,119 +135,23 @@ namespace Net\TheDeveloperBlog\Ramverk
 		}
 
 		/**
-		 * Retrieve the configuration handler factory.
-		 * @return Net\TheDeveloperBlog\Ramverk\Config\Handler\Factory Configuration handler factory.
+		 * Retrieve the application context.
+		 * @return Net\TheDeveloperBlog\Ramverk\Core\Context Application context.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function getContext()
+		{
+			return $this->_context;
+		}
+
+		/**
+		 * Retrieve the configuration handler factory, used by the autoload-trait.
+		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Handler\Factory Configuration handler factory.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function getConfigurationHandlerFactory()
 		{
-			// Check if the handler factory already have been instansiated. If
-			// the handler factory has yet not been instansiated, instansiate it.
-			if($this->_handlerFactory === NULL) {
-				// Retrieve the application profile and context.
-				$profile = $this->getConfig()->get('profile');
-				$context = $this->getConfig()->get('context');
-
-				// Instansiate the cache and parser for the factory.
-				$cache = new Handler\Cache($profile, $context);
-				$parser = new Handler\Parser($this->getConfig(), $profile, $context);
-
-				// Instansiate the configuration handler factory.
-				$this->_handlerFactory = new Handler\Factory($this->getConfig(), $cache, $parser);
-			}
-			return $this->_handlerFactory;
-		}
-
-		/**
-		 * Retrieve the context controller.
-		 * @return Net\TheDeveloperBlog\Ramverk\Controller Context controller.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
-		 */
-		public function getController()
-		{
-			// Check if the controller already have been instansiated. If the
-			// controller has yet not been instansiated, instansiate it.
-			if($this->_controller === NULL) {
-				$context = ucfirst($this->getConfig()->get('context'));
-				$namespace = 'Net\\TheDeveloperBlog\\Ramverk';
-
-				$controller['base'] = "{$namespace}\\Controller";
-				$controller['name'] = "{$controller['base']}\\{$context}";
-
-				if(!class_exists($controller['name'])) {
-					// TODO: Better specify the Exception-object.
-					throw new Exception(sprintf(
-						'Controller for context "%s" do not exists.',
-						$context
-					));
-				}
-
-				$controller['reflection'] = new \ReflectionClass($controller['name']);
-				if(!$controller['reflection']->isSubclassOf($controller['base'])) {
-					// TODO: Better specify the Exception-object.
-					throw new Exception(sprintf(
-						'Controller for context "%s" do not extend the base controller.',
-						$context
-					));
-				}
-
-				$request['base'] = "{$namespace}\\Request";
-				$request['name'] = "{$request['base']}\\{$context}";
-
-				if(!class_exists($request['name'])) {
-					// TODO: Better specify the Exception-object.
-					throw new Exception(sprintf(
-						'Request for context "%s" do not exists.',
-						$context
-					));
-				}
-
-				$request['reflection'] = new \ReflectionClass($request['name']);
-				if(!$request['reflection']->isSubclassOf($request['base'])) {
-					// TODO: Better specify the Exception-object.
-					throw new Exception(sprintf(
-						'Request for context "%s" do not extend the base request.',
-						$context
-					));
-				}
-
-				$filename = '%directory.application.config%/routing.xml';
-				$routes = $this->getConfigurationHandlerFactory()->callHandler('Routing', $filename);
-				if(empty($routes)) {
-					// TODO: Better specify the Exception-object.
-					throw new Exception(sprintf(
-						'The configuration file "%s" returned an empty array.',
-						$filename
-					));
-				}
-
-				$routing['base'] = "{$request['base']}\\Routing";
-				$routing['name'] = "{$routing['base']}\\{$context}";
-
-				if(!class_exists($routing['name'])) {
-					// TODO: Better specify the Exception-object.
-					throw new Exception(sprintf(
-						'Routing for context "%s" do not exists.',
-						$context
-					));
-				}
-
-				$routing['reflection'] = new \ReflectionClass($routing['name']);
-				if(!$routing['reflection']->isSubclassOf($routing['base'])) {
-					// TODO: Better specify the Exception-object.
-					throw new Exception(sprintf(
-						'Routing for context "%s" do not extend the base routing.',
-						$context
-					));
-				}
-				$routing['instance'] = $routing['reflection']->newInstanceArgs($routes);
-
-				// Temporarily include the core as an argument. Need to be able
-				// to merge autoload configurations.
-				#$controller['arguments'] = array($this, $this->getConfig(), $routing['instance']);
-				$this->_controller = $controller['reflection']->newInstance();
-			}
-			return $this->_controller;
+			return $this->getContext()->getConfigurationHandlerFactory();
 		}
 	}
 }

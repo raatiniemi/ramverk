@@ -22,6 +22,10 @@ namespace Net\TheDeveloperBlog\Ramverk
 	 */
 	abstract class Controller
 	{
+		public function __construct(Core\Context $context, Request $request)
+		{
+		}
+
 		/**
 		 * Dispatch the controller.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
