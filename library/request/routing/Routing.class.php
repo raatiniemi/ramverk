@@ -20,7 +20,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Request
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 	 */
-	abstract class Routing
+	class Routing
 	{
 		/**
 		 * Available routes.
@@ -41,9 +41,23 @@ namespace Net\TheDeveloperBlog\Ramverk\Request
 		/**
 		 * Parse the available routes.
 		 * @param string $uri Request URI.
+		 * @return array Route matching the Request URI.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @todo Implement support for prepending additional routes.
+		 * @todo Handle retrieval of the URI arguments.
 		 */
-		abstract public function parseRoutes($uri);
+		public function parseRoutes($uri)
+		{
+			$route = array();
+
+			foreach($this->_routes as $availableRoute) {
+				if(preg_match("#({$availableRoute['pattern']})#i", $uri)) {
+					$route = $availableRoute;
+				}
+			}
+
+			return $route;
+		}
 	}
 }
 // End of file: Routing.class.php

@@ -22,8 +22,28 @@ namespace Net\TheDeveloperBlog\Ramverk
 	 */
 	abstract class Controller
 	{
+		/**
+		 * Context for the application.
+		 * @var Net\TheDeveloperBlog\Ramverk\Core\Context
+		 */
+		protected $_context;
+
+		/**
+		 * Handles requests.
+		 * @var Net\TheDeveloperBlog\Ramverk\Request
+		 */
+		protected $_request;
+
+		/**
+		 * Initialize the controller.
+		 * @param Net\TheDeveloperBlog\Ramverk\Core\Context $context Context for the application
+		 * @param Net\TheDeveloperBlog\Ramverk\Request $request Handles requests.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
 		public function __construct(Core\Context $context, Request $request)
 		{
+			$this->_context = $context;
+			$this->_request = $request;
 		}
 
 		/**

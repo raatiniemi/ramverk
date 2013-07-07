@@ -23,15 +23,6 @@ namespace Net\TheDeveloperBlog\Ramverk\Request\Routing
 	 */
 	class Web extends Request\Routing
 	{
-		/**
-		 * Parse the available routes.
-		 * @param string $uri Request URI.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
-		 */
-		public function parseRoutes($uri)
-		{
-			// TODO: Parse routing.
-		}
 	}
 }
 // End of file: Web.class.php

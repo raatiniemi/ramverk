@@ -155,7 +155,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 					throw new Exception('No routing configuration have been specified.');
 				}
 
-				$routing['instance'] = $routing['reflection']->newInstanceArgs($routes);
+				$arguments = array($routes);
+				$routing['instance'] = $routing['reflection']->newInstanceArgs($arguments);
 
 				// -- Request
 				$request['base'] = "{$namespace}\\Request";
@@ -179,7 +180,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 					));
 				}
 
-				$request['instance'] = $request['reflection']->newInstance();
+				$arguments = array($routing['instance']);
+				$request['instance'] = $request['reflection']->newInstanceArgs($arguments);
 
 				// -- Controller
 				$controller['base'] = "{$namespace}\\Controller";
@@ -203,6 +205,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 					));
 				}
 
+				// TODO: Add response as an argument to the controller.
 				$arguments = array($this, $request['instance']);
 				$this->_controller = $controller['reflection']->newInstanceArgs($arguments);
 			}
