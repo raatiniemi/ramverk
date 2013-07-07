@@ -24,6 +24,12 @@ namespace Net\TheDeveloperBlog\Ramverk\Request
 	class Web extends Ramverk\Request
 	{
 		/**
+		 * Retrieved request HTTP headers.
+		 * @var array
+		 */
+		protected $_headers;
+
+		/**
 		 * Initialize the routing request.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
@@ -38,6 +44,30 @@ namespace Net\TheDeveloperBlog\Ramverk\Request
 				$this->_module = $route['module'];
 				$this->_action = $route['action'];
 			}
+		}
+
+		/**
+		 */
+		public function getHttpHeaders()
+		{
+			if($this->_headers === NULL) {
+				$this->_headers = array_change_key_case(getallheaders());
+			}
+			return $this->_headers;
+		}
+
+		public function getHttpHeader($name)
+		{
+			$headers = $this->getHttpHeader();
+
+			return isset($headers[$name]) ? $headers[$name] : NULL;
+		}
+
+		/**
+		 */
+		public function getMethod()
+		{
+			return $_SERVER['REQUEST_METHOD'] === 'POST' ? 'POST' : 'GET';
 		}
 	}
 }
