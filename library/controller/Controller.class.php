@@ -9,6 +9,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
+	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
 	 * Base functionality for the controller.
@@ -22,6 +23,12 @@ namespace Net\TheDeveloperBlog\Ramverk
 	 */
 	abstract class Controller
 	{
+		// +------------------------------------------------------------------+
+		// | Trait use-directives.                                            |
+		// +------------------------------------------------------------------+
+		use Configuration\Utility;
+		use Loader\Autoload;
+
 		/**
 		 * Context for the application.
 		 * @var Net\TheDeveloperBlog\Ramverk\Core\Context
@@ -35,6 +42,12 @@ namespace Net\TheDeveloperBlog\Ramverk
 		protected $_request;
 
 		/**
+		 * Module configuration.
+		 * @var array
+		 */
+		protected $_configuration;
+
+		/**
 		 * Initialize the controller.
 		 * @param Net\TheDeveloperBlog\Ramverk\Core\Context $context Context for the application
 		 * @param Net\TheDeveloperBlog\Ramverk\Request $request Handles requests.
@@ -44,6 +57,53 @@ namespace Net\TheDeveloperBlog\Ramverk
 		{
 			$this->_context = $context;
 			$this->_request = $request;
+		}
+
+		/**
+		 * Initialize the module.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		protected function initializeModule()
+		{
+			// Retrieve the module name for the request.
+			$name = ucfirst($this->_request->getModule());
+
+			// Check whether the module actually exists.
+			$directory = $this->expandDirectives("%directory.application.module%/{$name}");
+			if(!is_dir($directory)) {
+				// TODO: Better specify the Exception-object.
+				throw new Exception("Module \"{$name}\" do not exists.");
+			}
+
+			// Retrieve the configuration for the module.
+			$filename = "{$directory}/config/module.xml";
+			$this->_configuration = $this->getConfigurationHandlerFactory()->callHandler('Module', $filename);
+
+			// Attempt to set module based class autoloading, if available.
+			$this->_autoloadFile = "{$directory}/config/autoload.xml";
+			if(file_exists($this->_autoloadFile)) {
+				spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
+			}
+		}
+
+		/**
+		 * Get the configuration container, used by Utility-trait.
+		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function getConfig()
+		{
+			return $this->_context->getConfig();
+		}
+
+		/**
+		 * Retrieve the configuration handler factory, used by Autoload-trait.
+		 * @return Net\TheDeveloperBlog\Ramverk\Config\Handler\Factory Configuration handler factory.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function getConfigurationHandlerFactory()
+		{
+			return $this->_context->getConfigurationHandlerFactory();
 		}
 
 		/**
