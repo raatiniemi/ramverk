@@ -30,6 +30,12 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 		public function dispatch()
 		{
 			$this->initializeModule();
+
+			if($this->_config->get('enabled')) {
+				// TODO: Handle enabled modules.
+			} else {
+				// TODO: Handle disabled modules.
+			}
 		}
 	}
 }

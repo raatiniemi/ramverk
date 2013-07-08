@@ -42,10 +42,10 @@ namespace Net\TheDeveloperBlog\Ramverk
 		protected $_request;
 
 		/**
-		 * Module configuration.
+		 * Configuration for the module.
 		 * @var array
 		 */
-		protected $_configuration;
+		protected $_config;
 
 		/**
 		 * Initialize the controller.
@@ -77,7 +77,9 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 			// Retrieve the configuration for the module.
 			$filename = "{$directory}/config/module.xml";
-			$this->_configuration = $this->getConfigurationHandlerFactory()->callHandler('Module', $filename);
+			$this->_config = new Configuration\Container(
+				$this->getConfigurationHandlerFactory()->callHandler('Module', $filename)
+			);
 
 			// Attempt to set module based class autoloading, if available.
 			$this->_autoloadFile = "{$directory}/config/autoload.xml";
