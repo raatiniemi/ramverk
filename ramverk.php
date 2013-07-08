@@ -28,6 +28,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 	require __DIR__ . '/library/configuration/handler/Handler.class.php';
 	require __DIR__ . '/library/configuration/handler/Autoload.class.php';
 
+	// Include exceptions.
 	require __DIR__ . '/library/exception/Exception.class.php';
 }
 // End of file: ramverk.php

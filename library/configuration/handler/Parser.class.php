@@ -267,4 +267,4 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	}
 }
 // End of file: Parser.class.php
-// Location: library/config/handler/Parser.class.php
+// Location: library/configuration/handler/Parser.class.php
