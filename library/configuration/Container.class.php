@@ -71,6 +71,16 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		}
 
 		/**
+		 * Import items to the container.
+		 * @param array $items Items to import.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function import(array $items)
+		{
+			$this->importItems($items);
+		}
+
+		/**
 		 * Get the configuration container, used by Utility-trait.
 		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>

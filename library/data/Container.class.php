@@ -89,7 +89,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 		 */
 		public function importItems(array $items)
 		{
-			foreach($item as $name => $item) {
+			foreach($items as $name => $item) {
 				$this->setItem($name, $item);
 			}
 		}
