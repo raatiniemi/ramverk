@@ -80,6 +80,18 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 			return array_key_exists($name, $this->_container)
 				&& isset($this->_container[$name]);
 		}
+
+		/**
+		 * Import items to the container.
+		 * @param array $items Items to import.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function importItems(array $items)
+		{
+			foreach($item as $name => $item) {
+				$this->setItem($name, $item);
+			}
+		}
 	}
 }
 // End of file: Container.class.php
