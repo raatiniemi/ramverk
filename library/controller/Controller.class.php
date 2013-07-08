@@ -9,7 +9,6 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
 	 * Base functionality for the controller.
@@ -42,12 +41,6 @@ namespace Net\TheDeveloperBlog\Ramverk
 		protected $_request;
 
 		/**
-		 * Configuration for the module.
-		 * @var array
-		 */
-		protected $_config;
-
-		/**
 		 * Initialize the controller.
 		 * @param Net\TheDeveloperBlog\Ramverk\Core\Context $context Context for the application
 		 * @param Net\TheDeveloperBlog\Ramverk\Request $request Handles requests.
@@ -57,35 +50,6 @@ namespace Net\TheDeveloperBlog\Ramverk
 		{
 			$this->_context = $context;
 			$this->_request = $request;
-		}
-
-		/**
-		 * Initialize the module.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
-		 */
-		protected function initializeModule()
-		{
-			// Retrieve the module name for the request.
-			$name = ucfirst($this->_request->getModule());
-
-			// Check whether the module actually exists.
-			$directory = $this->expandDirectives("%directory.application.module%/{$name}");
-			if(!is_dir($directory)) {
-				// TODO: Better specify the Exception-object.
-				throw new Exception("Module \"{$name}\" do not exists.");
-			}
-
-			// Retrieve the configuration for the module.
-			$filename = "{$directory}/config/module.xml";
-			$this->_config = new Configuration\Container(
-				$this->getConfigurationHandlerFactory()->callHandler('Module', $filename)
-			);
-
-			// Attempt to set module based class autoloading, if available.
-			$this->_autoloadFile = "{$directory}/config/autoload.xml";
-			if(file_exists($this->_autoloadFile)) {
-				spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
-			}
 		}
 
 		/**
