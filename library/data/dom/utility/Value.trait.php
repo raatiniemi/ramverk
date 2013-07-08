@@ -53,20 +53,17 @@ namespace Net\TheDeveloperBlog\Ramverk\Data\Dom\Utility
 
 		/**
 		 * Handles typecasting of values.
-		 * @param mixed $value Value to typecast.
+		 * @param string $value Value to typecast.
 		 * @return mixed Typecast value.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		protected function handleTypecast($value)
 		{
-			$type = gettype($value);
-
-			// Check which data type the value is.
-			if($type === 'boolean' || preg_match('/^(true|false)$/i', $value)) {
-				$value = (boolean)$value;
-			} elseif($type === 'integer' || preg_match('/^([0-9]+)$/', $value)) {
+			if(preg_match('/^(true|false)$/i', $value)) {
+				$value = strtolower($value) === 'true' ? TRUE : FALSE;
+			} elseif(preg_match('/^([0-9]+)$/', $value)) {
 				$value = (integer)$value;
-			} elseif($type === 'double' || preg_match('/^([0-9\.]+)$/', $value)) {
+			} elseif(preg_match('/^([0-9\.]+)$/', $value)) {
 				$value = (double)$value;
 			}
 
