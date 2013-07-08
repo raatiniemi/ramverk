@@ -10,6 +10,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
+	use Net\TheDeveloperBlog\Ramverk\Data\Dom;
 
 	/**
 	 * Handler for autoload configuration.
@@ -29,11 +30,11 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * @return array Retrieved configuration data.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function execute(\DOMDocument $document)
+		public function execute(Dom\Document $document)
 		{
 			$configuration = array();
 			foreach($document->getElementsByTagName('settings') as $module) {
-				$configuration['enabled'] = $module->hasAttribute('enabled') ? $module->getAttribute('enabled') : TRUE;
+				$configuration['enabled'] = $module->getAttribute('enabled', TRUE);
 
 				foreach($module->getElementsByTagName('setting') as $setting) {
 					if(!$setting->hasAttribute('name')) {
@@ -46,7 +47,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 					}
 
 					$name = $setting->getAttribute('name');
-					$configuration[$name] = $setting->nodeValue;
+					$configuration[$name] = $setting->getValue();
 				}
 
 				// Since we only want one configuration per module we can

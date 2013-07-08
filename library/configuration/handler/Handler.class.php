@@ -9,6 +9,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
+	use Net\TheDeveloperBlog\Ramverk\Data\Dom;
 
 	/**
 	 * Base functionality for configuration handlers.
@@ -59,7 +60,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		 * @return array Retrieved configuration data.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		abstract public function execute(\DOMDocument $document);
+		abstract public function execute(Dom\Document $document);
 	}
 }
 // End of file: Handler.class.php

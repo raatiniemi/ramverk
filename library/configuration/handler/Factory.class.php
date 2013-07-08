@@ -11,6 +11,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 // +--------------------------------------------------------------------------+
 	use Net\TheDeveloperBlog\Ramverk;
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
+	use Net\TheDeveloperBlog\Ramverk\Data\Dom;
 
 	/**
 	 * Factory for instansiating configuration handlers.
@@ -136,7 +137,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 				$instance = $this->_handlers[$handler];
 
 				// Setup the arguments for the handlers execute-method.
-				$document = new \DOMDocument('1.0', 'UTF-8');
+				$document = new Dom\Document('1.0', 'UTF-8');
 				$document->load($filename);
 
 				// Parse the configuration document. Parsing includes inclusion

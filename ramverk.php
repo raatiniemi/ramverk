@@ -28,6 +28,12 @@ namespace Net\TheDeveloperBlog\Ramverk
 	require __DIR__ . '/library/configuration/handler/Handler.class.php';
 	require __DIR__ . '/library/configuration/handler/Autoload.class.php';
 
+	// Include the extended DOM functionality.
+	require __DIR__ . '/library/data/dom/utility/Value.trait.php';
+	require __DIR__ . '/library/data/dom/Document.class.php';
+	require __DIR__ . '/library/data/dom/Element.class.php';
+	require __DIR__ . '/library/data/dom/Node.class.php';
+
 	// Include exceptions.
 	require __DIR__ . '/library/exception/Exception.class.php';
 }

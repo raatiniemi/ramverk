@@ -23,6 +23,11 @@
 
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Data\\Container">%directory.core.library%/data/Container.class.php</autoload>
 
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Data\\Dom\\Utility\\Value">%directory.core.library%/data/dom/utility/Value.trait.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Data\\Dom\\Document">%directory.core.library%/data/dom/Document.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Data\\Dom\\Element">%directory.core.library%/data/dom/Element.class.php</autoload>
+			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Data\\Dom\\Node">%directory.core.library%/data/dom/Node.class.php</autoload>
+
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Exception">%directory.core.library%/exception/Exception.class.php</autoload>
 
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Loader\\Autoload">%directory.core.library%/loader/Autoload.trait.php</autoload>

@@ -10,6 +10,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
+	use Net\TheDeveloperBlog\Ramverk\Data\Dom;
 
 	/**
 	 * Handler for autoload configuration.
@@ -29,7 +30,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * @return array Retrieved configuration data.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function execute(\DOMDocument $document)
+		public function execute(Dom\Document $document)
 		{
 			$autoloads = array();
 			foreach($document->getElementsByTagName('autoload') as $autoload) {
@@ -43,7 +44,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 				}
 
 				$name = $autoload->getAttribute('name');
-				$autoloads[$name] = $this->expandDirectives($autoload->nodeValue);
+				$autoloads[$name] = $this->expandDirectives($autoload->getValue());
 			}
 			return $autoloads;
 		}

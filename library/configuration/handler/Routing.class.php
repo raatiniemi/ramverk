@@ -11,6 +11,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 // +--------------------------------------------------------------------------+
 	use Net\TheDeveloperBlog\Ramverk;
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
+	use Net\TheDeveloperBlog\Ramverk\Data\Dom;
 
 	/**
 	 * Handler for routing configuration.
@@ -30,7 +31,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * @return array Retrieved configuration data.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function execute(\DOMDocument $document)
+		public function execute(Dom\Document $document)
 		{
 			$routes = array();
 			foreach($document->getElementsByTagName('route') as $route) {
