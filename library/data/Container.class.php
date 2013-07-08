@@ -85,6 +85,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 		 * Import items to the container.
 		 * @param array $items Items to import.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @todo Handle support for recursive arrays.
 		 */
 		public function importItems(array $items)
 		{
