@@ -9,6 +9,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
+	use Net\TheDeveloperBlog\Ramverk;
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
 	use Net\TheDeveloperBlog\Ramverk\Data\Dom;
 

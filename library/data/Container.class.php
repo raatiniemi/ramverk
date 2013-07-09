@@ -9,7 +9,6 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk;
 
 	/**
 	 * Container for working with KeyValue based items.
