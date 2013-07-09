@@ -10,7 +10,6 @@ namespace Net\TheDeveloperBlog\Ramverk
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
-	use Net\TheDeveloperBlog\Ramverk\Configuration\Handler;
 	use Net\TheDeveloperBlog\Ramverk\Loader;
 
 	/**

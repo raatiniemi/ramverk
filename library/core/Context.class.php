@@ -12,7 +12,6 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 	use Net\TheDeveloperBlog\Ramverk;
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
 	use Net\TheDeveloperBlog\Ramverk\Configuration\Handler;
-	use Net\TheDeveloperBlog\Ramverk\Controller;
 
 	/**
 	 * Handles the context for the application.
@@ -152,7 +151,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 				$routes = $this->getConfigurationHandlerFactory()->callHandler('Routing', $filename);
 				if(empty($routes)) {
 					// TODO: Better specify the Exception-object.
-					throw new Exception('No routing configuration have been specified.');
+					throw new Ramverk\Exception('No routing configuration have been specified.');
 				}
 
 				$arguments = array($routes);
@@ -189,7 +188,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 
 				if(!class_exists($controller['name'])) {
 					// TODO: Better specify the Exception-object.
-					throw new Exception(sprintf(
+					throw new Ramverk\Exception(sprintf(
 						'Controller for context "%s" do not exists.',
 						$context
 					));
@@ -198,7 +197,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 				$controller['reflection'] = new \ReflectionClass($controller['name']);
 				if(!$controller['reflection']->isSubclassOf($controller['base'])) {
 					// TODO: Better specify the Exception-object.
-					throw new Exception(sprintf(
+					throw new Ramverk\Exception(sprintf(
 						'Controller for context "%s" do not extend "%s".',
 						$context,
 						$controller['base']

@@ -9,7 +9,6 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk;
 
 	/**
 	 * Utilities for working with the configuration container.
