@@ -20,8 +20,13 @@ namespace Net\TheDeveloperBlog\Ramverk
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 	 */
-	class Action
+	abstract class Action
 	{
+		/**
+		 * Execute the action.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		abstract public function execute();
 	}
 }
 // End of file: Action.class.php

@@ -31,8 +31,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 		 */
 		public function dispatch()
 		{
-			$moduleName = ucfirst($this->_request->getModule());
-			$actionName = ucfirst($this->_request->getAction());
+			$moduleName = ucfirst(strtolower($this->_request->getModule()));
+			$actionName = ucfirst(strtolower($this->_request->getAction()));
 
 			$directory = $this->expandDirectives("%directory.application.module%/{$moduleName}");
 			if(!is_dir($directory)) {
@@ -54,15 +54,56 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 				$config->import($items);
 			}
 
-			// TODO: Handle namespace for actions, models and views.
+			// TODO: Handle fallback namespace from the application.
 			// If no namespace have been supplied for the specific module, the
 			// application namespace should be used. If no namespace have been
 			// supplied for the application, global namespace should be used.
+			$namespace = $config->get('namespace');
 
-			// TODO: Handle content types.
+			if($namespace !== NULL) {
+				$actionName = "{$namespace}\\{$moduleName}\\Action\\{$actionName}";
+			}
 
 			$action['reflection'] = new \ReflectionClass($actionName);
-			$action['method'] = $this->_request->getMethod() === 'POST' ? 'Write' : 'Read';
+			$action['action'] = $this->_request->getMethod() === 'POST' ? 'Write' : 'Read';
+
+			// TODO: Handle content types.
+			$action['methods'][] = sprintf('execute%s', $action['action']);
+			$action['methods'][] = $action['method'] = 'execute';
+
+			foreach($action['methods'] as $method) {
+				if($action['reflection']->hasMethod($method)) {
+					$action['method'] = $method;
+					break;
+				}
+			}
+
+			// TODO: Pass arguments to the action constructor.
+			$action['instance'] = $action['reflection']->newInstance();
+
+			// Retrieve the view name from the action.
+			$viewName = call_user_func_array(array($action['instance'], $action['method']), array());
+
+			if($namespace !== NULL) {
+				$viewName = "{$namespace}\\{$moduleName}\\View\\{$viewName}";
+			}
+
+			$view['reflection'] = new \ReflectionClass($viewName);
+
+			// TODO: Handle content types.
+			$view['methods'][] = $view['method'] = 'execute';
+
+			foreach($view['methods'] as $method) {
+				if($view['reflection']->hasMethod($method)) {
+					$view['method'] = $method;
+					break;
+				}
+			}
+
+			// TODO: Pass arguments to the view constructor.
+			// TODO: Load template.
+			$view['instance'] = $view['reflection']->newInstance();
+			call_user_func_array(array($view['instance'], $view['method']), array());
 		}
 	}
 }
