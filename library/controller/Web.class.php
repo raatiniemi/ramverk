@@ -31,13 +31,14 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 		 */
 		public function dispatch()
 		{
-			$moduleName = ucfirst(strtolower($this->_request->getModule()));
-			$actionName = ucfirst(strtolower($this->_request->getAction()));
+			$config = new Configuration\Container();
+			$config->set('module.name', ucfirst(strtolower($this->_request->getModule())));
+			$config->set('action.name', ucfirst(strtolower($this->_request->getAction())));
 
-			$directory = $this->expandDirectives("%directory.application.module%/{$moduleName}");
+			$directory = $this->expandDirectives("%directory.application.module%/{$config->get('module.name')}");
 			if(!is_dir($directory)) {
 				// TODO: Better specify the Exception-object.
-				throw new Ramverk\Exception("Module \"{$moduleName}\" do not exists.");
+				throw new Ramverk\Exception(sprintf('Module "%s" do not exists.', $config->get('module.name')));
 			}
 
 			$autoload = "{$directory}/config/autoload.xml";
@@ -46,28 +47,25 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 				spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
 			}
 
-			$config = new Configuration\Container();
-
 			$module = "{$directory}/config/module.xml";
 			if(file_exists($module)) {
 				$items = $this->getConfigurationHandlerFactory()->callHandler('Module', $module);
 				$config->import($items);
 			}
 
-			// TODO: Handle fallback namespace from the application.
+			// TODO: Implement support for namespace fallback.
 			// If no namespace have been supplied for the specific module, the
 			// application namespace should be used. If no namespace have been
 			// supplied for the application, global namespace should be used.
-			$namespace = $config->get('namespace');
 
-			if($namespace !== NULL) {
-				$actionName = "{$namespace}\\{$moduleName}\\Action\\{$actionName}";
+			$config->set('action.class', $config->get('action.name'));
+			if($config->has('module.namespace')) {
+				$config->set('action.class', $config->expandDirectives('%module.namespace%\\%module.name%\\Action\\%action.name%'), TRUE);
 			}
 
-			$action['reflection'] = new \ReflectionClass($actionName);
+			$action['reflection'] = new \ReflectionClass($config->get('action.class'));
 			$action['action'] = $this->_request->getMethod() === 'POST' ? 'Write' : 'Read';
 
-			// TODO: Handle content types.
 			$action['methods'][] = sprintf('execute%s', $action['action']);
 			$action['methods'][] = $action['method'] = 'execute';
 
@@ -81,16 +79,25 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 			// TODO: Pass arguments to the action constructor.
 			$action['instance'] = $action['reflection']->newInstance();
 
-			// Retrieve the view name from the action.
-			$viewName = call_user_func_array(array($action['instance'], $action['method']), array());
+			$config->set('view.name', sprintf(
+				'%s%s',
+				$config->get('action.name'),
+				call_user_func_array(array($action['instance'], $action['method']), array())
+			));
 
-			if($namespace !== NULL) {
-				$viewName = "{$namespace}\\{$moduleName}\\View\\{$viewName}";
+			// TODO: Implement support for namespace fallback.
+			// If no namespace have been supplied for the specific module, the
+			// application namespace should be used. If no namespace have been
+			// supplied for the application, global namespace should be used.
+
+			$config->set('view.class', $config->get('view.name'));
+			if($config->has('module.namespace')) {
+				$config->set('view.class', $config->expandDirectives('%module.namespace%\\%module.name%\\View\\%view.name%'), TRUE);
 			}
 
-			$view['reflection'] = new \ReflectionClass($viewName);
+			$view['reflection'] = new \ReflectionClass($config->get('view.class'));
 
-			// TODO: Handle content types.
+			// TODO: Implement support for content types.
 			$view['methods'][] = $view['method'] = 'execute';
 
 			foreach($view['methods'] as $method) {
@@ -101,9 +108,10 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 			}
 
 			// TODO: Pass arguments to the view constructor.
-			// TODO: Load template.
 			$view['instance'] = $view['reflection']->newInstance();
 			call_user_func_array(array($view['instance'], $view['method']), array());
+
+			// TODO: Handle loading of template for content type HTML.
 		}
 	}
 }
