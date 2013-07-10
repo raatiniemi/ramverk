@@ -47,7 +47,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 						));
 					}
 
-					$name = $setting->getAttribute('name');
+					// Prefix every item from the module configuration with "module.".
+					$name = "module.{$setting->getAttribute('name')}";
 					$configuration[$name] = $setting->getValue();
 				}
 
