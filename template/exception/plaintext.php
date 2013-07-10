@@ -45,8 +45,7 @@ Message
 
 Version Information
 =====================
-<?php // TODO: Handle ramverk versioning. ?>
-Ramverk: 1337
+Ramverk: <?=Version . PHP_EOL; ?>
 PHP: <?=phpversion() . PHP_EOL; ?>
 System: <?=php_uname() . PHP_EOL; ?>
 Timestamp: <?=gmdate(DATE_ISO8601) . PHP_EOL; ?>
