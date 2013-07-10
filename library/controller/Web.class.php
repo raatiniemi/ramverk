@@ -10,7 +10,6 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Net\TheDeveloperBlog\Ramverk;
-	use Net\TheDeveloperBlog\Ramverk\Configuration;
 
 	/**
 	 * Functionality for the web based controller.
@@ -31,27 +30,9 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 		 */
 		public function dispatch()
 		{
-			$config = new Configuration\Container();
-			$config->set('module.name', ucfirst(strtolower($this->_request->getModule())));
+			$config = $this->initializeModule();
+
 			$config->set('action.name', ucfirst(strtolower($this->_request->getAction())));
-
-			$directory = $this->expandDirectives("%directory.application.module%/{$config->get('module.name')}");
-			if(!is_dir($directory)) {
-				// TODO: Better specify the Exception-object.
-				throw new Ramverk\Exception(sprintf('Module "%s" do not exists.', $config->get('module.name')));
-			}
-
-			$autoload = "{$directory}/config/autoload.xml";
-			if(file_exists($autoload)) {
-				$this->_autoloadFile = $autoload;
-				spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
-			}
-
-			$module = "{$directory}/config/module.xml";
-			if(file_exists($module)) {
-				$items = $this->getConfigurationHandlerFactory()->callHandler('Module', $module);
-				$config->import($items);
-			}
 
 			// TODO: Implement support for namespace fallback.
 			// If no namespace have been supplied for the specific module, the
