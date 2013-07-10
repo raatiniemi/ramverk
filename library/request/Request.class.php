@@ -9,7 +9,6 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk\Request;
 
 	/**
 	 * Base functionality for handling requests.
@@ -25,7 +24,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 	{
 		/**
 		 * Handles request routing.
-		 * @var Net\TheDeveloperBlog\Ramverk\Request\Routing
+		 * @var Net\TheDeveloperBlog\Ramverk\Routing
 		 */
 		protected $_routing;
 
@@ -43,10 +42,10 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Initialize the request.
-		 * @param Net\TheDeveloperBlog\Ramverk\Request\Routing $routing Handles request routing.
+		 * @param Net\TheDeveloperBlog\Ramverk\Routing $routing Handles request routing.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function __construct(Request\Routing $routing)
+		public function __construct(Routing $routing)
 		{
 			$this->_routing = $routing;
 

@@ -125,7 +125,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 				$namespace = 'Net\\TheDeveloperBlog\\Ramverk';
 
 				// -- Routing
-				$routing['base'] = "{$namespace}\\Request\\Routing";
+				$routing['base'] = "{$namespace}\\Routing";
 				$routing['name'] = "{$routing['base']}\\{$context}";
 
 				if(!class_exists($routing['name'])) {
