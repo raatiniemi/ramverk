@@ -4,7 +4,7 @@
 // | Copyright (c) 2013, Authors                                              |
 // | Copyright (c) 2013, The Developer Blog                                   |
 // +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk\Request\Routing
+namespace Net\TheDeveloperBlog\Ramverk\Routing
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
@@ -15,7 +15,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Request\Routing
 	 * Functionality for handling web based request routing.
 	 *
 	 * @package Ramverk
-	 * @subpackage Request
+	 * @subpackage Routing
 	 *
 	 * @copyright (c) 2013, Authors
 	 * @copyright (c) 2013, The Developer Blog
@@ -26,4 +26,4 @@ namespace Net\TheDeveloperBlog\Ramverk\Request\Routing
 	}
 }
 // End of file: Web.class.php
-// Location: library/request/routing/Web.class.php
+// Location: library/routing/Web.class.php
