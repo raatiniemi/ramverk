@@ -32,12 +32,13 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		 * Set configuration directive.
 		 * @param string $name Name of the directive.
 		 * @param mixed $value Value of the directive.
+		 * @param boolean $override Override existing directive.
 		 * @return boolean True if directive is set, otherwise false.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function set($name, $value)
+		public function set($name, $value, $override=FALSE)
 		{
-			return $this->setItem($name, $value);
+			return $this->setItem($name, $value, $override);
 		}
 
 		/**

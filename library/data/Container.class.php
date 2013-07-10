@@ -42,14 +42,15 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 		 * Set container item.
 		 * @param string $name Name of container item.
 		 * @param mixed $value Value of container item.
+		 * @param boolean $override Override existing container item.
 		 * @return boolean True if item have been set, otherwise false.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function setItem($name, $value)
+		public function setItem($name, $value, $override=FALSE)
 		{
 			// Check if the item already exists, we shouldn't override
 			// already existing items.
-			if(!$this->hasItem($name)) {
+			if(!$this->hasItem($name) || $override === TRUE) {
 				$this->_container[$name] = $value;
 
 				return TRUE;
