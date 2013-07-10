@@ -9,7 +9,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Routing
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk\Request;
+	use Net\TheDeveloperBlog\Ramverk;
 
 	/**
 	 * Functionality for handling web based request routing.
@@ -21,7 +21,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Routing
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 	 */
-	class Web extends Request\Routing
+	class Web extends Ramverk\Routing
 	{
 	}
 }
