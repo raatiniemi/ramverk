@@ -58,7 +58,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 			// Set the default exception template. If the template already have
 			// been specified, the specified template will not be replaced.
-			$config->set('exception.template', '%directory.core.template%/exception.php');
+			$config->set('exception.template', '%directory.core.template%/exception/plaintext.php');
 			$this->_config = $config;
 
 			// TODO: Instansiate the context.
