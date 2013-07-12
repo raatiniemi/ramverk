@@ -55,6 +55,26 @@ namespace Net\TheDeveloperBlog\Ramverk
 		}
 
 		/**
+		 * Retrieve the application context.
+		 * @return Net\TheDeveloperBlog\Ramverk\Net\TheDeveloperBlog\Ramverk\Core\Context
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function getContext()
+		{
+			return $this->_context;
+		}
+
+		/**
+		 * Retrieve the request object.
+		 * @return Net\TheDeveloperBlog\Ramverk\Net\TheDeveloperBlog\Ramverk\Request
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function getRequest()
+		{
+			return $this->_request;
+		}
+
+		/**
 		 * Get the configuration container, used by Utility-trait.
 		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
@@ -84,7 +104,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 		{
 			// Initialize the configuration container for the module.
 			$config = new Configuration\Container();
-			$config->set('module.name', ucfirst(strtolower($this->_request->getModule())));
+			$config->set('module.name', ucfirst(strtolower($this->getRequest()->getModule())));
 
 			// Check that the module directory actually exists.
 			$directory = $this->expandDirectives("%directory.application.module%/{$config->get('module.name')}");

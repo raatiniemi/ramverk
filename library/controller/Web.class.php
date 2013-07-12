@@ -32,7 +32,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 		{
 			$config = $this->initializeModule();
 
-			$config->set('action.name', ucfirst(strtolower($this->_request->getAction())));
+			$config->set('action.name', ucfirst(strtolower($this->getRequest()->getAction())));
 
 			// TODO: Implement support for namespace fallback.
 			// If no namespace have been supplied for the specific module, the
@@ -45,7 +45,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 			}
 
 			$action['reflection'] = new \ReflectionClass($config->get('action.class'));
-			$action['action'] = $this->_request->getMethod() === 'POST' ? 'Write' : 'Read';
+			$action['action'] = $this->getRequest()->getMethod() === 'POST' ? 'Write' : 'Read';
 
 			$action['methods'][] = sprintf('execute%s', $action['action']);
 			$action['methods'][] = $action['method'] = 'execute';
