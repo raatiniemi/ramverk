@@ -54,6 +54,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Request
 		public function getHttpHeaders()
 		{
 			if($this->_headers === NULL) {
+				// TODO: Handle getallheaders on non-apache platforms.
 				$this->_headers = array_change_key_case(getallheaders());
 			}
 			return $this->_headers;
