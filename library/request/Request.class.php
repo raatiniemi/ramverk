@@ -49,14 +49,25 @@ namespace Net\TheDeveloperBlog\Ramverk
 		{
 			$this->_routing = $routing;
 
+			// Initialize the request routing.
 			$this->initialize();
 		}
 
 		/**
-		 * Initialize the routing request.
+		 * Initialize the request routing.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		abstract protected function initialize();
+
+		/**
+		 * Retrieve the routing.
+		 * @return Net\TheDeveloperBlog\Ramverk\Net\TheDeveloperBlog\Ramverk\Routing
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function getRouting()
+		{
+			return $this->_routing;
+		}
 
 		/**
 		 * Get the module name for the request.
@@ -69,8 +80,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 		}
 
 		/**
-		 * Get the action name for the request
-		 * @return string Action name for the request
+		 * Get the action name for the request.
+		 * @return string Action name for the request.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function getAction()

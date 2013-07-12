@@ -47,6 +47,9 @@ namespace Net\TheDeveloperBlog\Ramverk\Request
 		}
 
 		/**
+		 * Retrieve all the HTTP headers.
+		 * @return array All request HTTP headers.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function getHttpHeaders()
 		{
@@ -56,14 +59,24 @@ namespace Net\TheDeveloperBlog\Ramverk\Request
 			return $this->_headers;
 		}
 
+		/**
+		 * Retrieve a HTTP header.
+		 * @param string $name Name of the HTTP header.
+		 * @return string Value for the HTTP header, or NULL.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
 		public function getHttpHeader($name)
 		{
 			$headers = $this->getHttpHeader();
 
+			// Check if the header exists, otherwise return NULL.
 			return isset($headers[$name]) ? $headers[$name] : NULL;
 		}
 
 		/**
+		 * Retrieve the HTTP method.
+		 * @return string HTTP method used with the request.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function getMethod()
 		{
