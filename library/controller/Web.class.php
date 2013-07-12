@@ -79,6 +79,22 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 			$view['reflection'] = new \ReflectionClass($config->get('view.class'));
 
 			// TODO: Implement support for content types.
+			$headers = $this->getRequest()->getHttpHeaders();
+			if(isset($headers['content-type'])) {
+				$headers['content-type'] = strtolower($headers['content-type']);
+
+				switch($headers['content-type']) {
+					case 'application/json':
+						$contentType = 'json';
+						break;
+					case 'text/html':
+					default:
+						$contentType = 'html';
+						break;
+				}
+
+				$view['methods'][] = sprintf('execute%s', ucfirst(strtolower($contentType)));
+			}
 			$view['methods'][] = $view['method'] = 'execute';
 
 			foreach($view['methods'] as $method) {
