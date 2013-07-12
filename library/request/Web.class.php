@@ -67,6 +67,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Request
 		 */
 		public function getHttpHeader($name)
 		{
+			// Have to convert the name to lowercase, otherwise we'll encounter case issues.
+			$name = strtolower($name);
 			$headers = $this->getHttpHeader();
 
 			// Check if the header exists, otherwise return NULL.
