@@ -79,6 +79,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Controller
 			$view['reflection'] = new \ReflectionClass($config->get('view.class'));
 
 			// TODO: Implement support for content types.
+			// TODO: Handle content type from routing.
 			$headers = $this->getRequest()->getHttpHeaders();
 			if(isset($headers['content-type'])) {
 				$headers['content-type'] = strtolower($headers['content-type']);
