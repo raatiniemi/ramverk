@@ -11,7 +11,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 // +--------------------------------------------------------------------------+
 
 	/**
-	 * Base functionality for the controller.
+	 * Functionality for dispatching actions.
 	 *
 	 * @package Ramverk
 	 * @subpackage Controller
