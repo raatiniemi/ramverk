@@ -51,7 +51,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 				$factory = $this->getConfigurationHandlerFactory();
 
 				// Get the autoload configuration file.
-				if(($filename = $this->_autoloadFile) === NULL) {
+				if(($filename = $this->getAutoloadFile()) === NULL) {
 					// TODO: Better specify the Exception-object.
 					throw new Ramverk\Exception(sprintf(
 						'No autoload file have been supplied for class "%s".',
@@ -104,6 +104,26 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 			//
 			// Do not trigger a new autoload-chain with the controll.
 			return class_exists($name, FALSE);
+		}
+
+		/**
+		 * Set the path for the autoload file.
+		 * @param string $file Path to the autoload file.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function setAutoloadFile($file)
+		{
+			$this->_autoloadFile = $file;
+		}
+
+		/**
+		 * Get the path for the autoload file.
+		 * @return string Path to the autoload file.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function getAutoloadFile()
+		{
+			return $this->_autoloadFile;
 		}
 
 		/**
