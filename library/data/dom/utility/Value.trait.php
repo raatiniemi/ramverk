@@ -11,12 +11,10 @@ namespace Net\TheDeveloperBlog\Ramverk\Data\Dom\Utility
 // +--------------------------------------------------------------------------+
 
 	/**
-	 * Handles retrieval of value from DOM node.
+	 * Handle value retrieval for DOM nodes/elements.
 	 *
 	 * @package Ramverk
 	 * @subpackage Data
-	 *
-	 * @category DOM
 	 *
 	 * @copyright (c) 2013, Authors
 	 * @copyright (c) 2013, The Developer Blog

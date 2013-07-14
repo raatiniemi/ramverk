@@ -11,10 +11,10 @@ namespace Net\TheDeveloperBlog\Ramverk\Data\Dom
 // +--------------------------------------------------------------------------+
 
 	/**
+	 * DOMNode.
+	 *
 	 * @package Ramverk
 	 * @subpackage Data
-	 *
-	 * @category DOM
 	 *
 	 * @copyright (c) 2013, Authors
 	 * @copyright (c) 2013, The Developer Blog
