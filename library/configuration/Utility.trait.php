@@ -24,6 +24,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 	{
 		/**
 		 * Expands configuration directives.
+		 * Directive names between precentage signs, e.g. %application.name%
+		 * will be replaced with the value of the directive.
 		 * @param string $value String with configuration directives to expand.
 		 * @return string String with configuration directives expanded.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
@@ -49,6 +51,11 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 
 		/**
 		 * Get the configuration container.
+		 * Since the expand directives method needs the configuration container
+		 * the implementing class has to supply the getConfig-method.
+		 *
+		 * By using a method instead of direct property access enable us to do
+		 * initial setup and redirect to another container.
 		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
