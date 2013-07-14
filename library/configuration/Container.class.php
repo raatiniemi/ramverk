@@ -9,6 +9,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
+	use Net\TheDeveloperBlog\Ramverk;
 	use Net\TheDeveloperBlog\Ramverk\Data;
 
 	/**
@@ -29,16 +30,55 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		use Utility;
 
 		/**
+		 * Container for readonly directives.
+		 * @var array
+		 */
+		protected $_readonly;
+
+		/**
+		 * Initialize the container within inital values.
+		 * @param array $container Initial values for the container.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function __construct(array $container=array())
+		{
+			parent::__construct($container);
+
+			// Initialize the readonly container.
+			$this->_readonly = array();
+		}
+
+		/**
 		 * Set configuration directive.
 		 * @param string $name Name of the directive.
 		 * @param mixed $value Value of the directive.
 		 * @param boolean $override Override existing directive.
+		 * @param boolean $readonly Should the diretive be readonly.
 		 * @return boolean True if directive is set, otherwise false.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function set($name, $value, $override=FALSE)
+		public function set($name, $value, $override=FALSE, $readonly=FALSE)
 		{
-			return $this->setItem($name, $value, $override);
+			// Check if the directive already exists as readonly.
+			if($this->hasReadonly($name)) {
+				// TODO: Better specify the Exception-object.
+				throw new Ramverk\Exception(sprintf(
+					'Configuration directive "%s" already exists and is readonly.',
+					$name
+				));
+			}
+
+			// Attempt to set the configuration directive. If the directive is
+			// set the return value will be TRUE, otherwise it's FALSE.
+			$returnValue = $this->setItem($name, $value, $override);
+
+			// If the configuration directive have been set and the directive
+			// is specified as readonly it should be added to the readonly container.
+			if($returnValue && $readonly) {
+				$this->_readonly[$name] = $value;
+			}
+
+			return $returnValue;
 		}
 
 		/**
@@ -68,6 +108,18 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		public function has($name)
 		{
 			return $this->hasItem($name);
+		}
+
+		/**
+		 * Check whether a readonly configuration directive exists or not.
+		 * @param string $name Name of the directive.
+		 * @return boolean True if the readonly directive exists, otherwise false.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function hasReadonly($name)
+		{
+			return array_key_exists($name, $this->_readonly)
+				&& isset($this->_readonly[$name]);
 		}
 
 		/**
