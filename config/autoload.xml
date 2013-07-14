@@ -16,7 +16,6 @@
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler\\Factory">%directory.core.library%/configuration/handler/Factory.class.php</autoload>
 
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Controller">%directory.core.library%/controller/Controller.class.php</autoload>
-			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Controller\\Web">%directory.core.library%/controller/Web.class.php</autoload>
 
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Core">%directory.core.library%/core/Core.class.php</autoload>
 			<autoload name="Net\\TheDeveloperBlog\\Ramverk\\Core\\Context">%directory.core.library%/core/Context.class.php</autoload>

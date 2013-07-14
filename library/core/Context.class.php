@@ -183,26 +183,14 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 				$request['instance'] = $request['reflection']->newInstanceArgs($arguments);
 
 				// -- Controller
-				$controller['base'] = "{$namespace}\\Controller";
-				$controller['name'] = "{$controller['base']}\\{$context}";
+				$controller['name'] = "{$namespace}\\Controller";
 
 				if(!class_exists($controller['name'])) {
 					// TODO: Better specify the Exception-object.
-					throw new Ramverk\Exception(sprintf(
-						'Controller for context "%s" do not exists.',
-						$context
-					));
+					throw new Ramverk\Exception('Controller do not exists.');
 				}
 
 				$controller['reflection'] = new \ReflectionClass($controller['name']);
-				if(!$controller['reflection']->isSubclassOf($controller['base'])) {
-					// TODO: Better specify the Exception-object.
-					throw new Ramverk\Exception(sprintf(
-						'Controller for context "%s" do not extend "%s".',
-						$context,
-						$controller['base']
-					));
-				}
 
 				// TODO: Add response as an argument to the controller.
 				$arguments = array($this, $request['instance']);
