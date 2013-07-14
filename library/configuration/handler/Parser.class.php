@@ -11,6 +11,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 // +--------------------------------------------------------------------------+
 	use Net\TheDeveloperBlog\Ramverk;
 	use Net\TheDeveloperBlog\Ramverk\Configuration;
+	use Net\TheDeveloperBlog\Ramverk\Data\Dom;
 
 	/**
 	 * Handles parsing of data from configuration handlers.
@@ -79,11 +80,11 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Execute parsing of the configuration document.
-		 * @param DOMDocument $document Configuration document to parse.
-		 * @return DOMDocument Parsed configuration document.
+		 * @param Net\TheDeveloperBlog\Ramverk\Data\Dom\Document $document Configuration document to parse.
+		 * @return Net\TheDeveloperBlog\Ramverk\Data\Dom\Document Parsed configuration document.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		public function execute(\DOMDocument $document)
+		public function execute(Dom\Document $document)
 		{
 			// Initialize the document parsing.
 			$this->parse($document);
@@ -151,11 +152,11 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Parse the configuration document.
-		 * @param DOMDocument $document Document to parse.
-		 * @return DOMDocument Parsed document.
+		 * @param Net\TheDeveloperBlog\Ramverk\Data\Dom\Document $document Document to parse.
+		 * @return Net\TheDeveloperBlog\Ramverk\Data\Dom\Document Parsed document.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		protected function parse(\DOMDocument $document)
+		protected function parse(Dom\Document $document)
 		{
 			// Run some quick validation of the document. Every valid document
 			// have a configurations element as root.
@@ -205,10 +206,10 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Initialize parsing of parent document, if available.
-		 * @param DOMDocument $document Current document being parsed.
+		 * @param Net\TheDeveloperBlog\Ramverk\Data\Dom\Document $document Current document being parsed.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		protected function parseParentDocument(\DOMDocument $document)
+		protected function parseParentDocument(Dom\Document $document)
 		{
 			// Check if the document has a parent document.
 			$documentElement = $document->documentElement;

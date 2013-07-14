@@ -13,7 +13,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 	use Net\TheDeveloperBlog\Ramverk\Data;
 
 	/**
-	 * Container for working with configurations.
+	 * Container for working with configuration directives.
 	 *
 	 * @package Ramverk
 	 * @subpackage Configuration
@@ -39,6 +39,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		 * Initialize the container within inital values.
 		 * @param array $container Initial values for the container.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @todo Implement support for initial readonly container.
 		 */
 		public function __construct(array $container=array())
 		{

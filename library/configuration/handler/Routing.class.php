@@ -27,7 +27,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	{
 		/**
 		 * Execute the configuration handler.
-		 * @param DOMDocument $document XML document with configuration data.
+		 * @param Net\TheDeveloperBlog\Ramverk\Data\Dom\Document $document XML document with configuration data.
 		 * @return array Retrieved configuration data.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
@@ -42,11 +42,11 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Parse the route configuration.
-		 * @param DOMElement $route Element with route configuration.
+		 * @param Net\TheDeveloperBlog\Ramverk\Data\Dom\Element $route Element with route configuration.
 		 * @return array Parsed route.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
-		private function parseRoute(\DOMElement $route)
+		private function parseRoute(Dom\Element $route)
 		{
 			$config = array();
 

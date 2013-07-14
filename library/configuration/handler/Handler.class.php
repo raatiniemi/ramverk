@@ -56,7 +56,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 
 		/**
 		 * Execute the configuration handler.
-		 * @param DOMDocument $document XML document with configuration data.
+		 * @param Net\TheDeveloperBlog\Ramverk\Data\Dom\Document $document XML document with configuration data.
 		 * @return array Retrieved configuration data.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
