@@ -128,7 +128,9 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 
 		/**
 		 * Retrieve the configuration handler factory.
-		 * @return Net\TheDeveloperBlog\Ramverk\Config\Handler\Factory Configuration handler factory.
+		 * Since the autoload method needs the configuration handler factory
+		 * the implementing class has to supply the getConfigurationHandlerFactory-method.
+		 * @return Net\TheDeveloperBlog\Ramverk\Config\Handler\Factory Factory for configuration handlers.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		abstract public function getConfigurationHandlerFactory();
