@@ -20,13 +20,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 	 * @copyright (c) 2013, The Developer Blog
 	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 	 */
-	abstract class View
+	class View
 	{
-		/**
-		 * Execute the view.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
-		 */
-		abstract public function execute();
 	}
 }
 // End of file: View.class.php
