@@ -119,6 +119,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 		 */
 		public function getController()
 		{
+			// TODO: Implement the controller initialization.
 		}
 	}
 }
