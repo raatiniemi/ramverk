@@ -92,6 +92,16 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 				$this->setItem($name, $item);
 			}
 		}
+
+		/**
+		 * Export items from the container.
+		 * @return array Items stored within the container.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function exportItems()
+		{
+			return $this->_container;
+		}
 	}
 }
 // End of file: Container.class.php

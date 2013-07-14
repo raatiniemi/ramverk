@@ -71,13 +71,23 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		}
 
 		/**
-		 * Import items to the container.
-		 * @param array $items Items to import.
+		 * Import directives to the container.
+		 * @param array $items Directives to import.
 		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
 		 */
 		public function import(array $items)
 		{
 			$this->importItems($items);
+		}
+
+		/**
+		 * Export directives from the container.
+		 * @return array Directives stored within the container.
+		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 */
+		public function export()
+		{
+			return $this->exportItems();
 		}
 
 		/**
