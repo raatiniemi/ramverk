@@ -1,5 +1,9 @@
 <?php
 try {
+	// TODO: Handle default routes, index and 404.
+	// TODO: Handle default content type depending on context.
+	// TODO: Include the template for HTML content type.
+
 	// Include the available Action-classes.
 	require 'action/Action.class.php';
 	require 'action/Index.class.php';
@@ -15,10 +19,7 @@ try {
 	require 'view/LoginFailure.class.php';
 
 	// Retrieve the request URI.
-	$uri = isset($_GET['uri']) ? trim($_GET['uri'], '/') : '';
-
-	$module['name'] = 'Index';
-	$action['name'] = 'Index';
+	$uri = isset($_GET['uri']) ? trim($_GET['uri'], '/') : NULL;
 
 	// Require the routing configurations.
 	$routes = require 'routes.php';
