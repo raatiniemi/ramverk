@@ -3,12 +3,12 @@
 	{
 		public function executeHtml()
 		{
-			echo __METHOD__;
+			return $this->setupHtml();
 		}
 
 		public function executeJson()
 		{
-			echo json_encode(array(
+			return json_encode(array(
 				'status' => 'success',
 				'method' => __METHOD__
 			));

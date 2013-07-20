@@ -1,0 +1,1 @@
+Simple template for a login form.

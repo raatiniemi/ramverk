@@ -3,6 +3,6 @@
 	{
 		public function executeHtml()
 		{
-			echo __METHOD__;
+			return $this->setupHtml(array(), NULL);
 		}
 	}

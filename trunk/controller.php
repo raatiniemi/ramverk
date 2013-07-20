@@ -1,8 +1,6 @@
 <?php
 try {
-	// TODO: Handle default routes, index and 404.
 	// TODO: Handle default content type depending on context.
-	// TODO: Include the template for HTML content type.
 
 	// Include the available Action-classes.
 	require 'action/Action.class.php';
@@ -27,7 +25,14 @@ try {
 		if(preg_match("#{$route['pattern']}#i", $uri)) {
 			$module['name'] = ucfirst(strtolower($route['module']));
 			$action['name'] = ucfirst(strtolower($route['action']));
+
+			break;
 		}
+	}
+
+	if(!isset($module) || !isset($action)) {
+		// TODO: Initialize the module and action with the 404.
+		throw new Exception("Page not found");
 	}
 
 	// ---- Handle Action
@@ -79,7 +84,7 @@ try {
 	}
 
 	$view['instance'] = $view['reflection']->newInstance();
-	call_user_func_array(array($view['instance'], $view['method']), array());
+	echo call_user_func_array(array($view['instance'], $view['method']), array());
 } catch(Exception $e) {
 	echo $e->getMessage();
 	exit($e->getCode());
