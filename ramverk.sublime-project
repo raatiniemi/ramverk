@@ -29,7 +29,7 @@
 	"build_systems":
 	[
 		{
-			"name": "unittest",
+			"name": "Ramverk — Test Suite",
 			"shell_cmd": "php ${project_path}/test/ramverk.php"
 		}
 	]
