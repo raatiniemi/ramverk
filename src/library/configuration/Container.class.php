@@ -65,7 +65,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 
 			// Attempt to set the configuration directive. If the directive is
 			// set the return value will be TRUE, otherwise it's FALSE.
-			$returnValue = $this->setItem($name, $value, $override);
+			$returnValue = parent::set($name, $value, $override);
 
 			// If the configuration directive have been set and the directive
 			// is specified as readonly it should be added to the readonly container.
@@ -85,24 +85,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 		 */
 		public function get($name, $default=NULL)
 		{
-			$value = $default;
-
-			if($this->hasItem($name)) {
-				$value = $this->getItem($name);
-			}
-
-			return $value;
-		}
-
-		/**
-		 * Check whether a configuration directive exists or not.
-		 * @param string $name Name of the directive.
-		 * @return boolean True if the directive exists, otherwise false.
-		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-		 */
-		public function has($name)
-		{
-			return $this->hasItem($name);
+			return $this->has($name) ? parent::get($name) : $default;
 		}
 
 		/**
@@ -115,26 +98,6 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 		{
 			return array_key_exists($name, $this->_readonly)
 				&& isset($this->_readonly[$name]);
-		}
-
-		/**
-		 * Import directives to the container.
-		 * @param array $items Directives to import.
-		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-		 */
-		public function import(array $items)
-		{
-			$this->importItems($items);
-		}
-
-		/**
-		 * Export directives from the container.
-		 * @return array Directives stored within the container.
-		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-		 */
-		public function export()
-		{
-			return $this->exportItems();
 		}
 
 		/**

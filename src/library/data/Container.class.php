@@ -40,11 +40,11 @@ namespace Me\Raatiniemi\Ramverk\Data
 		 * @return boolean True if item have been set, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function setItem($name, $value, $override=FALSE)
+		public function set($name, $value, $override=FALSE)
 		{
 			// Check if the item already exists, we shouldn't override
 			// already existing items.
-			if(!$this->hasItem($name) || $override === TRUE) {
+			if(!$this->has($name) || $override === TRUE) {
 				$this->_container[$name] = $value;
 
 				return TRUE;
@@ -58,9 +58,9 @@ namespace Me\Raatiniemi\Ramverk\Data
 		 * @return mixed Value of container item or NULL if item do not exists.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function getItem($name)
+		public function get($name)
 		{
-			return $this->hasItem($name) ? $this->_container[$name] : NULL;
+			return $this->has($name) ? $this->_container[$name] : NULL;
 		}
 
 		/**
@@ -69,7 +69,7 @@ namespace Me\Raatiniemi\Ramverk\Data
 		 * @return boolean True if the item exists, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function hasItem($name)
+		public function has($name)
 		{
 			return array_key_exists($name, $this->_container)
 				&& isset($this->_container[$name]);
@@ -80,10 +80,10 @@ namespace Me\Raatiniemi\Ramverk\Data
 		 * @param array $items Items to import.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function importItems(array $items)
+		public function import(array $items)
 		{
 			foreach($items as $name => $item) {
-				$this->setItem($name, $item);
+				$this->set($name, $item);
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace Me\Raatiniemi\Ramverk\Data
 		 * @return array Items stored within the container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function exportItems()
+		public function export()
 		{
 			return $this->_container;
 		}
