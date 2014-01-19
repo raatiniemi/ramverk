@@ -1,37 +1,37 @@
 <configurations>
 	<configuration>
-		<autoloads>
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Action">%directory.core.library%/action/Action.class.php</autoload>
+		<autoloads namespace="Me\\Raatiniemi\\Ramverk">
+			<autoload name="Action">%directory.core.library%/action/Action.class.php</autoload>
 
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Configuration\\Container">%directory.core.library%/configuration/Container.class.php</autoload>
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Configuration\\Utility">%directory.core.library%/configuration/Utility.trait.php</autoload>
+			<autoload name="Configuration\\Container">%directory.core.library%/configuration/Container.class.php</autoload>
+			<autoload name="Configuration\\Utility">%directory.core.library%/configuration/Utility.trait.php</autoload>
 
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Configuration\\Handler">%directory.core.library%/configuration/handler/Handler.class.php</autoload>
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Autoload">%directory.core.library%/configuration/handler/Autoload.class.php</autoload>
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Module">%directory.core.library%/configuration/handler/Module.class.php</autoload>
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Routing">%directory.core.library%/configuration/handler/Routing.class.php</autoload>
+			<autoload name="Configuration\\Handler">%directory.core.library%/configuration/handler/Handler.class.php</autoload>
+			<autoload name="Configuration\\Handler\\Autoload">%directory.core.library%/configuration/handler/Autoload.class.php</autoload>
+			<autoload name="Configuration\\Handler\\Module">%directory.core.library%/configuration/handler/Module.class.php</autoload>
+			<autoload name="Configuration\\Handler\\Routing">%directory.core.library%/configuration/handler/Routing.class.php</autoload>
 
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Cache">%directory.core.library%/configuration/handler/Cache.class.php</autoload>
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Parser">%directory.core.library%/configuration/handler/Parser.class.php</autoload>
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory">%directory.core.library%/configuration/handler/Factory.class.php</autoload>
+			<autoload name="Configuration\\Handler\\Cache">%directory.core.library%/configuration/handler/Cache.class.php</autoload>
+			<autoload name="Configuration\\Handler\\Parser">%directory.core.library%/configuration/handler/Parser.class.php</autoload>
+			<autoload name="Configuration\\Handler\\Factory">%directory.core.library%/configuration/handler/Factory.class.php</autoload>
 
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Controller">%directory.core.library%/controller/Controller.class.php</autoload>
+			<autoload name="Controller">%directory.core.library%/controller/Controller.class.php</autoload>
 
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Core">%directory.core.library%/core/Core.class.php</autoload>
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Core\\Context">%directory.core.library%/core/Context.class.php</autoload>
+			<autoload name="Core">%directory.core.library%/core/Core.class.php</autoload>
+			<autoload name="Core\\Context">%directory.core.library%/core/Context.class.php</autoload>
 
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Data\\Container">%directory.core.library%/data/Container.class.php</autoload>
+			<autoload name="Data\\Container">%directory.core.library%/data/Container.class.php</autoload>
 
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Data\\Dom\\Utility\\Value">%directory.core.library%/data/dom/utility/Value.trait.php</autoload>
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Data\\Dom\\Document">%directory.core.library%/data/dom/Document.class.php</autoload>
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Data\\Dom\\Element">%directory.core.library%/data/dom/Element.class.php</autoload>
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Data\\Dom\\Node">%directory.core.library%/data/dom/Node.class.php</autoload>
+			<autoload name="Data\\Dom\\Utility\\Value">%directory.core.library%/data/dom/utility/Value.trait.php</autoload>
+			<autoload name="Data\\Dom\\Document">%directory.core.library%/data/dom/Document.class.php</autoload>
+			<autoload name="Data\\Dom\\Element">%directory.core.library%/data/dom/Element.class.php</autoload>
+			<autoload name="Data\\Dom\\Node">%directory.core.library%/data/dom/Node.class.php</autoload>
 
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Exception">%directory.core.library%/exception/Exception.class.php</autoload>
+			<autoload name="Exception">%directory.core.library%/exception/Exception.class.php</autoload>
 
-			<autoload name="Me\\Raatiniemi\\Ramverk\\Loader\\Autoload">%directory.core.library%/loader/Autoload.trait.php</autoload>
+			<autoload name="Loader\\Autoload">%directory.core.library%/loader/Autoload.trait.php</autoload>
 
-			<autoload name="Me\\Raatiniemi\\Ramverk\\View">%directory.core.library%/view/View.class.php</autoload>
+			<autoload name="View">%directory.core.library%/view/View.class.php</autoload>
 		</autoloads>
 	</configuration>
 </configurations>
