@@ -10,6 +10,15 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 
 	\Mock::generate('\\Me\\Raatiniemi\\Ramverk\\Configuration\\Container', 'MockContainer');
 
+	/**
+	 * Unit test case for the autoload configuration handler.
+	 *
+	 * @package Ramverk
+	 * @subpackage Test
+	 *
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
+	 */
 	class Autoload extends \UnitTestCase
 	{
 		public function testValidAutoloadDocument()
@@ -86,3 +95,5 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 		}
 	}
 }
+// End of file: Autoload.test.php
+// Location: test/library/configuration/handler/Autoload.test.php

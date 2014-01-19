@@ -18,8 +18,10 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 	{
 		/**
 		 * Expands configuration directives.
+		 *
 		 * Directive names between precentage signs, e.g. %application.name%
 		 * will be replaced with the value of the directive.
+		 *
 		 * @param string $value String with configuration directives to expand.
 		 * @return string String with configuration directives expanded.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
@@ -34,6 +36,8 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 				$value = preg_replace_callback(
 					'/\%([a-z0-9\.]+)\%/i',
 					function($matches) {
+						// Attempt to retrieve the value for the configuration directive.
+						// If no value is found, use the original value.
 						return $this->getConfig()->get($matches[1], $matches[0]);
 					},
 					$value
@@ -45,11 +49,13 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 
 		/**
 		 * Get the configuration container.
+		 *
 		 * Since the expand directives method needs the configuration container
 		 * the implementing class has to supply the getConfig-method.
 		 *
 		 * By using a method instead of direct property access enable us to do
 		 * initial setup and redirect to another container.
+		 *
 		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
