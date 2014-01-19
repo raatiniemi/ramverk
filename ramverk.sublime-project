@@ -22,5 +22,12 @@
 			"follow_symlinks": true,
 			"path": "."
 		}
+	],
+	"build_systems":
+	[
+		{
+			"name": "unittest",
+			"shell_cmd": "php ${project_path}/test/ramverk.php"
+		}
 	]
 }
