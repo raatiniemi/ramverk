@@ -40,20 +40,27 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 
 			$data = array();
 			foreach($groups as $group) {
+				// If the autoload group has defined a namespace, then this
+				// namespace will prefix every class within the group.
 				$namespace = $group->hasAttribute('namespace') ? "{$group->getAttribute('namespace')}\\" : NULL;
 
+				// Retrieve the autoload items from the group.
 				$items = $group->getElementsByTagName('autoload');
 				foreach($items as $item) {
+					// Every item must have the name of the class defined.
 					if(!$item->hasAttribute('name')) {
 						// TODO: Write exception message.
 						// TODO: Better specify the exception object.
 						throw new Ramverk\Exception('');
 					}
 
+					// Prepend the group namespace (if any) to the class name,
+					// and expand the class path directives.
 					$name = "{$namespace}{$item->getAttribute('name')}";
 					$data[$name] = $this->expandDirectives($item->getValue());
 				}
 			}
+			// TODO: Should we throw an exception if $data is empty?
 			return $data;
 		}
 	}
