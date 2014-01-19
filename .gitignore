@@ -1,4 +1,16 @@
-# Eclipse/Zend Studio
+# OS
+## OS X
+.DS_Store
+._*
+
+## Linux
+~*
+
+# Editor
+## Eclipse/Zend Studio
 .settings/
 .buildpath
 .project
+
+## Sublime Text
+*.sublime-workspace
