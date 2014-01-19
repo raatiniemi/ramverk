@@ -5,6 +5,7 @@ namespace Me\Raatiniemi\Ramverk\Sample
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk;
+	use Me\Raatiniemi\Ramverk\Configuration;
 
 	try {
 		// Require the framework bootstrap file, the autoload functionality
@@ -12,20 +13,16 @@ namespace Me\Raatiniemi\Ramverk\Sample
 		$directory = realpath(__DIR__ . '/..');
 		require "{$directory}/src/ramverk.php";
 
-		// Setup the basic application configurations.
-		// There're three directives that need to be defined.
-		$config = new Ramverk\Configuration\Container();
+		// Setup the basic application directory configurations.
+		$config = new Configuration\Container();
 
-		// Profile for the application.
-		// For example, useful when separating configuration between different
-		// profiles, e.g. development and production.
-		$config->set('profile', 'development', TRUE, TRUE);
+		// Absolute path for the core framework.
+		$config->set('directory.core', "{$directory}/src", FALSE, TRUE);
 
-		// Absolute path for the core framework directory.
-		$config->set('directory.core', "{$directory}/src");
+		// Absolute path for the application.
+		$config->set('directory.application', "{$directory}/sample/application", FALSE, TRUE);
 
-		// Absolute path for the application directory.
-		$config->set('directory.application', "{$directory}/sample/application");
+		$core = new Ramverk\Core($config);
 	} catch(\Exception $e) {
 		// Render thrown exceptions with the specified template.
 		Ramverk\Exception::render($e, $config);
