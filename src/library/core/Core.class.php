@@ -38,23 +38,32 @@ namespace Me\Raatiniemi\Ramverk
 		/**
 		 * Initialize the ramverk core.
 		 * @param Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
+		 * @param string $profile Profile for the application, optional.
+		 * @param string $context Context for the application, optional.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function __construct(Configuration\Container $config, $profile=NULL, $context=NULL)
 		{
-			// Check if the application profile is set, otherwise use the default.
-			$profile = $profile !== NULL ? $profile : $config->get('profile.default', 'development');
-			$config->set('profile', $profile);
+			// Check if the configuration container have been supplied with a profile.
+			if(!$config->has('profile')) {
+				// If no profile have been defined, check if the profile have been
+				// supplied as an argument, otherwise use the default profile.
+				$profile = isset($profile) ? $profile : $config->get('profile.default', 'development');
+				$config->set('profile', $profile);
+			}
 
-			// Check if the application context is set, otherwise use the default.
-			$context = $context !== NULL ? $context : $config->get('context.default', 'web');
-			$config->set('context', $context);
+			// Check if the configuration container have been supplied with a context.
+			if(!$config->has('context')) {
+				// If no context have been defined, check if the context have been
+				// supplied as an argument, otherwise use the default context.
+				$context = isset($context) ? $context : $config->get('context.default', 'web');
+				$config->set('context', $context);
+			}
 
-			// Setup the default directories and register the configuration handlers.
+			// Setup the default directory structure.
 			$this->setupDirectories($config);
-			$this->registerConfigurationHandlers();
 
-			// Set the default exception template. If the template already have
+/*			// Set the default exception template. If the template already have
 			// been specified, the specified template will not be replaced.
 			$config->set('exception.template', '%directory.core.template%/exception/plaintext.php');
 			$this->_config = $config;
@@ -65,6 +74,9 @@ namespace Me\Raatiniemi\Ramverk
 			// Register the autoloader for the framework core.
 			$this->_autoloadFile = '%directory.application.config%/autoload.xml';
 			spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
+
+			// Register the configuration handlers.
+			$this->registerConfigurationHandlers();*/
 		}
 
 		/**
