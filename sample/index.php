@@ -12,20 +12,18 @@ namespace Me\Raatiniemi\Ramverk\Sample
 		$directory = realpath(__DIR__ . '/..');
 		require "{$directory}/src/ramverk.php";
 
-		// Setup the basic application configurations. There're three directives
-		// that need to be defined.
+		// Setup the basic application configurations.
+		// There're three directives that need to be defined.
 		$config = new Ramverk\Configuration\Container();
 
-		// 'profile'
-		// Profile for the application. For example, useful when separating configuration
-		// between different profiles, e.g. development and production.
+		// Profile for the application.
+		// For example, useful when separating configuration between different
+		// profiles, e.g. development and production.
 		$config->set('profile', 'development', TRUE, TRUE);
 
-		// 'directory.core'
 		// Absolute path for the core framework directory.
 		$config->set('directory.core', "{$directory}/src");
 
-		// 'directory.application'
 		// Absolute path for the application directory.
 		$config->set('directory.application', "{$directory}/sample/application");
 	} catch(\Exception $e) {
