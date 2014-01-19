@@ -10,9 +10,6 @@ namespace Net\TheDeveloperBlog\Ramverk
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 
-	// Require the framework version information.
-	require __DIR__ . '/version.php';
-
 	// Require the absolute core classes needed to bootstrap the framework.
 	// With these included the autoload functionality can handle the rest.
 	require __DIR__ . '/library/loader/Autoload.trait.php';
