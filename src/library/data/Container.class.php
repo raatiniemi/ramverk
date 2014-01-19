@@ -78,13 +78,19 @@ namespace Me\Raatiniemi\Ramverk\Data
 		/**
 		 * Import items to the container.
 		 * @param array $items Items to import.
+		 * @param boolean $override Override existing items.
+		 * @return boolean True if items were imported, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function import(array $items)
+		public function import(array $items, $override=FALSE)
 		{
+			$imported = TRUE;
 			foreach($items as $name => $item) {
-				$this->set($name, $item);
+				if(!($imported = $this->set($name, $item, $override))) {
+					break;
+				}
 			}
+			return $imported;
 		}
 
 		/**
