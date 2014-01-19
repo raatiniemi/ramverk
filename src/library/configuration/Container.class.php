@@ -67,8 +67,8 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 			// set the return value will be TRUE, otherwise it's FALSE.
 			$returnValue = parent::set($name, $value, $override);
 
-			// If the configuration directive have been set and the directive
-			// is specified as readonly it should be added to the readonly container.
+			// If the configuration directive have been set and the directive is
+			// specified as readonly it should be added to the readonly container.
 			if($returnValue && $readonly) {
 				$this->_readonly[$name] = $value;
 			}

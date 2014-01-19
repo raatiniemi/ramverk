@@ -39,6 +39,7 @@ namespace Me\Raatiniemi\Ramverk\Test
 		 */
 		private $_testCases = array(
 			'test/library/configuration/handler/Autoload.test.php',
+			'test/library/configuration/Container.test.php',
 			'test/library/data/Container.test.php'
 		);
 
