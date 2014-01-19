@@ -17,9 +17,10 @@
 				"library/controller",
 				"library/exception",
 				"template",
-				"trunk",
 				"library/loader",
-				"library/view"
+				"library/view",
+				"vendor",
+				"trunk"
 			],
 			"follow_symlinks": true,
 			"path": "."
