@@ -1,10 +1,5 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk\Data
+namespace Me\Raatiniemi\Ramverk\Data
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
@@ -16,9 +11,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 	 * @package Ramverk
 	 * @subpackage Data
 	 *
-	 * @copyright (c) 2013, Authors
-	 * @copyright (c) 2013, The Developer Blog
-	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
 	 */
 	class Container
 	{
@@ -31,7 +25,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 		/**
 		 * Initialize the container within inital values.
 		 * @param array $container Initial values for the container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function __construct(array $container=array())
 		{
@@ -44,7 +38,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 		 * @param mixed $value Value of container item.
 		 * @param boolean $override Override existing container item.
 		 * @return boolean True if item have been set, otherwise false.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function setItem($name, $value, $override=FALSE)
 		{
@@ -62,7 +56,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 		 * Get container item.
 		 * @param string $name Name of the container item.
 		 * @return mixed Value of container item or NULL if item do not exists.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getItem($name)
 		{
@@ -73,7 +67,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 		 * Check whether a container item exists.
 		 * @param string $name Name of the container item.
 		 * @return boolean True if the item exists, otherwise false.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function hasItem($name)
 		{
@@ -84,7 +78,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 		/**
 		 * Import items to the container.
 		 * @param array $items Items to import.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function importItems(array $items)
 		{
@@ -96,7 +90,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Data
 		/**
 		 * Export items from the container.
 		 * @return array Items stored within the container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function exportItems()
 		{

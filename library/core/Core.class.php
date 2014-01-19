@@ -1,16 +1,11 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk
+namespace Me\Raatiniemi\Ramverk
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk\Configuration;
-	use Net\TheDeveloperBlog\Ramverk\Loader;
+	use Me\Raatiniemi\Ramverk\Configuration;
+	use Me\Raatiniemi\Ramverk\Loader;
 
 	/**
 	 * Initialize the core functionality.
@@ -18,9 +13,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 	 * @package Ramverk
 	 * @subpackage Core
 	 *
-	 * @copyright (c) 2013, Authors
-	 * @copyright (c) 2013, The Developer Blog
-	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
 	 */
 	final class Core
 	{
@@ -31,20 +25,20 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Configuration container.
-		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Container
+		 * @var Me\Raatiniemi\Ramverk\Configuration\Container
 		 */
 		private $_config;
 
 		/**
 		 * Application context.
-		 * @var Net\TheDeveloperBlog\Ramverk\Core\Context
+		 * @var Me\Raatiniemi\Ramverk\Core\Context
 		 */
 		private $_context;
 
 		/**
 		 * Initialize the ramverk core.
-		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @param Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function __construct(Configuration\Container $config, $profile=NULL, $context=NULL)
 		{
@@ -76,7 +70,7 @@ namespace Net\TheDeveloperBlog\Ramverk
 		/**
 		 * Setup the default directory structure.
 		 * If directories already have been specified, the directories will not be replaced.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		private function setupDirectories($config)
 		{
@@ -109,12 +103,12 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Register the configuration handlers.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		private function registerConfigurationHandlers()
 		{
 			// Base namespace for the configuration handlers.
-			$namespace = 'Net\\TheDeveloperBlog\\Ramverk\\Configuration\\Handler';
+			$namespace = 'Me\\Raatiniemi\\Ramverk\\Configuration\\Handler';
 
 			// Register the handlers with the handler factory.
 			$factory = $this->getConfigurationHandlerFactory();
@@ -125,8 +119,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Get the configuration container, used by Utility-trait.
-		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getConfig()
 		{
@@ -135,8 +129,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Retrieve the application context.
-		 * @return Net\TheDeveloperBlog\Ramverk\Core\Context Application context.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @return Me\Raatiniemi\Ramverk\Core\Context Application context.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getContext()
 		{
@@ -145,8 +139,8 @@ namespace Net\TheDeveloperBlog\Ramverk
 
 		/**
 		 * Retrieve the configuration handler factory, used by the autoload-trait.
-		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Handler\Factory Configuration handler factory.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @return Me\Raatiniemi\Ramverk\Configuration\Handler\Factory Configuration handler factory.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getConfigurationHandlerFactory()
 		{

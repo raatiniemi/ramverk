@@ -1,16 +1,11 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk\Configuration
+namespace Me\Raatiniemi\Ramverk\Configuration
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk;
-	use Net\TheDeveloperBlog\Ramverk\Data;
+	use Me\Raatiniemi\Ramverk;
+	use Me\Raatiniemi\Ramverk\Data;
 
 	/**
 	 * Container for working with configuration directives.
@@ -18,9 +13,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 	 * @package Ramverk
 	 * @subpackage Configuration
 	 *
-	 * @copyright (c) 2013, Authors
-	 * @copyright (c) 2013, The Developer Blog
-	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
 	 */
 	class Container extends Data\Container
 	{
@@ -38,7 +32,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		/**
 		 * Initialize the container within inital values.
 		 * @param array $container Initial values for the container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 * @todo Implement support for initial readonly container.
 		 */
 		public function __construct(array $container=array())
@@ -56,7 +50,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		 * @param boolean $override Override existing directive.
 		 * @param boolean $readonly Should the diretive be readonly.
 		 * @return boolean True if directive is set, otherwise false.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function set($name, $value, $override=FALSE, $readonly=FALSE)
 		{
@@ -87,7 +81,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		 * @param string $name Name of the directive.
 		 * @param mixed $default Default value, if directive do not exists.
 		 * @return mixed Directive or default value.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function get($name, $default=NULL)
 		{
@@ -104,7 +98,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		 * Check whether a configuration directive exists or not.
 		 * @param string $name Name of the directive.
 		 * @return boolean True if the directive exists, otherwise false.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function has($name)
 		{
@@ -115,7 +109,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		 * Check whether a readonly configuration directive exists or not.
 		 * @param string $name Name of the directive.
 		 * @return boolean True if the readonly directive exists, otherwise false.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function hasReadonly($name)
 		{
@@ -126,7 +120,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		/**
 		 * Import directives to the container.
 		 * @param array $items Directives to import.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function import(array $items)
 		{
@@ -136,7 +130,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		/**
 		 * Export directives from the container.
 		 * @return array Directives stored within the container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function export()
 		{
@@ -145,8 +139,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 
 		/**
 		 * Get the configuration container, used by Utility-trait.
-		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getConfig()
 		{

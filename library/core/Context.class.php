@@ -1,17 +1,12 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk\Core
+namespace Me\Raatiniemi\Ramverk\Core
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk;
-	use Net\TheDeveloperBlog\Ramverk\Configuration;
-	use Net\TheDeveloperBlog\Ramverk\Configuration\Handler;
+	use Me\Raatiniemi\Ramverk;
+	use Me\Raatiniemi\Ramverk\Configuration;
+	use Me\Raatiniemi\Ramverk\Configuration\Handler;
 
 	/**
 	 * Handles the context for the application.
@@ -19,9 +14,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 	 * @package Ramverk
 	 * @subpackage Core
 	 *
-	 * @copyright (c) 2013, Authors
-	 * @copyright (c) 2013, The Developer Blog
-	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
 	 */
 	class Context
 	{
@@ -32,26 +26,26 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 
 		/**
 		 * Configuration container.
-		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Container.
+		 * @var Me\Raatiniemi\Ramverk\Configuration\Container.
 		 */
 		protected $_config;
 
 		/**
 		 * Configuration handler factory.
-		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Handler\Factory
+		 * @var Me\Raatiniemi\Ramverk\Configuration\Handler\Factory
 		 */
 		protected $_configurationHandlerFactory;
 
 		/**
 		 * Application context controller.
-		 * @var Net\TheDeveloperBlog\Ramverk\Controller
+		 * @var Me\Raatiniemi\Ramverk\Controller
 		 */
 		protected $_controller;
 
 		/**
 		 * Initialize the application context.
-		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @param Me\Raatiniemi\Ramverk\Configuration\Container $config Configuration container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function __construct(Configuration\Container $config)
 		{
@@ -60,8 +54,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 
 		/**
 		 * Retrieve configuration container.
-		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration Container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration Container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getConfig()
 		{
@@ -70,8 +64,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 
 		/**
 		 * Retrieve the factory for configuration handlers.
-		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Handler\Factory Configuration handler factory.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @return Me\Raatiniemi\Ramverk\Configuration\Handler\Factory Configuration handler factory.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getConfigurationHandlerFactory()
 		{
@@ -114,8 +108,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Core
 
 		/**
 		 * Retrieve the context controller.
-		 * @return Net\TheDeveloperBlog\Ramverk\Controller Context controller.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @return Me\Raatiniemi\Ramverk\Controller Context controller.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getController()
 		{

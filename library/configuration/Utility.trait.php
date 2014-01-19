@@ -1,10 +1,5 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk\Configuration
+namespace Me\Raatiniemi\Ramverk\Configuration
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
@@ -16,9 +11,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 	 * @package Ramverk
 	 * @subpackage Configuration
 	 *
-	 * @copyright (c) 2013, Authors
-	 * @copyright (c) 2013, The Developer Blog
-	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
 	 */
 	trait Utility
 	{
@@ -28,7 +22,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		 * will be replaced with the value of the directive.
 		 * @param string $value String with configuration directives to expand.
 		 * @return string String with configuration directives expanded.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function expandDirectives($value)
 		{
@@ -56,8 +50,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 		 *
 		 * By using a method instead of direct property access enable us to do
 		 * initial setup and redirect to another container.
-		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		abstract public function getConfig();
 	}

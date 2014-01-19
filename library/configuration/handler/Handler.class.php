@@ -1,15 +1,10 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk\Configuration
+namespace Me\Raatiniemi\Ramverk\Configuration
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk\Data\Dom;
+	use Me\Raatiniemi\Ramverk\Data\Dom;
 
 	/**
 	 * Base functionality for configuration handlers.
@@ -17,9 +12,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 	 * @package Ramverk
 	 * @subpackage Configuration
 	 *
-	 * @copyright (c) 2013, Authors
-	 * @copyright (c) 2013, The Developer Blog
-	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
 	 */
 	abstract class Handler
 	{
@@ -30,14 +24,14 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 
 		/**
 		 * Configuration container.
-		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Container
+		 * @var Me\Raatiniemi\Ramverk\Configuration\Container
 		 */
 		protected $_config;
 
 		/**
 		 * Initialize the configuration handler.
-		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @param Me\Raatiniemi\Ramverk\Configuration\Container $config Configuration container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function __construct(Container $config)
 		{
@@ -46,8 +40,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 
 		/**
 		 * Get the configuration container, used by Utility-trait.
-		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getConfig()
 		{
@@ -56,9 +50,9 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration
 
 		/**
 		 * Execute the configuration handler.
-		 * @param Net\TheDeveloperBlog\Ramverk\Data\Dom\Document $document XML document with configuration data.
+		 * @param Me\Raatiniemi\Ramverk\Data\Dom\Document $document XML document with configuration data.
 		 * @return array Retrieved configuration data.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		abstract public function execute(Dom\Document $document);
 	}

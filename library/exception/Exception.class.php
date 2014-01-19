@@ -1,15 +1,10 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk
+namespace Me\Raatiniemi\Ramverk
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk\Configuration;
+	use Me\Raatiniemi\Ramverk\Configuration;
 
 	/**
 	 * Base for framework exceptions.
@@ -17,17 +12,16 @@ namespace Net\TheDeveloperBlog\Ramverk
 	 * @package Ramverk
 	 * @subpackage Exception
 	 *
-	 * @copyright (c) 2013, Authors
-	 * @copyright (c) 2013, The Developer Blog
-	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
 	 */
 	class Exception extends \Exception
 	{
 		/**
 		 * Render the exception message with template.
 		 * @param Exception $e Thrown exception.
-		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @param Me\Raatiniemi\Ramverk\Configuration\Container $config Configuration container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public static function render(\Exception $e, Configuration\Container $config)
 		{

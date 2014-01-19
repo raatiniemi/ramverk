@@ -1,15 +1,10 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk\Loader
+namespace Me\Raatiniemi\Ramverk\Loader
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk;
+	use Me\Raatiniemi\Ramverk;
 
 	/**
 	 * Handles autoloading of classes, interfaces and traits.
@@ -17,9 +12,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 	 * @package Ramverk
 	 * @subpackage Loader
 	 *
-	 * @copyright (c) 2013, Authors
-	 * @copyright (c) 2013, The Developer Blog
-	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
 	 */
 	trait Autoload
 	{
@@ -39,7 +33,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 		 * Handles autoloading of classes, interfaces and traits.
 		 * @param string $name Name of the item to autoload, with namespace.
 		 * @return boolean True if item was loaded, otherwise false.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function autoload($name)
 		{
@@ -109,7 +103,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 		/**
 		 * Set the path for the autoload file.
 		 * @param string $file Path to the autoload file.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function setAutoloadFile($file)
 		{
@@ -119,7 +113,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 		/**
 		 * Get the path for the autoload file.
 		 * @return string Path to the autoload file.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getAutoloadFile()
 		{
@@ -130,8 +124,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Loader
 		 * Retrieve the configuration handler factory.
 		 * Since the autoload method needs the configuration handler factory
 		 * the implementing class has to supply the getConfigurationHandlerFactory-method.
-		 * @return Net\TheDeveloperBlog\Ramverk\Config\Handler\Factory Factory for configuration handlers.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @return Me\Raatiniemi\Ramverk\Config\Handler\Factory Factory for configuration handlers.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		abstract public function getConfigurationHandlerFactory();
 	}

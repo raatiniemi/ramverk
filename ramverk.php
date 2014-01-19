@@ -1,10 +1,5 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk
+namespace Me\Raatiniemi\Ramverk
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |

@@ -1,15 +1,10 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
+namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk;
+	use Me\Raatiniemi\Ramverk;
 
 	/**
 	 * Handles caching of configuration data from handlers.
@@ -17,9 +12,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	 * @package Ramverk
 	 * @subpackage Configuration
 	 *
-	 * @copyright (c) 2013, Authors
-	 * @copyright (c) 2013, The Developer Blog
-	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
 	 *
 	 * @todo Migrate most of the functionality to a more generic caching class.
 	 */
@@ -41,7 +35,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * Initialize the cache for configuration handlers.
 		 * @param string $profile Profile for the application.
 		 * @param string $context Context for the application.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function __construct($profile, $context)
 		{
@@ -53,7 +47,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * Assemble the name for the cache file.
 		 * @param string $filename Name of the configuration file.
 		 * @return string Generated cache name.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function generateName($filename)
 		{
@@ -73,7 +67,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * @param string $filename Absolute path to the configuration file.
 		 * @param string $cachename Absolute path to the cache file.
 		 * @return boolean True if the cache file should be updated, otherwise false.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function isModified($filename, $cachename)
 		{
@@ -84,7 +78,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * Read data from the cache file.
 		 * @param string $cachename Absolute path to the cache file.
 		 * @return array Array with the configuration data, or NULL.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function read($cachename)
 		{
@@ -114,7 +108,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * @param string $cachename Absolute path to the cache file.
 		 * @param array $data Configuration data to be cached.
 		 * @return boolean True if caching was successful, otherwise false.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function write($cachename, array $data)
 		{

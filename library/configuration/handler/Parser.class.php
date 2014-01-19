@@ -1,17 +1,12 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
+namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk;
-	use Net\TheDeveloperBlog\Ramverk\Configuration;
-	use Net\TheDeveloperBlog\Ramverk\Data\Dom;
+	use Me\Raatiniemi\Ramverk;
+	use Me\Raatiniemi\Ramverk\Configuration;
+	use Me\Raatiniemi\Ramverk\Data\Dom;
 
 	/**
 	 * Handles parsing of data from configuration handlers.
@@ -19,9 +14,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	 * @package Ramverk
 	 * @subpackage Configuration
 	 *
-	 * @copyright (c) 2013, Authors
-	 * @copyright (c) 2013, The Developer Blog
-	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
 	 */
 	class Parser
 	{
@@ -32,7 +26,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Configuration container.
-		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Container
+		 * @var Me\Raatiniemi\Ramverk\Configuration\Container
 		 */
 		protected $_config;
 
@@ -62,10 +56,10 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Initialize the parser for configuration handlers.
-		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
+		 * @param Me\Raatiniemi\Ramverk\Configuration\Container $config Configuration container.
 		 * @param string $profile Profile for the application.
 		 * @param string $context Context for the application.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function __construct(Configuration\Container $config, $profile, $context)
 		{
@@ -80,9 +74,9 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Execute parsing of the configuration document.
-		 * @param Net\TheDeveloperBlog\Ramverk\Data\Dom\Document $document Configuration document to parse.
-		 * @return Net\TheDeveloperBlog\Ramverk\Data\Dom\Document Parsed configuration document.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @param Me\Raatiniemi\Ramverk\Data\Dom\Document $document Configuration document to parse.
+		 * @return Me\Raatiniemi\Ramverk\Data\Dom\Document Parsed configuration document.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function execute(Dom\Document $document)
 		{
@@ -152,9 +146,9 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Parse the configuration document.
-		 * @param Net\TheDeveloperBlog\Ramverk\Data\Dom\Document $document Document to parse.
-		 * @return Net\TheDeveloperBlog\Ramverk\Data\Dom\Document Parsed document.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @param Me\Raatiniemi\Ramverk\Data\Dom\Document $document Document to parse.
+		 * @return Me\Raatiniemi\Ramverk\Data\Dom\Document Parsed document.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		protected function parse(Dom\Document $document)
 		{
@@ -206,8 +200,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Initialize parsing of parent document, if available.
-		 * @param Net\TheDeveloperBlog\Ramverk\Data\Dom\Document $document Current document being parsed.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @param Me\Raatiniemi\Ramverk\Data\Dom\Document $document Current document being parsed.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		protected function parseParentDocument(Dom\Document $document)
 		{
@@ -258,8 +252,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Get the configuration container, used by Utility-trait.
-		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getConfig()
 		{

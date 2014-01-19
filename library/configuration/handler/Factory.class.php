@@ -1,17 +1,12 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
+namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk;
-	use Net\TheDeveloperBlog\Ramverk\Configuration;
-	use Net\TheDeveloperBlog\Ramverk\Data\Dom;
+	use Me\Raatiniemi\Ramverk;
+	use Me\Raatiniemi\Ramverk\Configuration;
+	use Me\Raatiniemi\Ramverk\Data\Dom;
 
 	/**
 	 * Factory for instansiating configuration handlers.
@@ -19,9 +14,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	 * @package Ramverk
 	 * @subpackage Configuration
 	 *
-	 * @copyright (c) 2013, Authors
-	 * @copyright (c) 2013, The Developer Blog
-	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
 	 */
 	class Factory
 	{
@@ -44,28 +38,28 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Configuration container.
-		 * @var Net\TheDeveloperBlog\Ramverk\Configuration
+		 * @var Me\Raatiniemi\Ramverk\Configuration
 		 */
 		protected $_config;
 
 		/**
 		 * Caching for configuration handler data.
-		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Cache
+		 * @var Me\Raatiniemi\Ramverk\Configuration\Cache
 		 */
 		protected $_cache;
 
 		/**
 		 * Parser for configuration handlers.
-		 * @var Net\TheDeveloperBlog\Ramverk\Configuration\Parser
+		 * @var Me\Raatiniemi\Ramverk\Configuration\Parser
 		 */
 		protected $_parser;
 
 		/**
 		 * Initialize the configuration handler factory.
-		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Container $config Configuration container.
-		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Handler\Cache $cache Caching for configuration handler data.
-		 * @param Net\TheDeveloperBlog\Ramverk\Configuration\Handler\Parser $parser Parser for configuration handlers.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @param Me\Raatiniemi\Ramverk\Configuration\Container $config Configuration container.
+		 * @param Me\Raatiniemi\Ramverk\Configuration\Handler\Cache $cache Caching for configuration handler data.
+		 * @param Me\Raatiniemi\Ramverk\Configuration\Handler\Parser $parser Parser for configuration handlers.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function __construct(Configuration\Container $config, Cache $cache, Parser $parser)
 		{
@@ -78,7 +72,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * Call the configuration handler.
 		 * @param string $name Name of the configuration handler.
 		 * @return array Parsed configuration from the handler.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function callHandler($name, $filename)
 		{
@@ -172,7 +166,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * Instansiates/loads the configuration handler.
 		 * @param string $handler Handlers full class name, with namespace.
 		 * @return void Handlers are stored within the handlers array.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		protected function loadHandler($handler)
 		{
@@ -211,7 +205,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * Check if specified configuration handler is registered.
 		 * @param string $name Name of the handler.
 		 * @return boolean True if handler is registered, otherwise false.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function hasHandler($name)
 		{
@@ -223,7 +217,7 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * Check if the specified configuration handler is instansiated/loaded.
 		 * @param string $handler Handlers full class name, with namespace.
 		 * @return boolean True if handler is instansiated, otherwise false.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		protected function isInstansiated($handler)
 		{
@@ -235,9 +229,9 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 		 * Register configuration handler.
 		 * @param string $name Name of the handler, used with callHandler.
 		 * @param string $class Handlers full class name, with namespace.
-		 * @throws Net\TheDeveloperBlog\Ramverk\Exception If handler is already registered.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If handler is already registered.
 		 * @return boolean True if handler is successfully registered.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function registerHandler($name, $class)
 		{
@@ -257,8 +251,8 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Get the configuration container, used by Utility-trait.
-		 * @return Net\TheDeveloperBlog\Ramverk\Configuration\Container Configuration container.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getConfig()
 		{

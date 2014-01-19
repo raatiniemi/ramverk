@@ -1,17 +1,12 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | This file is a part of the Ramverk project by The Developer Blog.        |
-// | Copyright (c) 2013, Authors                                              |
-// | Copyright (c) 2013, The Developer Blog                                   |
-// +--------------------------------------------------------------------------+
-namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
+namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Net\TheDeveloperBlog\Ramverk;
-	use Net\TheDeveloperBlog\Ramverk\Configuration;
-	use Net\TheDeveloperBlog\Ramverk\Data\Dom;
+	use Me\Raatiniemi\Ramverk;
+	use Me\Raatiniemi\Ramverk\Configuration;
+	use Me\Raatiniemi\Ramverk\Data\Dom;
 
 	/**
 	 * Handler for routing configuration.
@@ -19,17 +14,16 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 	 * @package Ramverk
 	 * @subpackage Configuration
 	 *
-	 * @copyright (c) 2013, Authors
-	 * @copyright (c) 2013, The Developer Blog
-	 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2013-2014, Authors
 	 */
 	class Routing extends Configuration\Handler
 	{
 		/**
 		 * Execute the configuration handler.
-		 * @param Net\TheDeveloperBlog\Ramverk\Data\Dom\Document $document XML document with configuration data.
+		 * @param Me\Raatiniemi\Ramverk\Data\Dom\Document $document XML document with configuration data.
 		 * @return array Retrieved configuration data.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function execute(Dom\Document $document)
 		{
@@ -42,9 +36,9 @@ namespace Net\TheDeveloperBlog\Ramverk\Configuration\Handler
 
 		/**
 		 * Parse the route configuration.
-		 * @param Net\TheDeveloperBlog\Ramverk\Data\Dom\Element $route Element with route configuration.
+		 * @param Me\Raatiniemi\Ramverk\Data\Dom\Element $route Element with route configuration.
 		 * @return array Parsed route.
-		 * @author Tobias Raatiniemi <me@thedeveloperblog.net>
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		private function parseRoute(Dom\Element $route)
 		{
