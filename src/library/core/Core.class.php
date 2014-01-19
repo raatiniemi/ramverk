@@ -50,6 +50,10 @@ namespace Me\Raatiniemi\Ramverk
 			$context = $context !== NULL ? $context : $config->get('context.default', 'web');
 			$config->set('context', $context);
 
+			// Setup the default directories and register the configuration handlers.
+			$this->setupDirectories($config);
+			$this->registerConfigurationHandlers();
+
 			// Set the default exception template. If the template already have
 			// been specified, the specified template will not be replaced.
 			$config->set('exception.template', '%directory.core.template%/exception/plaintext.php');
@@ -61,10 +65,6 @@ namespace Me\Raatiniemi\Ramverk
 			// Register the autoloader for the framework core.
 			$this->_autoloadFile = '%directory.application.config%/autoload.xml';
 			spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
-
-			// Setup the default directories and register the configuration handlers.
-			$this->setupDirectories($config);
-			$this->registerConfigurationHandlers();
 		}
 
 		/**
