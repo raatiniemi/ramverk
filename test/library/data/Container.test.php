@@ -95,6 +95,13 @@ namespace Me\Raatiniemi\Ramverk\Test\Data
 			$container = new Data\Container();
 			$this->assertEqual($container->export(), array());
 		}
+
+		public function testExportInitial()
+		{
+			$data = array('foo' => 'bar');
+			$container = new Data\Container($data);
+			$this->assertEqual($container->export(), $data);
+		}
 	}
 }
 // End of file: Container.test.php
