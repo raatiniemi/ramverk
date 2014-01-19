@@ -1,9 +1,11 @@
 <?php
 namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 {
+// +--------------------------------------------------------------------------+
+// | Namespace use-directives.                                                |
+// +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk\Configuration;
 	use Me\Raatiniemi\Ramverk\Configuration\Handler;
-
 	use Me\Raatiniemi\Ramverk\Data\Dom;
 
 	\Mock::generate('\\Me\\Raatiniemi\\Ramverk\\Configuration\\Container', 'MockContainer');
