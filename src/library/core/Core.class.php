@@ -63,34 +63,42 @@ namespace Me\Raatiniemi\Ramverk
 			// Setup the default directory structure.
 			$this->setupDirectories($config);
 
-/*			// Set the default exception template. If the template already have
-			// been specified, the specified template will not be replaced.
-			$config->set('exception.template', '%directory.core.template%/exception/plaintext.php');
+			// Check if the configuration container have been supplied with an exception template.
+			if(!$config->has('exception.template')) {
+				// If no exception template have been defined, use the default.
+				$template = $config->get('exception.template.default', '%directory.core.template%/exception/plaintext.php');
+				$config->set('exception.template', $template);
+			}
+
+			// Initialize the core context.
+			// TODO: Implement support for custom core context classes?
+			$this->_context = new Core\Context($config);
 			$this->_config = $config;
 
-			// TODO: Instansiate the context.
-			$this->_context = new Core\Context($this->getConfig());
-
-			// Register the autoloader for the framework core.
+			// Register the framework autoload handler.
 			$this->_autoloadFile = '%directory.application.config%/autoload.xml';
 			spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
 
 			// Register the configuration handlers.
-			$this->registerConfigurationHandlers();*/
+			$this->registerConfigurationHandlers();
 		}
 
 		/**
 		 * Setup the default directory structure.
+		 *
 		 * If directories already have been specified, the directories will not be replaced.
+		 *
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 * @todo Implement check for has directory before attempting to write it.
 		 */
 		private function setupDirectories($config)
 		{
 			// -- Core directory structure.
 			// Check that a base core directory have been supplied.
 			if(!$config->has('directory.core')) {
+				// TODO: Better exception message, include config name.
 				// TODO: Better specify the Exception-object.
-				throw new Exception('No core directory have been supplied.');
+				throw new Ramverk\Exception('No core directory have been supplied.');
 			}
 
 			// Setup the default directory structure for the core.
@@ -101,8 +109,9 @@ namespace Me\Raatiniemi\Ramverk
 			// -- Application directory structure.
 			// Check that a base application directory have been supplied.
 			if(!$config->has('directory.application')) {
+				// TODO: Better exception message, include config name.
 				// TODO: Better specify the Exception-object.
-				throw new Exception('No application directory have been supplied.');
+				throw new Ramverk\Exception('No application directory have been supplied.');
 			}
 
 			// Setup the default directory structure for the application.
@@ -125,18 +134,6 @@ namespace Me\Raatiniemi\Ramverk
 			// Register the handlers with the handler factory.
 			$factory = $this->getConfigurationHandlerFactory();
 			$factory->registerHandler('Autoload', "{$namespace}\\Autoload");
-			$factory->registerHandler('Module', "{$namespace}\\Module");
-			$factory->registerHandler('Routing', "{$namespace}\\Routing");
-		}
-
-		/**
-		 * Get the configuration container, used by Utility-trait.
-		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
-		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-		 */
-		public function getConfig()
-		{
-			return $this->_config;
 		}
 
 		/**
