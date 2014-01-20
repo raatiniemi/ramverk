@@ -8,6 +8,9 @@ namespace Me\Raatiniemi\Ramverk\Sample
 	use Me\Raatiniemi\Ramverk\Configuration;
 
 	try {
+		// Enable full error reporting.
+		error_reporting(E_ALL);
+
 		// Require the framework bootstrap file, the autoload functionality
 		// within the framework will handle the inclusion of the other files.
 		$directory = realpath(__DIR__ . '/..');
@@ -22,6 +25,7 @@ namespace Me\Raatiniemi\Ramverk\Sample
 		// Absolute path for the application.
 		$config->set('directory.application', "{$directory}/sample/application", FALSE, TRUE);
 
+		// Initialize the framework core.
 		$core = new Ramverk\Core($config);
 	} catch(\Exception $e) {
 		// Render thrown exceptions with the specified template.
