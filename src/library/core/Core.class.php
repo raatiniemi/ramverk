@@ -60,15 +60,15 @@ namespace Me\Raatiniemi\Ramverk
 				$config->set('context', $context);
 			}
 
-			// Setup the default directory structure.
-			$this->setupDirectories($config);
-
 			// Check if the configuration container have been supplied with an exception template.
 			if(!$config->has('exception.template')) {
 				// If no exception template have been defined, use the default.
 				$template = $config->get('exception.template.default', '%directory.core.template%/exception/plaintext.php');
 				$config->set('exception.template', $template);
 			}
+
+			// Setup the default directory structure.
+			$this->setupDirectories($config);
 
 			// Initialize the core context.
 			// TODO: Implement support for custom core context classes?
@@ -98,7 +98,7 @@ namespace Me\Raatiniemi\Ramverk
 			if(!$config->has('directory.core')) {
 				// TODO: Better exception message, include config name.
 				// TODO: Better specify the Exception-object.
-				throw new Ramverk\Exception('No core directory have been supplied.');
+				throw new Exception('No core directory have been supplied.');
 			}
 
 			// Setup the default directory structure for the core.
@@ -111,7 +111,7 @@ namespace Me\Raatiniemi\Ramverk
 			if(!$config->has('directory.application')) {
 				// TODO: Better exception message, include config name.
 				// TODO: Better specify the Exception-object.
-				throw new Ramverk\Exception('No application directory have been supplied.');
+				throw new Exception('No application directory have been supplied.');
 			}
 
 			// Setup the default directory structure for the application.
