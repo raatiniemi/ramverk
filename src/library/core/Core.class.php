@@ -76,7 +76,7 @@ namespace Me\Raatiniemi\Ramverk
 			$this->_config = $config;
 
 			// Register the framework autoload handler.
-			$this->_autoloadFile = '%directory.application.config%/autoload.xml';
+			$this->setAutoloadFile('%directory.application.config%/autoload.xml');
 			spl_autoload_register(array($this, 'autoload'), TRUE, TRUE);
 
 			// Register the configuration handlers.
