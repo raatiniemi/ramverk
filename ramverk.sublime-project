@@ -13,10 +13,7 @@
 			"folder_exclude_patterns":
 			[
 				"library/action",
-				"library/controller",
-				"library/exception",
 				"template",
-				"library/loader",
 				"library/view",
 				"vendor",
 				"trunk"
