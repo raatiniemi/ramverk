@@ -21,6 +21,102 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 	 */
 	class Routing extends \UnitTestCase
 	{
+		public function testEmptyRoutingDocument()
+		{
+			$document = new Dom\Document();
+			$document->loadXML('<routes></routes>');
+
+			$container = new \MockContainer();
+			$routing = new Handler\Routing($container);
+
+			$this->assertEqual($routing->execute($document), array());
+		}
+
+		public function testValidRoute()
+		{
+			$document = new Dom\Document();
+			$document->loadXML(
+				'<routes>'.
+					'<route name="index" pattern="^$" module="index" action="index" />'.
+				'</routes>'
+			);
+
+			$container = new \MockContainer();
+			$routing = new Handler\Routing($container);
+
+			$this->assertEqual($routing->execute($document), array(
+				array(
+					'name' => 'index',
+					'pattern' => '^$',
+					'module' => 'index',
+					'action' => 'index'
+				)
+			));
+		}
+
+		public function testRouteMissingName()
+		{
+			$document = new Dom\Document();
+			$document->loadXML(
+				'<routes>'.
+					'<route pattern="^$" module="index" action="index" />'.
+				'</routes>'
+			);
+
+			$container = new \MockContainer();
+			$routing = new Handler\Routing($container);
+
+			$this->expectException();
+			$routing->execute($document);
+		}
+
+		public function testRouteMissingPattern()
+		{
+			$document = new Dom\Document();
+			$document->loadXML(
+				'<routes>'.
+					'<route name="index" module="index" action="index" />'.
+				'</routes>'
+			);
+
+			$container = new \MockContainer();
+			$routing = new Handler\Routing($container);
+
+			$this->expectException();
+			$routing->execute($document);
+		}
+
+		public function testRouteMissingModule()
+		{
+			$document = new Dom\Document();
+			$document->loadXML(
+				'<routes>'.
+					'<route name="index" pattern="^$" action="index" />'.
+				'</routes>'
+			);
+
+			$container = new \MockContainer();
+			$routing = new Handler\Routing($container);
+
+			$this->expectException();
+			$routing->execute($document);
+		}
+
+		public function testRouteMissingAction()
+		{
+			$document = new Dom\Document();
+			$document->loadXML(
+				'<routes>'.
+					'<route name="index" pattern="^$" module="index" />'.
+				'</routes>'
+			);
+
+			$container = new \MockContainer();
+			$routing = new Handler\Routing($container);
+
+			$this->expectException();
+			$routing->execute($document);
+		}
 	}
 }
 // End of file: Routing.test.php

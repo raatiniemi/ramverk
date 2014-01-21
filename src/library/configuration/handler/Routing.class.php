@@ -19,6 +19,22 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 	 */
 	class Routing extends Configuration\Handler
 	{
+		/**
+		 * Execute the configuration handler
+		 * @param Me\Raatiniemi\Ramverk\Data\Dom\Document $document XML document with configuration data.
+		 * @return array Retrieved configuration data.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		public function execute(Dom\Document $document)
+		{
+			$data = array();
+			$groups = $document->getElementsByTagName('routes');
+			if(!empty($groups)) {
+				foreach($groups as $group) {
+				}
+			}
+			return $data;
+		}
 	}
 }
 // End of file: Routing.class.php
