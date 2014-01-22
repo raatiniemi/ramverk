@@ -134,6 +134,7 @@ namespace Me\Raatiniemi\Ramverk
 			// Register the handlers with the handler factory.
 			$factory = $this->getConfigurationHandlerFactory();
 			$factory->registerHandler('Autoload', "{$namespace}\\Autoload");
+			$factory->registerHandler('Routing', "{$namespace}\\Routing");
 		}
 
 		/**
