@@ -64,7 +64,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 			$autoload->execute($document);
 		}
 
-		public function testAutoloadDocumentWithNamespaceOnClass()
+		public function testAutoloadDocumentWithNamespaceOnItem()
 		{
 			$document = new Dom\Document();
 			$document->loadXML(
@@ -79,7 +79,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 			$this->assertEqual($autoload->execute($document), array('Foo\\Bar' => 'foo/Bar.php'));
 		}
 
-		public function testAutoloadDocumentWithNamespaceOnAutoloads()
+		public function testAutoloadDocumentWithNamespaceOnGroup()
 		{
 			$document = new Dom\Document();
 			$document->loadXML(
