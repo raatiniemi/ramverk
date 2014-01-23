@@ -12,11 +12,7 @@
 			],
 			"folder_exclude_patterns":
 			[
-				"library/action",
-				"template",
-				"library/view",
-				"vendor",
-				"trunk"
+				"vendor"
 			],
 			"follow_symlinks": true,
 			"path": "."
