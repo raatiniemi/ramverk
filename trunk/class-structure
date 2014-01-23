@@ -1,0 +1,15 @@
+Controller
+- Retrieve the request information.
+-- Pass the url (routing pattern) and the parsed routing configuration to the routing class.
+-- Retrieve the module and action name from the routing.
+--- If none is found initialize the 404.
+-- Based on the request method the action method name will be modified (read/write).
+--- Check if the action has the method, fallback to 'execute'.
+-- Create the action, and execute the method.
+--- The method return one part of the view name, e.g. in the login case, 'form'
+    for input username/password and 'success' for an actual login.
+-- Assemble the name of the view class, the first part should be the same as the
+   action, and the second part is the value returned from the action method. E.g. if
+   the action is named Login and return 'form', then the view class should be LoginForm.
+--- Based on the header content type the response (view method) should be different.
+    E.g. if the content type is json the method should be executeJson.

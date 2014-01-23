@@ -1,7 +1,5 @@
 <?php
 try {
-	// TODO: Handle default content type depending on context.
-
 	// Include the available Action-classes.
 	require 'action/Action.class.php';
 	require 'action/Index.class.php';
@@ -59,6 +57,7 @@ try {
 
 	// ---- Handle View
 
+	// TODO: Handle default content type depending on context.
 	$headers = array_change_key_case(getallheaders());
 	if(isset($headers['content-type'])) {
 		$ct = strtolower($headers['content-type']);
