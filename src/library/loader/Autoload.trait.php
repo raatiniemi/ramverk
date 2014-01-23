@@ -67,10 +67,6 @@ namespace Me\Raatiniemi\Ramverk\Loader
 				$this->_autoload = $autoload;
 			}
 
-			// Due to the use of namespaces, the separator have to be dubbled
-			// to be able to match the array index.
-			$name = str_replace('\\', '\\\\', $name);
-
 			// Check if the class exists within our autoload configurations.
 			if(isset($this->_autoload[$name])) {
 				// Before attempting to include the file, we have to check that
