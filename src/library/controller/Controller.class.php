@@ -16,6 +16,19 @@ namespace Me\Raatiniemi\Ramverk
 	 */
 	class Controller
 	{
+		protected $_request;
+
+		protected $_response;
+
+		public function __construct(Request $request, Response $response)
+		{
+			$this->_request = $request;
+			$this->_response = $response;
+		}
+
+		public function dispatch()
+		{
+		}
 	}
 }
 // End of file: Controller.class.php

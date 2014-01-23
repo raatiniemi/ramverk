@@ -113,7 +113,14 @@ namespace Me\Raatiniemi\Ramverk\Core
 		 */
 		public function getController()
 		{
-			// TODO: Implement the controller initialization.
+			if($this->_controller === NULL) {
+				// TODO: Implement the controller initialization.
+				$request = new Ramverk\Request();
+				$response = new Ramverk\Response();
+
+				$controller = new Ramverk\Controller($request, $response);
+			}
+			return $this->_controller;
 		}
 	}
 }
