@@ -62,6 +62,8 @@ try {
 	if(isset($headers['content-type'])) {
 		$ct = strtolower($headers['content-type']);
 
+		// always use the second part of the content-type?
+		// */json, */html etc.
 		switch($ct) {
 			case 'application/json':
 				$type = 'json';

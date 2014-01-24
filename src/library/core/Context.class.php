@@ -115,10 +115,8 @@ namespace Me\Raatiniemi\Ramverk\Core
 		{
 			if($this->_controller === NULL) {
 				// TODO: Implement the controller initialization.
-				$request = new Ramverk\Request();
-				$response = new Ramverk\Response();
-
-				$controller = new Ramverk\Controller($request, $response);
+				$controller = new Ramverk\Controller($this);
+				$this->_controller = $controller;
 			}
 			return $this->_controller;
 		}

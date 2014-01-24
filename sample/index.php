@@ -27,7 +27,7 @@ namespace Me\Raatiniemi\Ramverk\Sample
 
 		// Initialize the framework core.
 		$core = new Ramverk\Core($config);
-		$core->getContext()->getController();
+		$core->getContext()->getController()->dispatch();
 	} catch(\Exception $e) {
 		// Render thrown exceptions with the specified template.
 		Ramverk\Exception::render($e, $config);

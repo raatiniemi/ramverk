@@ -13,3 +13,17 @@ Controller
    the action is named Login and return 'form', then the view class should be LoginForm.
 --- Based on the header content type the response (view method) should be different.
     E.g. if the content type is json the method should be executeJson.
+
+
+
+
+
+$routing = new routing();
+$request = new request();
+$response = new response();
+
+$controller = new Controller($context, $routing, $request, $response);
+
+dispatch() {
+	$routing->parseRoute($this->request->getUri);
+}
