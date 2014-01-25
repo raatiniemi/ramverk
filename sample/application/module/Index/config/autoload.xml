@@ -1,0 +1,8 @@
+<configurations>
+	<configuration>
+		<autoloads namespace="Me\Raatiniemi\Ramverk\Sample\Application\Index">
+			<autoload name="Action\Index">%directory.application.module%/Index/action/Index.class.php</autoload>
+			<autoload name="View\IndexSuccess">%directory.application.module%/Index/view/IndexSuccess.class.php</autoload>
+		</autoloads>
+	</configuration>
+</configurations>
