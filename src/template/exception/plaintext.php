@@ -20,8 +20,8 @@ namespace Me\Raatiniemi\Ramverk
 ===========<?=str_repeat('=', strlen($className)) . PHP_EOL; ?>
 Exception: <?=$className . PHP_EOL; ?>
 ===========<?=str_repeat('=', strlen($className)) . PHP_EOL; ?>
-
 <?php if($e instanceof Exception) : ?>
+
 This is an internal Ramverk exception.
 <?php endif; ?>
 
