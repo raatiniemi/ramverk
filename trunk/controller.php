@@ -58,12 +58,13 @@ try {
 	// ---- Handle View
 
 	// TODO: Handle default content type depending on context.
+	// TODO: Use the accept header instead of the content-type.
+	// Using the accept header gives us the possiblity to fallback if the
+	// media type is not defined for the action.
 	$headers = array_change_key_case(getallheaders());
 	if(isset($headers['content-type'])) {
 		$ct = strtolower($headers['content-type']);
 
-		// always use the second part of the content-type?
-		// */json, */html etc.
 		switch($ct) {
 			case 'application/json':
 				$type = 'json';
