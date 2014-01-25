@@ -4,15 +4,13 @@ namespace Me\Raatiniemi\Ramverk\Sample\Application
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
+	use Me\Raatiniemi\Ramverk;
 
 	/**
-	 * @package Ramverk
-	 * @subpackage View
-	 *
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	class View
+	class View extends Ramverk\View
 	{
 	}
 }
