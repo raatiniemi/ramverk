@@ -86,9 +86,9 @@ namespace Me\Raatiniemi\Ramverk
 
 			// If we have a module namespace available, we have to prepend it to
 			// the action class, otherwise we won't find the class.
-			$action['name'] = $action['class'] = $route['action'];
+			$action['name'] = $action['class'] = ucfirst(strtolower($route['action']));
 			if(isset($config['namespace'])) {
-				$action['class'] = sprintf('%s\\Action\\%s', $config['namespace'], ucfirst(strtolower($action['class'])));
+				$action['class'] = sprintf('%s\\Action\\%s', $config['namespace'], $action['class']);
 			}
 
 			// Checking that the action class have the specified method, otherwise
@@ -113,12 +113,43 @@ namespace Me\Raatiniemi\Ramverk
 
 			// If we have a module namespace available, we have to prepend it to
 			// the view class, otherwise we won't find the class.
-			$view['name'] = $view['class'] = sprintf('%s%s', $action['name'], $view['name']);
+			$view['name'] = $view['class'] = sprintf('%s%s', $action['name'], ucfirst(strtolower($view['name'])));
 			if(isset($config['namespace'])) {
-				$view['class'] = sprintf('%s\\View\\%s', $config['namespace'], ucfirst(strtolower($view['class'])));
+				$view['class'] = sprintf('%s\\View\\%s', $config['namespace'], $view['class']);
 			}
 
-			// TODO: Initialize the view.
+			// The entire initialization of the view will be rewritten when I
+			// figure out a better way of doing it.
+			//
+			// Retrieve the content type from the header.
+			$headers = array_change_key_case(getallheaders());
+			if(isset($headers['content-type'])) {
+				$contentType = strtolower($headers['content-type']);
+
+				switch($contentType) {
+					case 'application/json':
+						$type = 'json';
+						break;
+					case 'text/html':
+					default:
+						$type = 'html';
+						break;
+				}
+			} else {
+				$type = 'html';
+			}
+			$view['method'] = sprintf('execute%s', ucfirst(strtolower($type)));
+
+			// Checking that the view class have the specified method, otherwise
+			// fallback to the default execute method.
+			$view['reflection'] = new \ReflectionClass($view['class']);
+			if(!$view['reflection']->hasMethod($view['method'])) {
+				$view['method'] = 'execute';
+			}
+
+			// Instansiate the view, and execute the method.
+			$view['instance'] = $view['reflection']->newInstance();
+			echo call_user_func_array(array($view['instance'], $view['method']), array());
 		}
 
 		protected function getConfig()
