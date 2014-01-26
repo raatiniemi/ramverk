@@ -66,10 +66,6 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 			$this->_config = $config;
 			$this->_profile = $profile;
 			$this->_context = $context;
-
-			// Initialize variables used while parsing.
-			$this->_items = array();
-			$this->_parentDocuments = array();
 		}
 
 		/**
@@ -80,6 +76,10 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 */
 		public function execute(Dom\Document $document)
 		{
+			// Initialize/reset variables used while parsing.
+			$this->_items = array();
+			$this->_parentDocuments = array();
+
 			// Initialize the document parsing.
 			$this->parse($document);
 
