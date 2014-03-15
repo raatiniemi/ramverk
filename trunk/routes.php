@@ -1,10 +1,10 @@
 <?php
 return array(
-/*	array(
+	array(
 		'module' => 'Index',
 		'action' => 'Index',
 		'pattern' => '^$'
-	),*/
+	),
 	array(
 		'module' => 'User',
 		'action' => 'Profile',
