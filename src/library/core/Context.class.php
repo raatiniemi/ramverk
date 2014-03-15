@@ -114,7 +114,7 @@ namespace Me\Raatiniemi\Ramverk\Core
 		public function getController()
 		{
 			if($this->_controller === NULL) {
-				// TODO: Implement the controller initialization.
+				// TODO: Implement the controller initialization dependant on context.
 				$controller = new Ramverk\Controller($this);
 				$this->_controller = $controller;
 			}
