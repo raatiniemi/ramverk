@@ -16,10 +16,11 @@ namespace Me\Raatiniemi\Ramverk
 	}
 
 	$className = get_class($e);
+	$length = strlen($className);
 ?>
-===========<?=str_repeat('=', strlen($className)) . PHP_EOL; ?>
+===========<?=str_repeat('=', $length) . PHP_EOL; ?>
 Exception: <?=$className . PHP_EOL; ?>
-===========<?=str_repeat('=', strlen($className)) . PHP_EOL; ?>
+===========<?=str_repeat('=', $length) . PHP_EOL; ?>
 <?php if($e instanceof Exception) : ?>
 
 This is an internal Ramverk exception.
