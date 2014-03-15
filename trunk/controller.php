@@ -57,15 +57,20 @@ try {
 
 	// ---- Handle View
 
-	// TODO: Handle default content type depending on context.
-	// TODO: Use the accept header instead of the content-type.
-	// Using the accept header gives us the possiblity to fallback if the
-	// media type is not defined for the action.
 	$headers = array_change_key_case(getallheaders());
-	if(isset($headers['content-type'])) {
-		$ct = strtolower($headers['content-type']);
 
-		switch($ct) {
+	// Check if the accept header have been supplied, otherwise fallback to "text/html".
+	// TODO: Allow for different fallback depending on output and context configuration.
+	$accept = isset($headers['accept']) ? $headers['accept'] : 'text/html';
+	$accepts = explode(',', $accept);
+	unset($accept);
+
+	// TODO: Implement support for quality marker, i.e. q=0.6.
+	$view['reflection'] = new \ReflectionClass($view['name']);
+	foreach($accepts as $accept) {
+		$accept = strtolower($accept);
+
+		switch($accept) {
 			case 'application/json':
 				$type = 'json';
 				break;
@@ -74,14 +79,18 @@ try {
 				$type = 'html';
 				break;
 		}
-	} else {
-		$type = 'html';
+
+		$method = sprintf('execute%s', ucfirst(strtolower($type)));
+		if($view['reflection']->hasMethod($method)) {
+			// Send the content-type header back with the correct content type.
+			header("Content-type: {$accept}");
+			$view['method'] = $method;
+			break;
+		}
 	}
 
-	$view['method'] = sprintf('execute%s', ucfirst(strtolower($type)));
-
-	$view['reflection'] = new ReflectionClass($view['name']);
-	if(!$view['reflection']->hasMethod($view['method'])) {
+	// If no method have been found for the view, use the default one.
+	if(!isset($view['method'])) {
 		$view['method'] = 'execute';
 	}
 
