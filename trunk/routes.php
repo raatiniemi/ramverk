@@ -1,9 +1,14 @@
 <?php
 return array(
-	array(
+/*	array(
 		'module' => 'Index',
 		'action' => 'Index',
 		'pattern' => '^$'
+	),*/
+	array(
+		'module' => 'User',
+		'action' => 'Profile',
+		'pattern' => '^user/{id:\d+}(/{page:(\w+)?})?$'
 	),
 	array(
 		'module' => 'User',
