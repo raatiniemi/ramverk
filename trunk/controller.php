@@ -28,8 +28,8 @@ try {
 		// The key will be used to match the value within the argument container.
 		$regex = sprintf(
 			'/\{{1}%1$s%2$s\}{1}/i',
-			'([a-z]+)\:',			// key,		e.g. id:
-			'([\\a-z\+\*\(\)\?]+)'	// value,	e.g. (\d+)
+			'([a-z]+)\:', // key, e.g. id:
+			'([\\a-z\+\*\(\)\?]+)' // value, e.g. (\d+)
 		);
 
 		if(preg_match_all($regex, $route['pattern'], $matches)) {
@@ -120,7 +120,30 @@ try {
 	$accepts = explode(',', $accept);
 	unset($accept);
 
-	// TODO: Implement support for quality marker, i.e. q=0.6.
+	// Sort the accept headers based on the defined accept quality.
+	$sorted = array();
+	foreach($accepts as $accept) {
+		if(strstr($accept, ';q=')) {
+			list($type, $quality) = explode(';q=', $accept);
+		} else {
+			$type = $accept;
+			$quality = '1.0';
+		}
+
+		$sorted[$quality][] = $type;
+	}
+	unset($accepts);
+
+	ksort($sorted, SORT_NUMERIC);
+	$sorted = array_reverse($sorted);
+
+	$accepts = array();
+	foreach($sorted as $quality) {
+		foreach($quality as $accept) {
+			$accepts[] = $accept;
+		}
+	}
+
 	$view['reflection'] = new \ReflectionClass($view['name']);
 	foreach($accepts as $accept) {
 		$accept = strtolower($accept);
