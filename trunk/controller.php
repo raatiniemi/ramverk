@@ -100,13 +100,45 @@ try {
 
 	$action['instance'] = $action['reflection']->newInstance();
 
+	$action['arguments'] = array();
+	if($action['method'] === 'executeWrite') {
+		$validate = require 'validate.php';
+
+		if(array_key_exists($module['name'], $validate)) {
+			$module['validate'] = $validate[$module['name']];
+			if(array_key_exists($action['name'], $module['validate'])) {
+				$action['validate'] = $module['validate'][$action['name']];
+
+				// TODO: Retrieve the data from the request, e.g. POST, JSON.
+				foreach($_POST as $index => $value) {
+					// If the request data index do not exists within the
+					// validation for the defined module/action then it should
+					// be removed from the request data.
+					//
+					// The same goes for values that do not match the supplied regex.
+					if(!array_key_exists($index, $action['validate'])) {
+						unset($_POST[$index]);
+					} else {
+						// TODO: Check that the regex is not empty, when parsing the configurations.
+						if(!preg_match($action['validate'][$index], $value)) {
+							unset($_POST[$index]);
+						}
+					}
+				}
+
+				// We can assign the remaining POST data to the action arguments.
+				$action['arguments'] = $_POST;
+			}
+		}
+	}
+
 	// Retrieve the view name.
 	$view['name'] = sprintf(
 		'%s%s',
 		$action['name'],
 		call_user_func_array(
 			array($action['instance'], $action['method']),
-			array()
+			array($action['arguments'])
 		)
 	);
 

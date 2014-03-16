@@ -1,10 +1,18 @@
 <?php
 	class Login extends Action
 	{
-		public function executeWrite()
+		public function executeWrite(array $data=array())
 		{
-			// Success or Failure.
-			return 'Success';
+			if(isset($data['username'], $data['password'])) {
+				// TODO: Attempt to login...
+				$login = TRUE;
+				if($login) {
+					return 'Success';
+				}
+			}
+			// TODO: Supply the view with a message...
+			// $this->setAttribute('error', 'Failed to login due to something');
+			return 'Error';
 		}
 
 		public function executeRead()
