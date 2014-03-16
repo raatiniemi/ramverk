@@ -8,7 +8,7 @@ return array(
 	array(
 		'module' => 'User',
 		'action' => 'Profile',
-		'pattern' => '^user/{id:\d+}(/{page:(\w+)?})?$'
+		'pattern' => '^user/{id:\d+}$'
 	),
 	array(
 		'module' => 'User',
