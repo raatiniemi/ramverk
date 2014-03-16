@@ -12,7 +12,7 @@
 			}
 			// TODO: Supply the view with a message...
 			// $this->setAttribute('error', 'Failed to login due to something');
-			return 'Error';
+			return 'Form';
 		}
 
 		public function executeRead()

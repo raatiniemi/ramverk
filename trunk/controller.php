@@ -24,29 +24,33 @@ try {
 	foreach($routes as $route) {
 		$parameters = array();
 
-		// Build the rexex used to match arguments routes.
-		// The key will be used to match the value within the argument container.
-		$regex = sprintf(
-			'/\{{1}%1$s%2$s\}{1}/i',
-			'([a-z]+)\:', // key, e.g. id:
-			'([\\a-z\+\*\(\)\?]+)' // value, e.g. (\d+)
-		);
+		// If the routing pattern contains the { character, e.g. parameter based
+		// regex is used within the pattern. We have to extract the data.
+		if(strstr($route['pattern'], '{')) {
+			// Build the rexex used to match arguments routes.
+			// The key will be used to match the value within the argument container.
+			$regex = sprintf(
+				'/\{{1}%1$s%2$s\}{1}/i',
+				'([a-z]+)\:', // key, e.g. id:
+				'([\\a-z\+\*\(\)\?]+)' // value, e.g. (\d+)
+			);
 
-		if(preg_match_all($regex, $route['pattern'], $matches)) {
-			// Only attempt to extract the route parameters if we have all of the
-			// necessary data, i.e. the matched values, the keys, and the patterns.
-			if(isset($matches[0], $matches[1], $matches[2])) {
-				$matched = $matches[0];
-				$keys = $matches[1];
-				$patterns = $matches[2];
+			if(preg_match_all($regex, $route['pattern'], $matches)) {
+				// Only attempt to extract the route parameters if we have all of the
+				// necessary data, i.e. the matched values, the keys, and the patterns.
+				if(isset($matches[0], $matches[1], $matches[2])) {
+					$matched = $matches[0];
+					$keys = $matches[1];
+					$patterns = $matches[2];
 
-				// Iterate through each of the matched parameters.
-				foreach($matched as $index => $match) {
-					$parameters[] = $keys[$index];
+					// Iterate through each of the matched parameters.
+					foreach($matched as $index => $match) {
+						$parameters[] = $keys[$index];
 
-					// Replace the parameter syntax with the actual regex for the parameter.
-					// Otherwise, we'll not be able to match the route against the URI.
-					$route['pattern'] = str_replace($match, "({$patterns[$index]})", $route['pattern']);
+						// Replace the parameter syntax with the actual regex for the parameter.
+						// Otherwise, we'll not be able to match the route against the URI.
+						$route['pattern'] = str_replace($match, "({$patterns[$index]})", $route['pattern']);
+					}
 				}
 			}
 		}
@@ -110,10 +114,11 @@ try {
 				$action['validate'] = $module['validate'][$action['name']];
 
 				// TODO: Retrieve the data from the request, e.g. POST, JSON.
+				// TODO: Retrieve the Content-type for the request body.
 				foreach($_POST as $index => $value) {
-					// If the request data index do not exists within the
-					// validation for the defined module/action then it should
-					// be removed from the request data.
+					// If the request data index do not exists within the validation
+					// for the defined module/action then it should be removed from
+					// the request data.
 					//
 					// The same goes for values that do not match the supplied regex.
 					if(!array_key_exists($index, $action['validate'])) {
