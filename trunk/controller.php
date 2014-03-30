@@ -18,6 +18,7 @@ try {
 
 	// Retrieve the request URI.
 	$uri = isset($_GET['uri']) ? trim($_GET['uri'], '/') : NULL;
+	unset($_GET['uri']);
 
 	// Require the routing configurations.
 	$routes = require 'routes.php';
@@ -94,6 +95,8 @@ try {
 
 	// ---- Handle Action
 
+	$headers = array_change_key_case(getallheaders());
+
 	$method = strtolower($_SERVER['REQUEST_METHOD']) === 'post' ? 'write' : 'read';
 	$action['method'] = sprintf('execute%s', ucfirst($method));
 
@@ -113,29 +116,48 @@ try {
 			if(array_key_exists($action['name'], $module['validate'])) {
 				$action['validate'] = $module['validate'][$action['name']];
 
-				// TODO: Retrieve the data from the request, e.g. POST, JSON.
-				// TODO: Retrieve the Content-type for the request body.
-				foreach($_POST as $index => $value) {
-					// If the request data index do not exists within the validation
-					// for the defined module/action then it should be removed from
-					// the request data.
-					//
-					// The same goes for values that do not match the supplied regex.
-					if(!array_key_exists($index, $action['validate'])) {
-						unset($_POST[$index]);
-					} else {
-						// TODO: Check that the regex is not empty, when parsing the configurations.
-						if(!preg_match($action['validate'][$index], $value)) {
-							unset($_POST[$index]);
+				$data = array();
+				$data = array_merge($data, !empty($_GET) ? $_GET : array());
+				$data = array_merge($data, !empty($_POST) ? $_POST : array());
+
+				if(isset($headers['content-type'])) {
+					$content = strtolower($headers['content-type']);
+					if($content === 'application/json') {
+						$input = file_get_contents('php://input');
+						$input = json_decode($input, TRUE);
+						if(!empty($input)) {
+							$data = array_merge($data, $input);
 						}
 					}
 				}
 
-				// We can assign the remaining POST data to the action arguments.
-				$action['arguments'] = $_POST;
+				if(!empty($data)) {
+					foreach($data as $index => $value) {
+						// If the request data index do not exists within the validation
+						// for the defined module/action then it should be removed from
+						// the request data.
+						//
+						// The same goes for values that do not match the supplied regex.
+						if(!array_key_exists($index, $action['validate'])) {
+							unset($data[$index]);
+						} else {
+							$regex = isset($action['validate'][$index]['regex']) ? $action['validate'][$index]['regex'] : NULL;
+							if(empty($regex) || !preg_match($regex, $value)) {
+								unset($data[$index]);
+							}
+						}
+					}
+
+					// We can assign the remaining data to the action arguments.
+					$action['arguments'] = $data;
+				}
 			}
 		}
 	}
+
+	// Reset the incoming data since we've already parsed the necessary information.
+	$_GET = $_POST = $_REQUEST = array();
+	$_SERVER['REQUEST_URI'] = $_SERVER['QUERY_STRING'] = NULL;
 
 	// Retrieve the view name.
 	$view['name'] = sprintf(
@@ -148,8 +170,6 @@ try {
 	);
 
 	// ---- Handle View
-
-	$headers = array_change_key_case(getallheaders());
 
 	// Check if the accept header have been supplied, otherwise fallback to "text/html".
 	// TODO: Allow for different fallback depending on output and context configuration.

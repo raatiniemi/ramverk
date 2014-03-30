@@ -4,8 +4,14 @@ return array(
 	'User' => array(
 		// Action
 		'Login' => array(
-			'username' => '/^[A-Z]+$/i',
-			'password' => '/^[A-Z]+$/i'
+			'username' => array(
+				'regex' => '/^[A-Z]+$/i',
+				'message' => 'asdf username'
+			),
+			'password' =>  array(
+				'regex' => '/^[A-Z]+$/i',
+				'message' => 'asdf password'
+			)
 		)
 	)
 );
