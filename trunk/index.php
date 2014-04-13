@@ -62,10 +62,10 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		if($action['method'] === 'executeWrite') {
 			$validate = require 'validate.php';
 
-			if(array_key_exists($module['name'], $validate)) {
-				$module['validate'] = $validate[$module['name']];
-				if(array_key_exists($action['name'], $module['validate'])) {
-					$action['validate'] = $module['validate'][$action['name']];
+			if(array_key_exists($route['module'], $validate)) {
+				$module['validate'] = $validate[$route['module']];
+				if(is_array($module['validate']) && array_key_exists($route['action'], $module['validate'])) {
+					$action['validate'] = $module['validate'][$route['action']];
 
 					$data = $request->getRequestRawData();
 					if(!empty($data)) {
