@@ -7,6 +7,7 @@ namespace Me\Raatiniemi\Ramverk
 
 	class Response
 	{
+		// TODO: Implement better support for response data.
 	}
 }
 // End of file: Response.class.php

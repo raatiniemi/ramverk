@@ -1,5 +1,12 @@
 <?php
-	class Login extends Action
+namespace Me\Raatiniemi\Ramverk\Trunk\Action
+{
+// +--------------------------------------------------------------------------+
+// | Namespace use-directives.                                                |
+// +--------------------------------------------------------------------------+
+	use Me\Raatiniemi\Ramverk\Trunk;
+
+	class Login extends Trunk\Action
 	{
 		public function executeWrite(array $data=array())
 		{
@@ -20,3 +27,4 @@
 			return 'Form';
 		}
 	}
+}

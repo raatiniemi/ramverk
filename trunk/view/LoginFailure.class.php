@@ -1,5 +1,12 @@
 <?php
-	class LoginFailure extends View
+namespace Me\Raatiniemi\Ramverk\Trunk\View
+{
+// +--------------------------------------------------------------------------+
+// | Namespace use-directives.                                                |
+// +--------------------------------------------------------------------------+
+	use Me\Raatiniemi\Ramverk\Trunk;
+
+	class LoginFailure extends Trunk\View
 	{
 		public function executeHtml()
 		{
@@ -14,3 +21,4 @@
 			));
 		}
 	}
+}

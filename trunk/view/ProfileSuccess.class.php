@@ -1,5 +1,12 @@
 <?php
-	class ProfileSuccess extends View
+namespace Me\Raatiniemi\Ramverk\Trunk\View
+{
+// +--------------------------------------------------------------------------+
+// | Namespace use-directives.                                                |
+// +--------------------------------------------------------------------------+
+	use Me\Raatiniemi\Ramverk\Trunk;
+
+	class ProfileSuccess extends Trunk\View
 	{
 		public function executeHtml()
 		{
@@ -15,3 +22,4 @@
 			));
 		}
 	}
+}

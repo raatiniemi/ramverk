@@ -1,0 +1,22 @@
+<configurations parent="%directory.core.config%/autoload.xml">
+	<configuration>
+		<autoloads namespace="Me\Raatiniemi\Ramverk\Trunk">
+			<autoload name="Action">%directory.application%/library/action/Action.class.php</autoload>
+			<autoload name="View">%directory.application%/library/view/View.class.php</autoload>
+		</autoloads>
+		<autoloads namespace="Me\Raatiniemi\Ramverk\Trunk\Action">
+			<autoload name="Index">%directory.application%/action/Index.class.php</autoload>
+			<autoload name="Login">%directory.application%/action/Login.class.php</autoload>
+			<autoload name="Logout">%directory.application%/action/Logout.class.php</autoload>
+			<autoload name="Profile">%directory.application%/action/Profile.class.php</autoload>
+		</autoloads>
+		<autoloads namespace="Me\Raatiniemi\Ramverk\Trunk\View">
+			<autoload name="IndexSuccess">%directory.application%/view/IndexSuccess.class.php</autoload>
+			<autoload name="LoginFailure">%directory.application%/view/LoginFailure.class.php</autoload>
+			<autoload name="LoginForm">%directory.application%/view/LoginForm.class.php</autoload>
+			<autoload name="LoginSuccess">%directory.application%/view/LoginSuccess.class.php</autoload>
+			<autoload name="LogoutSuccess">%directory.application%/view/LogoutSuccess.class.php</autoload>
+			<autoload name="ProfileSuccess">%directory.application%/view/ProfileSuccess.class.php</autoload>
+		</autoloads>
+	</configuration>
+</configurations>

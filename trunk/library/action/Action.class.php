@@ -1,14 +1,16 @@
 <?php
-namespace Me\Raatiniemi\Ramverk
+namespace Me\Raatiniemi\Ramverk\Trunk
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
+	use Me\Raatiniemi\Ramverk;
 
-	class Request
+	class Action extends Ramverk\Action
 	{
-		// TODO: Implement better support for request data.
+		public function execute()
+		{
+			throw new Exception('Method is not available');
+		}
 	}
 }
-// End of file: Request.class.php
-// Location: library/request/Request.class.php
