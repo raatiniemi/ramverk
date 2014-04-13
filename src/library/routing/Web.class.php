@@ -61,8 +61,8 @@ namespace Me\Raatiniemi\Ramverk\Routing
 				}
 
 				if(preg_match("#{$route['pattern']}#i", $uri, $matches)) {
-					$this->_module = ucfirst(strtolower($route['module']));
-					$this->_action = ucfirst(strtolower($route['action']));
+					$this->_module = $route['module'];
+					$this->_action = $route['action'];
 
 					// If the route have possible parameters we have to extract these
 					// to the parameters index for the action.

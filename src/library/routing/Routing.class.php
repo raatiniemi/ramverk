@@ -26,12 +26,12 @@ namespace Me\Raatiniemi\Ramverk
 
 		public function getModule()
 		{
-			return $this->_module;
+			return ucfirst(strtolower($this->_module));
 		}
 
 		public function getAction()
 		{
-			return $this->_action;
+			return ucfirst(strtolower($this->_action));
 		}
 
 		abstract public function getActionMethod(\ReflectionClass $reflection);
