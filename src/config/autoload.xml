@@ -13,7 +13,7 @@
 			<autoload name="Loader\Autoload">%directory.core.library%/loader/Autoload.trait.php</autoload>
 
 			<autoload name="Request">%directory.core.library%/request/Request.class.php</autoload>
-			<autoload name="Request\Web">%directory.core.library%/request/Web.class.php</autoload>
+			<autoload name="Request\Web">%directory.core.library%/request/web/Web.class.php</autoload>
 
 			<autoload name="Response">%directory.core.library%/response/Response.class.php</autoload>
 			<autoload name="Response\Web">%directory.core.library%/response/Web.class.php</autoload>
