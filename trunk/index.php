@@ -34,18 +34,56 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// ---- Controller code.
 
 		$factory = $core->getConfigurationHandlerFactory();
-		$routes = $factory->callHandler('Routing', '%directory.application.config%/routing.xml');
-
 		$config = $core->getContext()->getConfig();
 
-		// TODO: Implement support for context aware request, response, and routing.
+		/*
+			array(13) {
+				["profile"]=>"development"
+				["context"]=>"web"
 
-		$request = new Request\Web();
-		$routing = new Routing\Web($request, $routes);
-		$route = $routing->parse();
+				["exception.template"]=>"%directory.core.template%/exception/plaintext.php"
 
-		// TODO: Do not return the route, instead use $routing->hasRoute();
-		if(!isset($route['module']) || !isset($route['action'])) {
+				["directory.core"]=>"/var/www/ramverk/src"
+				["directory.application"]=>"/var/www/ramverk/trunk"
+				["directory.core.config"]=>"%directory.core%/config"
+				["directory.core.library"]=>"%directory.core%/library"
+				["directory.core.template"]=>"%directory.core%/template"
+				["directory.application.cache"]=>"%directory.application%/cache"
+				["directory.application.config"]=>"%directory.application%/config"
+				["directory.application.library"]=>"%directory.application%/library"
+				["directory.application.module"]=>"%directory.application%/module"
+				["directory.application.template"]=>"%directory.application%/template"
+			}
+		*/
+
+		$namespace['base'] = 'Me\\Raatiniemi\\Ramverk';
+
+		// Define the context based request, routing, and response classes with their namespaces.
+		$context = ucfirst(strtolower($config->get('context')));
+		$class['request'] = "{$namespace['base']}\\Request\\{$context}";
+		$class['routing'] = "{$namespace['base']}\\Routing\\{$context}";
+		$class['response'] = "{$namespace['base']}\\Response\\{$context}";
+
+		$keys = array_keys($class);
+		foreach($keys as $key) {
+			// Verify that each of the context based classes exists.
+			if(!class_exists($class[$key])) {
+				throw new \Exception("Context based '{$key}'-class do not exists");
+			}
+		}
+
+		// TODO: Send arguments to request constructor?
+		$reflection['request'] = new \ReflectionClass($class['request']);
+		$request = $reflection['request']->newInstance();
+
+		// Retrieve the routing configuration.
+		$routes = $factory->callHandler('Routing', '%directory.application.config%/routing.xml');
+
+		$reflection['routing'] = new \ReflectionClass($class['routing']);
+		$routing = $reflection['routing']->newInstanceArgs(array($request, $routes));
+		$routing->parse();
+
+		if(!$routing->hasRoute()) {
 			// TODO: Initialize the module and action with the 404.
 			// This way we can send the 404 page with the requested content type,
 			// e.g. pages requested with application/json in the accept header will
@@ -53,11 +91,12 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 			throw new \Exception('Page not found');
 		}
 
-		$config->set('directory.module', "%directory.application.module%/{$route['module']}");
+		$config->set('directory.module', "%directory.application.module%/{$routing->getModule()}");
 		if(!is_dir($config->expandDirectives('%directory.module%'))) {
 			throw new \Exception('Module do not exists');
 		}
 
+		// TODO: Better handling.
 		$config->set('directory.module.config', '%directory.module%/config');
 		$module = $config->expandDirectives('%directory.module.config%/module.xml');
 		if(is_readable($module)) {
@@ -67,25 +106,28 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 
 		// ---- Handle Action
 
-		$action['name'] = $action['class'] = $route['action'];
+		$name['action'] = $class['action'] = $routing->getAction();
 		if($config->has('namespace')) {
-			$action['class'] = sprintf('%s\\Action\\%s', $config->get('namespace'), $action['class']);
+			// TODO: Add support for custom action namespace.
+			$class['action'] = sprintf('%s\\Action\\%s', $config->get('namespace'), $class['action']);
 		}
 
-		$action['reflection'] = new \ReflectionClass($action['class']);
-		$action['method'] = $routing->getActionMethod($action['reflection']);
+		// TODO: Send arguments to action constructor?
+		$reflection['action'] = new \ReflectionClass($class['action']);
+		$action = $reflection['action']->newInstance();
 
-		// TODO: Arguments to action?
-		$action['instance'] = $action['reflection']->newInstance();
+		// TODO: Is the reflection really necessary?
+		$method['action'] = $routing->getActionMethod($reflection['action']);
 
-		$action['arguments'] = array();
-		if($action['method'] === 'executeWrite') {
+		//
+		$arguments['action'] = array();
+		if($method['action'] === 'executeWrite') {
 			$validate = require 'validate.php';
 
-			if(array_key_exists($route['module'], $validate)) {
-				$module['validate'] = $validate[$route['module']];
-				if(is_array($module['validate']) && array_key_exists($route['action'], $module['validate'])) {
-					$action['validate'] = $module['validate'][$route['action']];
+			if(array_key_exists($routing->getModule(), $validate)) {
+				$validate['module'] = $validate[$routing->getModule()];
+				if(is_array($validate['module']) && array_key_exists($routing->getAction(), $validate['module'])) {
+					$validate['action'] = $validate['module'][$routing->getAction()];
 
 					$data = $request->getRequestRawData();
 					if(!empty($data)) {
@@ -95,10 +137,10 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 							// the request data.
 							//
 							// The same goes for values that do not match the supplied regex.
-							if(!array_key_exists($index, $action['validate'])) {
+							if(!array_key_exists($index, $validate['action'])) {
 								unset($data[$index]);
 							} else {
-								$regex = isset($action['validate'][$index]['regex']) ? $action['validate'][$index]['regex'] : NULL;
+								$regex = isset($validate['action'][$index]['regex']) ? $validate['action'][$index]['regex'] : NULL;
 								if(empty($regex) || !preg_match($regex, $value)) {
 									unset($data[$index]);
 								}
@@ -106,31 +148,35 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 						}
 
 						// We can assign the remaining data to the action arguments.
-						$action['arguments'] = $data;
+						$arguments['action'] = $data;
 					}
 				}
 			}
 		}
 
 		// Retrieve the view name.
-		$view['name'] = call_user_func_array(array($action['instance'], $action['method']), $action['arguments']);
-		if(!isset($view['name']) || !is_string($view['name'])) {
+		$name['view'] = call_user_func_array(array($action, $method['action']), $arguments['action']);
+		if(!isset($name['view']) || !is_string($name['view'])) {
 			// The action method have to return a name.
 			// TODO: Write exception message.
 			// TODO: Better specify the exception object.
-			throw new Exception('');
+			throw new \Exception('');
 		}
 
 		// ---- Handle View
 
-		$response = new Response\Web();
+		$reflection['response'] = new \ReflectionClass($class['response']);
+		$response = $reflection['response']->newInstance();
+
+		// TODO: Accept will only be availabe within the Web context.
 		$accepts = $response->getAccept();
 
-		$view['name'] = $view['class'] = sprintf('%s%s', $action['name'], ucfirst(strtolower($view['name'])));
+		$name['view'] = $class['view'] = sprintf('%s%s', $name['action'], ucfirst(strtolower($name['view'])));
 		if($config->has('namespace')) {
-			$view['class'] = sprintf('%s\\View\\%s', $config->get('namespace'), $view['class']);
+			// TODO: Add support for custom view namespace.
+			$class['view'] = sprintf('%s\\View\\%s', $config->get('namespace'), $class['view']);
 		}
-		$view['reflection'] = new \ReflectionClass($view['class']);
+		$reflection['view'] = new \ReflectionClass($class['view']);
 		foreach($accepts as $accept) {
 			$accept = strtolower($accept);
 
@@ -144,22 +190,23 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 					break;
 			}
 
-			$method = sprintf('execute%s', ucfirst(strtolower($type)));
-			if($view['reflection']->hasMethod($method)) {
+			// TODO: Better handling for headers, add support for redirections etc.
+			$method['view'] = sprintf('execute%s', ucfirst(strtolower($type)));
+			if($reflection['view']->hasMethod($method['view'])) {
 				// Send the content-type header back with the correct content type.
 				header("Content-type: {$accept}");
-				$view['method'] = $method;
 				break;
 			}
 		}
 
 		// If no method have been found for the view, use the default one.
-		if(!isset($view['method'])) {
-			$view['method'] = 'execute';
+		if(!isset($method['view'])) {
+			$method['view'] = 'execute';
 		}
 
-		$view['instance'] = $view['reflection']->newInstance();
-		echo call_user_func_array(array($view['instance'], $view['method']), array($route['params']));
+		// TODO: Send arguments to view constructor?
+		$view = $reflection['view']->newInstance();
+		echo call_user_func_array(array($view, $method['view']), array());
 	} catch(\Exception $e) {
 		// Render thrown exceptions with the specified template.
 		Ramverk\Exception::render($e, $config);

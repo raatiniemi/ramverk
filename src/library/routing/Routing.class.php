@@ -24,6 +24,11 @@ namespace Me\Raatiniemi\Ramverk
 			$this->_params = array();
 		}
 
+		public function hasRoute()
+		{
+			return (bool)isset($this->_module, $this->_action);
+		}
+
 		public function getModule()
 		{
 			return ucfirst(strtolower($this->_module));
