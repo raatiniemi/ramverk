@@ -7,8 +7,7 @@
 				".*",
 				"*.sublime-project",
 				"*.sublime-workspace",
-				"license.txt",
-				"README.md"
+				"license.txt"
 			],
 			"folder_exclude_patterns":
 			[
