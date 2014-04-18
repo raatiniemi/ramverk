@@ -1,14 +1,14 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Trunk\Action
+namespace Me\Raatiniemi\Ramverk\Trunk\User\Action
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk\Trunk;
 
-	class Profile extends Trunk\Action
+	class Logout extends Trunk\Action
 	{
-		public function executeRead(array $parameters=array())
+		public function executeRead()
 		{
 			return 'Success';
 		}

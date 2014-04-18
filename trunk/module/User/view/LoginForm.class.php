@@ -1,24 +1,16 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Trunk\View
+namespace Me\Raatiniemi\Ramverk\Trunk\User\View
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk\Trunk;
 
-	class IndexSuccess extends Trunk\View
+	class LoginForm extends Trunk\View
 	{
 		public function executeHtml()
 		{
-			return $this->setupHtml();
-		}
-
-		public function executeJson()
-		{
-			return json_encode(array(
-				'status' => 'success',
-				'method' => __METHOD__
-			));
+			return $this->setupHtml(array(), NULL);
 		}
 	}
 }

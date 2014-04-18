@@ -1,5 +1,5 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Trunk\View
+namespace Me\Raatiniemi\Ramverk\Trunk\User\View
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |

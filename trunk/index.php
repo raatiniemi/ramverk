@@ -36,26 +36,46 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		$factory = $core->getConfigurationHandlerFactory();
 		$routes = $factory->callHandler('Routing', '%directory.application.config%/routing.xml');
 
+		$config = $core->getContext()->getConfig();
+
 		// TODO: Implement support for context aware request, response, and routing.
 
 		$request = new Request\Web();
 		$routing = new Routing\Web($request, $routes);
 		$route = $routing->parse();
 
+		// TODO: Do not return the route, instead use $routing->hasRoute();
 		if(!isset($route['module']) || !isset($route['action'])) {
 			// TODO: Initialize the module and action with the 404.
 			// This way we can send the 404 page with the requested content type,
 			// e.g. pages requested with application/json in the accept header will
 			// receive the the 404 with application/json.
-			throw new \Exception("Page not found");
+			throw new \Exception('Page not found');
+		}
+
+		$config->set('directory.module', "%directory.application.module%/{$route['module']}");
+		if(!is_dir($config->expandDirectives('%directory.module%'))) {
+			throw new \Exception('Module do not exists');
+		}
+
+		$config->set('directory.module.config', '%directory.module%/config');
+		$module = $config->expandDirectives('%directory.module.config%/module.xml');
+		if(is_readable($module)) {
+			// TODO: Prevent overrides and configuration directive collisions.
+			$config->import($factory->callHandler('Module', $module));
 		}
 
 		// ---- Handle Action
 
-		// TODO: Handle application/module namespace.
-		$action['reflection'] = new \ReflectionClass("Me\\Raatiniemi\\Ramverk\\Trunk\\Action\\{$route['action']}");
+		$action['name'] = $action['class'] = $route['action'];
+		if($config->has('namespace')) {
+			$action['class'] = sprintf('%s\\Action\\%s', $config->get('namespace'), $action['class']);
+		}
+
+		$action['reflection'] = new \ReflectionClass($action['class']);
 		$action['method'] = $routing->getActionMethod($action['reflection']);
 
+		// TODO: Arguments to action?
 		$action['instance'] = $action['reflection']->newInstance();
 
 		$action['arguments'] = array();
@@ -93,22 +113,24 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		}
 
 		// Retrieve the view name.
-		$view['name'] = sprintf(
-			'%s%s',
-			$route['action'],
-			call_user_func_array(
-				array($action['instance'], $action['method']),
-				array($action['arguments'])
-			)
-		);
+		$view['name'] = call_user_func_array(array($action['instance'], $action['method']), $action['arguments']);
+		if(!isset($view['name']) || !is_string($view['name'])) {
+			// The action method have to return a name.
+			// TODO: Write exception message.
+			// TODO: Better specify the exception object.
+			throw new Exception('');
+		}
 
 		// ---- Handle View
 
 		$response = new Response\Web();
 		$accepts = $response->getAccept();
 
-		// TODO: Handle application/module namespace.
-		$view['reflection'] = new \ReflectionClass("Me\\Raatiniemi\\Ramverk\\Trunk\\View\\{$view['name']}");
+		$view['name'] = $view['class'] = sprintf('%s%s', $action['name'], ucfirst(strtolower($view['name'])));
+		if($config->has('namespace')) {
+			$view['class'] = sprintf('%s\\View\\%s', $config->get('namespace'), $view['class']);
+		}
+		$view['reflection'] = new \ReflectionClass($view['class']);
 		foreach($accepts as $accept) {
 			$accept = strtolower($accept);
 

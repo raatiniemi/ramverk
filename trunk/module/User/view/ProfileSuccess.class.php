@@ -1,23 +1,24 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Trunk\View
+namespace Me\Raatiniemi\Ramverk\Trunk\User\View
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk\Trunk;
 
-	class LoginSuccess extends Trunk\View
+	class ProfileSuccess extends Trunk\View
 	{
 		public function executeHtml()
 		{
-			echo __METHOD__;
+			return $this->setupHtml();
 		}
 
-		public function executeJson()
+		public function executeJson(array $params=array())
 		{
-			echo json_encode(array(
+			return json_encode(array(
 				'status' => 'success',
-				'method' => __METHOD__
+				'method' => __METHOD__,
+				'parameters' => $params
 			));
 		}
 	}

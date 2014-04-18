@@ -1,0 +1,7 @@
+<configurations>
+	<configuration>
+		<module>
+			<setting name="namespace">Me\Raatiniemi\Ramverk\Trunk\Index</setting>
+		</module>
+	</configuration>
+</configurations>

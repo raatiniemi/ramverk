@@ -1,16 +1,16 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Trunk\View
+namespace Me\Raatiniemi\Ramverk\Trunk\User\Action
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk\Trunk;
 
-	class LoginForm extends Trunk\View
+	class Profile extends Trunk\Action
 	{
-		public function executeHtml()
+		public function executeRead(array $parameters=array())
 		{
-			return $this->setupHtml(array(), NULL);
+			return 'Success';
 		}
 	}
 }
