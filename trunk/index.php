@@ -33,6 +33,24 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 
 		// ---- Controller code.
 
+		/**
+		 * TODO: Figure out a way to loosen the coupling between controller and request, reponse, and routing.
+		 * The controller needs to be testable, hence the mentioned objects needs to
+		 * be injected to the controller and not instansiated within the controller.
+		 *
+		 * The action and view (and later model) will most likley have to be instansiated
+		 * within the controller, since that is basically the purpose of the controller dispatch.
+		 *
+		 * TODO: Implement support for request and response data.
+		 * The request data will be headers, post and get data, json data, etc. Based on the
+		 * request data different arguments should be sent to the action. The action in turn
+		 * will talk to the model and retrieve the response data.
+		 *
+		 * The reponse will need access to the request data aswell, since the accept headers
+		 * will be located there and those values will determind which content type to send
+		 * back to the user.
+		 */
+
 		$factory = $core->getConfigurationHandlerFactory();
 		$config = $core->getContext()->getConfig();
 
@@ -119,7 +137,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// TODO: Is the reflection really necessary?
 		$method['action'] = $routing->getActionMethod($reflection['action']);
 
-		//
+		// TODO: Migrate the request data handling.
 		$arguments['action'] = array();
 		if($method['action'] === 'executeWrite') {
 			$validate = require 'validate.php';
