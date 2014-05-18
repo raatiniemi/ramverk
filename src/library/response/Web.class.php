@@ -9,11 +9,6 @@ namespace Me\Raatiniemi\Ramverk\Response
 
 	class Web extends Ramverk\Response
 	{
-		// +------------------------------------------------------------------+
-		// | Trait use-directives.                                            |
-		// +------------------------------------------------------------------+
-		use Http\Header;
-
 		protected $_accepts;
 
 		protected function sortByQuality(array $data=array())

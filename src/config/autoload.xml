@@ -7,13 +7,16 @@
 
 			<autoload name="Core">%directory.core.library%/core/Core.class.php</autoload>
 			<autoload name="Core\Context">%directory.core.library%/core/Context.class.php</autoload>
+			<autoload name="Core\Context\Handler">%directory.core.library%/core/context/Handler.trait.php</autoload>
 
 			<autoload name="Exception">%directory.core.library%/exception/Exception.class.php</autoload>
 
 			<autoload name="Loader\Autoload">%directory.core.library%/loader/Autoload.trait.php</autoload>
 
 			<autoload name="Request">%directory.core.library%/request/Request.class.php</autoload>
+			<autoload name="Request\Data">%directory.core.library%/request/Data.class.php</autoload>
 			<autoload name="Request\Web">%directory.core.library%/request/web/Web.class.php</autoload>
+			<autoload name="Request\Web\Data">%directory.core.library%/request/web/Data.class.php</autoload>
 
 			<autoload name="Response">%directory.core.library%/response/Response.class.php</autoload>
 			<autoload name="Response\Web">%directory.core.library%/response/Web.class.php</autoload>
@@ -43,9 +46,6 @@
 			<autoload name="Dom\Document">%directory.core.library%/data/dom/Document.class.php</autoload>
 			<autoload name="Dom\Element">%directory.core.library%/data/dom/Element.class.php</autoload>
 			<autoload name="Dom\Node">%directory.core.library%/data/dom/Node.class.php</autoload>
-		</autoloads>
-		<autoloads namespace="Me\Raatiniemi\Ramverk\Utility">
-			<autoload name="Http\Header">%directory.core.library%/utility/http/Header.trait.php</autoload>
 		</autoloads>
 	</configuration>
 </configurations>

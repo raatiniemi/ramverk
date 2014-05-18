@@ -5,97 +5,95 @@ namespace Me\Raatiniemi\Ramverk\Request
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk;
-	use Me\Raatiniemi\Ramverk\Utility\Http;
+	use Me\Raatiniemi\Ramverk\Core;
+	use Me\Raatiniemi\Ramverk\Request\Web;
 
 	class Web extends Ramverk\Request
 	{
-		// +------------------------------------------------------------------+
-		// | Trait use-directives.                                            |
-		// +------------------------------------------------------------------+
-		use Http\Header;
+		/**
+		 * Initialize the web request object.
+		 * @param Me\Raatiniemi\Ramverk\Core\Context $ct Application context.
+		 * @param Me\Raatiniemi\Ramverk\Request\Web\Data $rd Request data.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		public function __construct(Core\Context $ct, Web\Data $rd)
+		{
+			parent::__construct($ct, $rd);
+		}
 
-		protected $_requestUri;
-
-		protected $_requestMethod;
-
-		protected $_requestData;
-
-		protected $_requestRawData;
-
-		public function __construct()
+		protected function processRawData()
 		{
 			// TODO: Handle custom request URI indexes.
 			// Retrieve the value for the specified request URI index.
-			$this->_requestUri = isset($_GET['uri']) ? trim($_GET['uri'], '/') : NULL;
+			$ru = isset($_GET['uri']) ? trim($_GET['uri'], '/') : NULL;
+			$this->setRequestUri($ru);
 
 			// Retrieve the method used for the request.
-			$this->_requestMethod = 'read';
-			if(isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) === 'post') {
-				$this->_requestMethod = 'write';
+			$rm = Ramverk\Request::Read;
+			if(isset($_SERVER['REQUEST_METHOD'])) {
+				// Check which of the request methods are used.
+				// TODO: Add support for HEAD and PUT.
+				switch(strtolower($_SERVER['REQUEST_METHOD'])) {
+					case 'post':
+						$rm = Ramverk\Request::Write;
+						break;
+					case 'get':
+					default:
+						$rm = Ramverk\Request::Read;
+						break;
+				}
 			}
+			$this->setRequestMethod($rm);
+
+			// Remove the URI index and request method, we are done with these.
 			unset($_GET['uri'], $_SERVER['REQUEST_METHOD']);
 
-			$this->_requestData = NULL;
-			$this->_requestRawData = array();
+			// Begin assembling the request data.
+			$data = array();
+			$data = array_merge($data, !empty($_GET) ? $_GET : array());
 
-			// Process the raw request data, save what is neccessary and discard
-			// everything else. Handles content type specific data.
-			$this->processRawData();
+			// If the request method is write, i.e. the user is most likley
+			// sending in data with the request.
+			if($this->getRequestMethod() === Ramverk\Request::Write) {
+				$data = array_merge($data, !empty($_POST) ? $_POST : array());
+
+				// Different content types send data on different channels, and
+				// needs to be handled separately.
+				//
+				// The content type specific request data have to be parsed last,
+				// otherwise the data might get overridden by GET/POST data.
+				$type = $this->getRequestData()->getHeader('content-type');
+				if(isset($type)) {
+					// Check if there's any data available via the input channel.
+					$input = file_get_contents('php://input');
+
+					// Since the content type header can be both uppcase and lowercase
+					// we have to convert it to lowercase before comparing it.
+					if(!empty($input)) {
+						switch(strtolower($type)) {
+							case 'application/json':
+								// Attempt to parse the incoming JSON data, if
+								// any is available we have to merge it with
+								// the rest of the request data.
+								$input = json_decode($input, TRUE);
+								if(!empty($input)) {
+									$data = array_merge($data, $input);
+								} else {
+									// TODO: Invalid JSON data recieved, handle it.
+								}
+							break;
+						}
+					}
+				}
+			}
+
+			// Set the raw request data.
+			$this->getRequestData()->setRaw($data);
 
 			// Reset the available input sources since we have stored the raw data.
 			// The raw data will be validated on request.
 			$_GET = $_POST = $_REQUEST = array();
 			$_SERVER['REQUEST_URI'] = $_SERVER['QUERY_STRING'] = NULL;
-		}
-
-		protected function processRawData()
-		{
-			$data = array();
-			$data = array_merge($data, !empty($_GET) ? $_GET : array());
-
-			if($this->getRequestMethod() === 'Write') {
-				$data = array_merge($data, !empty($_POST) ? $_POST : array());
-
-				// Different content types send data on different channels, and
-				// needs to be handled separately.
-				$type = $this->getHeader('content-type');
-				if(isset($type)) {
-					switch(strtolower($type)) {
-						case 'application/json':
-							$input = file_get_contents('php://input');
-							$input = json_decode($input, TRUE);
-							if(!empty($input)) {
-								$data = array_merge($data, $input);
-							}
-							break;
-					}
-				}
-			}
-
-			$this->_requestRawData = $data;
-		}
-
-		public function getRequestUri()
-		{
-			return $this->_requestUri;
-		}
-
-		public function getRequestMethod()
-		{
-			return ucfirst($this->_requestMethod);
-		}
-
-		public function getRequestData()
-		{
-			if($this->_requestData === NULL) {
-				// TODO: Validate the request data against the validate configuration.
-			}
-			return $this->_requestData;
-		}
-
-		public function getRequestRawData()
-		{
-			return $this->_requestRawData;
 		}
 	}
 }

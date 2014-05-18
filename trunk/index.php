@@ -31,7 +31,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// Initialize the framework core.
 		$core = new Ramverk\Core($config);
 
-		// ---- Controller code.
+		// ---- controller->dispatch() code.
 
 		/**
 		 * TODO: Figure out a way to loosen the coupling between controller and request, reponse, and routing.
@@ -78,27 +78,30 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 
 		// Define the context based request, routing, and response classes with their namespaces.
 		$context = ucfirst(strtolower($config->get('context')));
-		$class['request'] = "{$namespace['base']}\\Request\\{$context}";
+		$class['rq'] = "{$namespace['base']}\\Request\\{$context}";
+		$class['rd'] = "{$namespace['base']}\\Request\\{$context}\\Data";
+
 		$class['routing'] = "{$namespace['base']}\\Routing\\{$context}";
 		$class['response'] = "{$namespace['base']}\\Response\\{$context}";
 
-		$keys = array_keys($class);
-		foreach($keys as $key) {
-			// Verify that each of the context based classes exists.
-			if(!class_exists($class[$key])) {
+		// Verify that each of the context based classes exists.
+		foreach($class as $key => $value) {
+			if(!class_exists($value)) {
 				throw new \Exception("Context based '{$key}'-class do not exists");
 			}
 		}
+		$reflection['rd'] = new \ReflectionClass($class['rd']);
+		$rd = $reflection['rd']->newInstance();
 
 		// TODO: Send arguments to request constructor?
-		$reflection['request'] = new \ReflectionClass($class['request']);
-		$request = $reflection['request']->newInstance();
+		$reflection['rq'] = new \ReflectionClass($class['rq']);
+		$rq = $reflection['rq']->newInstanceArgs(array($core->getContext(), $rd));
 
 		// Retrieve the routing configuration.
 		$routes = $factory->callHandler('Routing', '%directory.application.config%/routing.xml');
 
 		$reflection['routing'] = new \ReflectionClass($class['routing']);
-		$routing = $reflection['routing']->newInstanceArgs(array($request, $routes));
+		$routing = $reflection['routing']->newInstanceArgs(array($rq, $routes));
 		$routing->parse();
 
 		if(!$routing->hasRoute()) {
@@ -147,7 +150,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 				if(is_array($validate['module']) && array_key_exists($routing->getAction(), $validate['module'])) {
 					$validate['action'] = $validate['module'][$routing->getAction()];
 
-					$data = $request->getRequestRawData();
+					$data = $rq->getRequestRawData();
 					if(!empty($data)) {
 						foreach($data as $index => $value) {
 							// If the request data index do not exists within the validation
@@ -182,6 +185,9 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		}
 
 		// ---- Handle View
+
+		// TODO: Handle headers within the reponse.
+		exit;
 
 		$reflection['response'] = new \ReflectionClass($class['response']);
 		$response = $reflection['response']->newInstance();

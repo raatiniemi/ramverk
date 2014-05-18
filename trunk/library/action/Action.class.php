@@ -10,7 +10,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 	{
 		public function execute()
 		{
-			throw new Exception('Method is not available');
+			throw new Ramverk\Exception('Method is not available');
 		}
 	}
 }
