@@ -22,7 +22,7 @@
 			<autoload name="Response\Web">%directory.core.library%/response/Web.class.php</autoload>
 
 			<autoload name="Routing">%directory.core.library%/routing/Routing.class.php</autoload>
-			<autoload name="Routing\Web">%directory.core.library%/routing/Web.class.php</autoload>
+			<autoload name="Routing\Web">%directory.core.library%/routing/web/Web.class.php</autoload>
 
 			<autoload name="View">%directory.core.library%/view/View.class.php</autoload>
 		</autoloads>
