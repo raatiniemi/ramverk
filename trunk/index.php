@@ -49,6 +49,9 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		 * The reponse will need access to the request data aswell, since the accept headers
 		 * will be located there and those values will determind which content type to send
 		 * back to the user.
+		 *
+		 * TODO: Validate the context, since only specific context will be available.
+		 * I.e. Web, Console, etc.
 		 */
 
 		$factory = $core->getConfigurationHandlerFactory();
@@ -75,12 +78,11 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		*/
 
 		$namespace['base'] = 'Me\\Raatiniemi\\Ramverk';
+		$context = ucfirst(strtolower($config->get('context')));
 
 		// Define the context based request, routing, and response classes with their namespaces.
-		$context = ucfirst(strtolower($config->get('context')));
 		$class['rq'] = "{$namespace['base']}\\Request\\{$context}";
 		$class['rd'] = "{$namespace['base']}\\Request\\{$context}\\Data";
-
 		$class['routing'] = "{$namespace['base']}\\Routing\\{$context}";
 		$class['response'] = "{$namespace['base']}\\Response\\{$context}";
 
