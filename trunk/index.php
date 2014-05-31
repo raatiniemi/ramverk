@@ -47,13 +47,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		 * The reponse will need access to the request data aswell, since the accept headers
 		 * will be located there and those values will determind which content type to send
 		 * back to the user.
-		 *
-		 * TODO: Validate the context, since only specific context will be available.
-		 * I.e. Web, Console, etc.
 		 */
-
-		$factory = $core->getConfigurationHandlerFactory();
-		$config = $core->getContext()->getConfig();
 
 		/*
 			array(13) {
@@ -74,6 +68,11 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 				["directory.application.template"]=>"%directory.application%/template"
 			}
 		*/
+
+		// Retrieve the configuration container and the configuration handler factory.
+		$config = $core->getContext()->getConfig();
+		$factory = $core->getConfigurationHandlerFactory();
+
 
 		$namespace['base'] = 'Me\\Raatiniemi\\Ramverk';
 		$context = ucfirst(strtolower($config->get('context')));

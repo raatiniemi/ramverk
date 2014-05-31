@@ -60,6 +60,14 @@ namespace Me\Raatiniemi\Ramverk
 				$config->set('context', $context);
 			}
 
+			// TODO: Validate the retrieved context name.
+			// Since each of the context requires certain classes and
+			// configurations we can only allow for specific context names to
+			// be used, i.e. 'web', 'console', etc.
+			//
+			// Howevery, it should be possible to supply additional context
+			// names through the application configuration.
+
 			// Check if the configuration container have been supplied with an exception template.
 			if(!$config->has('exception.template')) {
 				// If no exception template have been defined, use the default.
