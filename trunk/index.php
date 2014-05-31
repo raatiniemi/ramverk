@@ -22,10 +22,8 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// Setup the basic application directory configurations.
 		$config = new Configuration\Container();
 
-		// Absolute path for the core framework.
+		// Set the absolute path for the framework core and the application.
 		$config->set('directory.core', "{$directory}/src", FALSE, TRUE);
-
-		// Absolute path for the application.
 		$config->set('directory.application', "{$directory}/trunk", FALSE, TRUE);
 
 		// Initialize the framework core.
