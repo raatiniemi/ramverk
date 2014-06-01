@@ -9,24 +9,21 @@ namespace Me\Raatiniemi\Ramverk\Routing
 
 	class Web extends Ramverk\Routing
 	{
+		/**
+		 * Initialize the web based routing.
+		 * @param Me\Raatiniemi\Ramverk\Request $rq The request.
+		 * @param array $routes The available routing routes.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
 		public function __construct(Request\Web $request, array $routes=array())
 		{
 			parent::__construct($request, $routes);
 		}
 
-		public function getActionMethod(\ReflectionClass $reflection)
-		{
-			$method = sprintf('execute%s', $this->_request->getRequestMethod());
-			if(!$reflection->hasMethod($method)) {
-				$method = 'execute';
-			}
-			return $method;
-		}
-
 		public function parse()
 		{
-			$uri = $this->_request->getRequestUri();
-			foreach($this->_routes as $route) {
+			$uri = $this->getRequest()->getUri();
+			foreach($this->getRoutes() as $route) {
 				$parameters = array();
 
 				// If the routing pattern contains the { character, e.g. parameter based
@@ -61,8 +58,8 @@ namespace Me\Raatiniemi\Ramverk\Routing
 				}
 
 				if(preg_match("#{$route['pattern']}#i", $uri, $matches)) {
-					$this->_module = $route['module'];
-					$this->_action = $route['action'];
+					$this->setModule($route['module']);
+					$this->setAction($route['action']);
 
 					// If the route have possible parameters we have to extract these
 					// to the parameters index for the action.
@@ -81,7 +78,7 @@ namespace Me\Raatiniemi\Ramverk\Routing
 								$data[$name] = trim($matches[$key], '/');
 							}
 						}
-						$this->_params = $data;
+						$this->setParams($data);
 					}
 
 					break;

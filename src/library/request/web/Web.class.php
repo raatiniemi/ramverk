@@ -8,6 +8,15 @@ namespace Me\Raatiniemi\Ramverk\Request
 	use Me\Raatiniemi\Ramverk\Core;
 	use Me\Raatiniemi\Ramverk\Request\Web;
 
+	/**
+	 * Handles incoming requests for the web context.
+	 *
+	 * @package Ramverk
+	 * @subpackage Request
+	 *
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2014, Authors
+	 */
 	class Web extends Ramverk\Request
 	{
 		/**
@@ -21,12 +30,16 @@ namespace Me\Raatiniemi\Ramverk\Request
 			parent::__construct($ct, $rd);
 		}
 
+		/**
+		 * Processes the incoming raw data and populate the request data container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
 		protected function processRawData()
 		{
 			// TODO: Handle custom request URI indexes.
 			// Retrieve the value for the specified request URI index.
 			$ru = isset($_GET['uri']) ? trim($_GET['uri'], '/') : NULL;
-			$this->setRequestUri($ru);
+			$this->setUri($ru);
 
 			// Retrieve the method used for the request.
 			$rm = Ramverk\Request::Read;
@@ -43,7 +56,7 @@ namespace Me\Raatiniemi\Ramverk\Request
 						break;
 				}
 			}
-			$this->setRequestMethod($rm);
+			$this->setMethod($rm);
 
 			// Remove the URI index and request method, we are done with these.
 			unset($_GET['uri'], $_SERVER['REQUEST_METHOD']);
@@ -54,7 +67,7 @@ namespace Me\Raatiniemi\Ramverk\Request
 
 			// If the request method is write, i.e. the user is most likley
 			// sending in data with the request.
-			if($this->getRequestMethod() === Ramverk\Request::Write) {
+			if($this->getMethod() === Ramverk\Request::Write) {
 				$data = array_merge($data, !empty($_POST) ? $_POST : array());
 
 				// Different content types send data on different channels, and
@@ -62,7 +75,7 @@ namespace Me\Raatiniemi\Ramverk\Request
 				//
 				// The content type specific request data have to be parsed last,
 				// otherwise the data might get overridden by GET/POST data.
-				$type = $this->getRequestData()->getHeader('content-type');
+				$type = $this->getData()->getHeader('content-type');
 				if(isset($type)) {
 					// Check if there's any data available via the input channel.
 					$input = file_get_contents('php://input');
@@ -88,7 +101,7 @@ namespace Me\Raatiniemi\Ramverk\Request
 			}
 
 			// Set the raw request data.
-			$this->getRequestData()->setRaw($data);
+			$this->getData()->setRaw($data);
 
 			// Reset the available input sources since we have stored the raw data.
 			// The raw data will be validated on request.

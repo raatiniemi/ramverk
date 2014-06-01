@@ -31,48 +31,9 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 
 		// ---- controller->dispatch() code.
 
-		/**
-		 * TODO: Figure out a way to loosen the coupling between controller and request, reponse, and routing.
-		 * The controller needs to be testable, hence the mentioned objects needs to
-		 * be injected to the controller and not instansiated within the controller.
-		 *
-		 * The action and view (and later model) will most likley have to be instansiated
-		 * within the controller, since that is basically the purpose of the controller dispatch.
-		 *
-		 * TODO: Implement support for request and response data.
-		 * The request data will be headers, post and get data, json data, etc. Based on the
-		 * request data different arguments should be sent to the action. The action in turn
-		 * will talk to the model and retrieve the response data.
-		 *
-		 * The reponse will need access to the request data aswell, since the accept headers
-		 * will be located there and those values will determind which content type to send
-		 * back to the user.
-		 */
-
-		/*
-			Array
-			(
-				[directory.core] => /var/www/ramverk/src
-				[directory.application] => /var/www/ramverk/trunk
-				[profile] => development
-				[context] => web
-				[exception.template] => %directory.core.template%/exception/plaintext.php
-				[directory.core.config] => %directory.core%/config
-				[directory.core.library] => %directory.core%/library
-				[directory.core.template] => %directory.core%/template
-				[directory.application.cache] => %directory.application%/cache
-				[directory.application.config] => %directory.application%/config
-				[directory.application.library] => %directory.application%/library
-				[directory.application.module] => %directory.application%/module
-				[directory.application.template] => %directory.application%/template
-			)
-		*/
-
 		// Retrieve the configuration container and the configuration handler factory.
 		$config = $core->getContext()->getConfig();
 		$factory = $core->getConfigurationHandlerFactory();
-
-		print_r($config->export());
 
 		// Setup the base namespace for the framework and the context name.
 		// Since the context name will represent certain elements of the
@@ -80,6 +41,30 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// uppercase followed by lowercase.
 		$namespace['base'] = 'Me\\Raatiniemi\\Ramverk';
 		$context = ucfirst(strtolower($config->get('context')));
+
+		// TODO: Retrieve the application configuration.
+		// The application configuration will contain the application base
+		// namespace, key for retrieving the uri, etc.
+
+		// Create new instance for the context based request data container.
+		$class['rd'] = "{$namespace['base']}\\Request\\{$context}\\Data";
+		$reflection['rd'] = new \ReflectionClass($class['rd']);
+		$rd = $reflection['rd']->newInstance();
+
+		// Create new instance for the context based request.
+		$class['rq'] = "{$namespace['base']}\\Request\\{$context}";
+		$reflection['rq'] = new \ReflectionClass($class['rq']);
+		$rq = $reflection['rq']->newInstanceArgs(array($core->getContext(), $rd));
+
+		// Retrieve the application specific routing configuration.
+		$routes = $factory->callHandler('Routing', '%directory.application.config%/routing.xml');
+
+		// Create new instance for the context based routing.
+		$class['ro'] = "{$namespace['base']}\\Routing\\{$context}";
+		$reflection['ro'] = new \ReflectionClass($class['ro']);
+		$ro = $reflection['ro']->newInstanceArgs(array($rq, $routes));
+
+		var_dump($ro->parse());
 	} catch(\Exception $e) {
 		// Render thrown exceptions with the specified template.
 		Ramverk\Exception::render($e, $config);

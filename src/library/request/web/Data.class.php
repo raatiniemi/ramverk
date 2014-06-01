@@ -6,10 +6,28 @@ namespace Me\Raatiniemi\Ramverk\Request\Web
 // +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk\Request;
 
+	/**
+	 * Handles incoming data for the web context.
+	 *
+	 * @package Ramverk
+	 * @subpackage Request
+	 *
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2014, Authors
+	 */
 	class Data extends Request\Data
 	{
+		/**
+		 * Stores the request HTTP headers.
+		 * @var array
+		 */
 		private $_headers;
 
+		/**
+		 * Retrieve the request HTTP headers.
+		 * @return array Request HTTP headers.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
 		public function getHeaders()
 		{
 			// We should only attempt to parse the HTTP headers once.
@@ -42,17 +60,20 @@ namespace Me\Raatiniemi\Ramverk\Request\Web
 			return $this->_headers;
 		}
 
+		/**
+		 * Retrieve value for HTTP header, with support for fallback.
+		 * @param string $name Name of the HTTP header.
+		 * @param string $default Fallback value, if the HTTP header is not defined.
+		 * @return string Value for HTTP header.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
 		public function getHeader($name, $default=NULL)
 		{
-			$headers = $this->getHeaders();
-
-			$value = $default;
+			// Every HTTP header key is stored with lowercase letters.
 			$name = strtolower($name);
-			if(array_key_exists($name, $headers)) {
-				$value = $headers[$name];
-			}
 
-			return $value;
+			$headers = $this->getHeaders();
+			return array_key_exists($name, $headers) ? $headers[$name] : $default;
 		}
 	}
 }

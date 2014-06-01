@@ -6,6 +6,17 @@ namespace Me\Raatiniemi\Ramverk
 // +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk\Core;
 
+	/**
+	 * Generic functionality for handling incoming requests.
+	 *
+	 * @package Ramverk
+	 * @subpackage Request
+	 *
+	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+	 * @copyright (c) 2014, Authors
+	 *
+	 * @abstract
+	 */
 	abstract class Request
 	{
 		// +------------------------------------------------------------------+
@@ -42,7 +53,7 @@ namespace Me\Raatiniemi\Ramverk
 		private $_rd;
 
 		/**
-		 * Initialize the request object.
+		 * Initialize the request.
 		 * @param Me\Raatiniemi\Ramverk\Core\Context $ct Application context.
 		 * @param Me\Raatiniemi\Ramverk\Request\Data $rd Request data.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
@@ -50,13 +61,22 @@ namespace Me\Raatiniemi\Ramverk
 		public function __construct(Core\Context $ct, Request\Data $rd)
 		{
 			$this->setContext($ct);
-			$this->_rd = $rd;
+			$this->setData($rd);
 
 			// Process the raw request data, save what is neccessary and discard
 			// everything else. Handles content type specific data.
 			$this->processRawData();
 		}
 
+		/**
+		 * Processes the incoming raw data and populate the request data container.
+		 *
+		 * The incoming raw data is dependant on the application context, e.g.
+		 * the web context handles the data differently than the console context.
+		 *
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 * @abstract
+		 */
 		abstract protected function processRawData();
 
 		/**
@@ -65,7 +85,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return string Request URI.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function setRequestUri($ru)
+		protected function setUri($ru)
 		{
 			return $this->_ru = $ru;
 		}
@@ -75,7 +95,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return string Request URI.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function getRequestUri()
+		public function getUri()
 		{
 			return $this->_ru;
 		}
@@ -86,7 +106,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return string Request method.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function setRequestMethod($rm)
+		protected function setMethod($rm)
 		{
 			// Attempt to adjust the format for the request method. The method
 			// should be formated as `Write` or `Read`.
@@ -109,17 +129,30 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return string Request method.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function getRequestMethod()
+		public function getMethod()
 		{
 			return $this->_rm;
 		}
 
-		protected function getRequestData()
+		/**
+		 * Set the request data container.
+		 * @param Me\Raatiniemi\Ramverk\Request\Data $rd Request data container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		private function setData(Request\Data $rd)
+		{
+			$this->_rd = $rd;
+		}
+
+		/**
+		 * Retrieve the request data container.
+		 * @return Me\Raatiniemi\Ramverk\Request\Data Request data container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		protected function getData()
 		{
 			return $this->_rd;
 		}
-
-		// TODO: Implement better support for request data.
 	}
 }
 // End of file: Request.class.php
