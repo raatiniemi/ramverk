@@ -130,6 +130,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 			// return an array with the configuration.
 			$data = sprintf('<?php return %s;', var_export($data, 1));
 
+			// TODO: Check if $cachename is writable.
 			// The file_put_contents function returns the amount of bytes
 			// written and false on failure.
 			if(file_put_contents($cachename, $data) === FALSE) {
