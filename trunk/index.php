@@ -10,6 +10,9 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 	use Me\Raatiniemi\Ramverk\Response;
 	use Me\Raatiniemi\Ramverk\Routing;
 
+	// Start the performace timer.
+	$time['start'] = microtime(true);
+
 	try {
 		// Enable full error reporting.
 		error_reporting(E_ALL);
@@ -69,4 +72,8 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// Render thrown exceptions with the specified template.
 		Ramverk\Exception::render($e, $config);
 	}
+
+	// End the performace timer and print the results.
+	$time['end'] = microtime(true);
+	printf('Execution took %f seconds', ($time['end'] - $time['start']));
 }
