@@ -21,17 +21,17 @@ namespace Me\Raatiniemi\Ramverk\Core\Context
 		 * Stores the application context.
 		 * @var Me\Raatiniemi\Ramverk\Core\Context
 		 */
-		private $_context;
+		private $_ct;
 
 		/**
 		 * Set the application context.
-		 * @param Me\Raatiniemi\Ramverk\Core\Context $context Application context.
+		 * @param Me\Raatiniemi\Ramverk\Core\Context $ct Application context.
 		 * @return Me\Raatiniemi\Ramverk\Core\Context Application context.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function setContext(Core\Context $context)
+		protected function setContext(Core\Context $ct)
 		{
-			return $this->_context = $context;
+			return $this->_ct = $ct;
 		}
 
 		/**
@@ -41,7 +41,7 @@ namespace Me\Raatiniemi\Ramverk\Core\Context
 		 */
 		public function getContext()
 		{
-			return $this->_context;
+			return $this->_ct;
 		}
 
 		/**
@@ -51,7 +51,7 @@ namespace Me\Raatiniemi\Ramverk\Core\Context
 		 */
 		public function getConfig()
 		{
-			return $this->_context->getConfig();
+			return $this->getContext()->getConfig();
 		}
 	}
 }
