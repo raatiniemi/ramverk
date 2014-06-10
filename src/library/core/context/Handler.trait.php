@@ -53,6 +53,16 @@ namespace Me\Raatiniemi\Ramverk\Core\Context
 		{
 			return $this->getContext()->getConfig();
 		}
+
+		/**
+		 * Retrieve the configuration handler factory.
+		 * @return Me\Raatiniemi\Ramverk\Configuration\Handler\Factory Configuration handler factory.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		public function getConfigurationHandlerFactory()
+		{
+			return $this->getContext()->getConfigurationHandlerFactory();
+		}
 	}
 }
 // End of file: Handler.trait.php

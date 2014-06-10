@@ -25,6 +25,12 @@ namespace Me\Raatiniemi\Ramverk
 		use Loader\Autoload;
 
 		/**
+		 * Application controller.
+		 * @var Me\Raatiniemi\Ramverk\Controller
+		 */
+		private $_controller;
+
+		/**
 		 * Initialize the ramverk core.
 		 * @param Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
 		 * @param string $profile Profile for the application, optional.
@@ -135,13 +141,22 @@ namespace Me\Raatiniemi\Ramverk
 		}
 
 		/**
-		 * Retrieve the configuration handler factory, used by the autoload-trait.
-		 * @return Me\Raatiniemi\Ramverk\Configuration\Handler\Factory Configuration handler factory.
+		 * Retrieve the application controller.
+		 * @return Me\Raatiniemi\Ramverk\Controller Application controller.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function getConfigurationHandlerFactory()
+		public function getController()
 		{
-			return $this->getContext()->getConfigurationHandlerFactory();
+			if($this->_controller === NULL) {
+				$class = __NAMESPACE__ . '\\Controller';
+				if(!class_exists($class)) {
+					throw new \Exception('Can not find controller');
+				}
+
+				$reflection = new \ReflectionClass($class);
+				$this->_controller = $reflection->newInstanceArgs(array($this->getContext()));
+			}
+			return $this->_controller;
 		}
 	}
 }

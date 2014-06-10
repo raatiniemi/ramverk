@@ -37,12 +37,6 @@ namespace Me\Raatiniemi\Ramverk\Core
 		protected $_configurationHandlerFactory;
 
 		/**
-		 * Application context controller.
-		 * @var Me\Raatiniemi\Ramverk\Controller
-		 */
-		protected $_controller;
-
-		/**
 		 * Initialize the application context.
 		 * @param Me\Raatiniemi\Ramverk\Configuration\Container $config Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
@@ -104,21 +98,6 @@ namespace Me\Raatiniemi\Ramverk\Core
 				$this->_configurationHandlerFactory = new Handler\Factory($this->getConfig(), $cache, $parser);
 			}
 			return $this->_configurationHandlerFactory;
-		}
-
-		/**
-		 * Retrieve the context controller.
-		 * @return Me\Raatiniemi\Ramverk\Controller Context controller.
-		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-		 */
-		public function getController()
-		{
-			if($this->_controller === NULL) {
-				// TODO: Implement the controller initialization dependant on context.
-				$controller = new Ramverk\Controller($this);
-				$this->_controller = $controller;
-			}
-			return $this->_controller;
 		}
 	}
 }
