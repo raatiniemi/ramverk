@@ -34,8 +34,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 
 		// ---- controller->dispatch() code.
 
-		// Retrieve the configuration container and the configuration handler factory.
-		$config = $core->getContext()->getConfig();
+		// Retrieve the configuration handler factory.
 		$factory = $core->getConfigurationHandlerFactory();
 
 		// Setup the base namespace for the framework and the context name.
@@ -116,7 +115,16 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// container, with prefix to minimize the risk of name conflicts. Or,
 		// should they be imported to a new configuration container.
 
-		var_dump($config->export());
+		// TODO: Add support for module and application specific namespace.
+
+		$namespace['module'] = "Me\\Raatiniemi\\Ramverk\\Trunk\\{$routing->getModule()}";
+		$classes['action'] = "{$namespace['module']}\\Action\\{$routing->getAction()}";
+
+		$action = createReflectionInstance('action');
+		$method = $routing->getActionMethod($reflection['action']);
+
+		// Execute the action method.
+		call_user_func_array(array($action, $method), $routing->getParams());
 	} catch(\Exception $e) {
 		// Render thrown exceptions with the specified template.
 		Ramverk\Exception::render($e, $config);
