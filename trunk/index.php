@@ -45,38 +45,55 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		$namespace['base'] = 'Me\\Raatiniemi\\Ramverk';
 		$context = ucfirst(strtolower($config->get('context')));
 
+		$classes = array();
+		$classes['request'] = "{$namespace['base']}\\Request\\{$context}";
+		$classes['data'] = "{$namespace['base']}\\Request\\{$context}\\Data";
+		$classes['routing'] = "{$namespace['base']}\\Routing\\{$context}";
+
 		$reflection = array();
-		$newInstance = function($name, $class, array $arguments=array()) {
-			global $reflection;
+		function createReflectionInstance($name, array $arguments=array()) {
+			global $reflection, $classes;
 
 			if(!isset($reflection[$name])) {
+				if(!isset($classes[$name])) {
+					throw new \Exception(sprintf(
+						'Class for name "%s" is not registered',
+						$name
+					));
+				}
+				$class = $classes[$name];
+
+				if(!class_exists($class)) {
+					throw new \Exception(sprintf(
+						'Class "%s" can not be found',
+						$name
+					));
+				}
+
 				$reflection[$name] = new \ReflectionClass($class);
 			}
 
 			return $reflection[$name]->newInstanceArgs($arguments);
-		};
+		}
 
 		// TODO: Retrieve the application configuration.
 		// The application configuration will contain the application base
 		// namespace, key for retrieving the uri, etc.
 
 		// Create new instance for the context based request data container.
-		$class['rd'] = "{$namespace['base']}\\Request\\{$context}\\Data";
-		$rd = $newInstance('rd', $class['rd']);
+		$data = createReflectionInstance('data');
 
 		// Create new instance for the context based request.
-		$class['rq'] = "{$namespace['base']}\\Request\\{$context}";
-		$rq = $newInstance('rq', $class['rq'], array($core->getContext(), $rd));
+		$request = createReflectionInstance('request', array($core->getContext(), $data));
 
 		// Retrieve the application specific routing configuration.
 		$routes = $factory->callHandler('Routing', '%directory.application.config%/routing.xml');
 
 		// Create new instance for the context based routing.
-		$class['ro'] = "{$namespace['base']}\\Routing\\{$context}";
-		$ro = $newInstance('ro', $class['ro'], array($rq, $routes));
+		$routing = createReflectionInstance('routing', array($request, $routes));
 
 		// If a route have been found the 'parse'-method will return 'true'.
-		if(!$ro->parse()) {
+		if(!$routing->parse()) {
 			// TODO: No route have been found, handle it.
 		}
 	} catch(\Exception $e) {
