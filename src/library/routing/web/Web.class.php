@@ -20,6 +20,11 @@ namespace Me\Raatiniemi\Ramverk\Routing
 			parent::__construct($request, $routes);
 		}
 
+		/**
+		 * Parse the available routes after a match against the request.
+		 * @return boolean True if a route have been found, otherwise false.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
 		public function parse()
 		{
 			$uri = $this->getRequest()->getUri();
@@ -85,11 +90,7 @@ namespace Me\Raatiniemi\Ramverk\Routing
 				}
 			}
 
-			return array(
-				'module' => $this->getModule(),
-				'action' => $this->getAction(),
-				'params' => $this->getParams()
-			);
+			return $this->hasRoute();
 		}
 	}
 }

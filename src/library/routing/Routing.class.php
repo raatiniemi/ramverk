@@ -195,6 +195,11 @@ namespace Me\Raatiniemi\Ramverk
 			return $this->_params;
 		}
 
+		/**
+		 * Parse the available routes after a match against the request.
+		 * @return boolean True if a route have been found, otherwise false.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
 		abstract public function parse();
 	}
 }
