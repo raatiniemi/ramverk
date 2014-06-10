@@ -95,7 +95,23 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// If a route have been found the 'parse'-method will return 'true'.
 		if(!$routing->parse()) {
 			// TODO: No route have been found, handle it.
+			// Initialize the module and action with the 404. This way we can
+			// send the 404 page with the requested content type, e.g. pages
+			// requested with application/json in the accept header will
+			// receive the the 404 with application/json.
+			throw new \Exception('Page not found');
 		}
+
+		// -- setupModule code
+
+		// Setup the directory structure for the module.
+		// TODO: Check that the module base directory actually exists.
+		$config->set('directory.module', "%directory.application.module%/{$routing->getModule()}");
+		$config->set('directory.module.action', '%directory.module%/action');
+		$config->set('directory.module.config', '%directory.module%/config');
+		$config->set('directory.module.view', '%directory.module%/view');
+
+		var_dump($config->export());
 	} catch(\Exception $e) {
 		// Render thrown exceptions with the specified template.
 		Ramverk\Exception::render($e, $config);
