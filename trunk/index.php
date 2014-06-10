@@ -111,6 +111,11 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		$config->set('directory.module.config', '%directory.module%/config');
 		$config->set('directory.module.view', '%directory.module%/view');
 
+		// TODO: How should module configuration be handled?
+		// Should the configurations be imported to the existing configuration
+		// container, with prefix to minimize the risk of name conflicts. Or,
+		// should they be imported to a new configuration container.
+
 		var_dump($config->export());
 	} catch(\Exception $e) {
 		// Render thrown exceptions with the specified template.
