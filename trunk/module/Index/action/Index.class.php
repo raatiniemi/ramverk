@@ -8,7 +8,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk\Index\Action
 
 	class Index extends Trunk\Action
 	{
-		public function executeRead()
+		public function execute()
 		{
 			return 'Success';
 		}
