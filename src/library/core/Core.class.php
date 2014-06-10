@@ -21,19 +21,8 @@ namespace Me\Raatiniemi\Ramverk
 		// +------------------------------------------------------------------+
 		// | Trait use-directives.                                            |
 		// +------------------------------------------------------------------+
+		use Core\Context\Handler;
 		use Loader\Autoload;
-
-		/**
-		 * Configuration container.
-		 * @var Me\Raatiniemi\Ramverk\Configuration\Container
-		 */
-		private $_config;
-
-		/**
-		 * Application context.
-		 * @var Me\Raatiniemi\Ramverk\Core\Context
-		 */
-		private $_context;
 
 		/**
 		 * Initialize the ramverk core.
@@ -80,8 +69,7 @@ namespace Me\Raatiniemi\Ramverk
 
 			// Initialize the core context.
 			// TODO: Implement support for custom core context classes?
-			$this->_context = new Core\Context($config);
-			$this->_config = $config;
+			$this->setContext(new Core\Context($config));
 
 			// Register the framework autoload handler.
 			$this->setAutoloadFile('%directory.application.config%/autoload.xml');
@@ -144,16 +132,6 @@ namespace Me\Raatiniemi\Ramverk
 			$factory->registerHandler('Autoload', "{$namespace}\\Autoload");
 			$factory->registerHandler('Module', "{$namespace}\\Module");
 			$factory->registerHandler('Routing', "{$namespace}\\Routing");
-		}
-
-		/**
-		 * Retrieve the application context.
-		 * @return Me\Raatiniemi\Ramverk\Core\Context Application context.
-		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-		 */
-		public function getContext()
-		{
-			return $this->_context;
 		}
 
 		/**
