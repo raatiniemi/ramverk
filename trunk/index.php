@@ -45,29 +45,40 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		$namespace['base'] = 'Me\\Raatiniemi\\Ramverk';
 		$context = ucfirst(strtolower($config->get('context')));
 
+		$reflection = array();
+		$newInstance = function($name, $class, array $arguments=array()) {
+			global $reflection;
+
+			if(!isset($reflection[$name])) {
+				$reflection[$name] = new \ReflectionClass($class);
+			}
+
+			return $reflection[$name]->newInstanceArgs($arguments);
+		};
+
 		// TODO: Retrieve the application configuration.
 		// The application configuration will contain the application base
 		// namespace, key for retrieving the uri, etc.
 
 		// Create new instance for the context based request data container.
 		$class['rd'] = "{$namespace['base']}\\Request\\{$context}\\Data";
-		$reflection['rd'] = new \ReflectionClass($class['rd']);
-		$rd = $reflection['rd']->newInstance();
+		$rd = $newInstance('rd', $class['rd']);
 
 		// Create new instance for the context based request.
 		$class['rq'] = "{$namespace['base']}\\Request\\{$context}";
-		$reflection['rq'] = new \ReflectionClass($class['rq']);
-		$rq = $reflection['rq']->newInstanceArgs(array($core->getContext(), $rd));
+		$rq = $newInstance('rq', $class['rq'], array($core->getContext(), $rd));
 
 		// Retrieve the application specific routing configuration.
 		$routes = $factory->callHandler('Routing', '%directory.application.config%/routing.xml');
 
 		// Create new instance for the context based routing.
 		$class['ro'] = "{$namespace['base']}\\Routing\\{$context}";
-		$reflection['ro'] = new \ReflectionClass($class['ro']);
-		$ro = $reflection['ro']->newInstanceArgs(array($rq, $routes));
+		$ro = $newInstance('ro', $class['ro'], array($rq, $routes));
 
-		var_dump($ro->parse());
+		// If a route have been found the 'parse'-method will return 'true'.
+		if(!$ro->parse()) {
+			// TODO: No route have been found, handle it.
+		}
 	} catch(\Exception $e) {
 		// Render thrown exceptions with the specified template.
 		Ramverk\Exception::render($e, $config);
