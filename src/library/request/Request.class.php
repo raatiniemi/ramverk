@@ -38,13 +38,13 @@ namespace Me\Raatiniemi\Ramverk
 		 * Stores the request uri.
 		 * @var string
 		 */
-		private $_ru;
+		private $_uri;
 
 		/**
 		 * Stores the request method.
 		 * @var string
 		 */
-		private $_rm;
+		private $_method;
 
 		/**
 		 * Stores the request data.
@@ -81,13 +81,13 @@ namespace Me\Raatiniemi\Ramverk
 
 		/**
 		 * Set the request URI.
-		 * @param string $ru Request URI.
+		 * @param string $uri Request URI.
 		 * @return string Request URI.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function setUri($ru)
+		protected function setUri($uri)
 		{
-			return $this->_ru = $ru;
+			return $this->_uri = $uri;
 		}
 
 		/**
@@ -97,31 +97,31 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		public function getUri()
 		{
-			return $this->_ru;
+			return $this->_uri;
 		}
 
 		/**
 		 * Set the request method.
-		 * @param string $rm Request method.
+		 * @param string $method Request method.
 		 * @return string Request method.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function setMethod($rm)
+		protected function setMethod($method)
 		{
 			// Attempt to adjust the format for the request method. The method
 			// should be formated as `Write` or `Read`.
-			if(!empty($rm) && is_string($rm)) {
-				$rm = ucfirst(strtolower($rm));
+			if(!empty($method) && is_string($method)) {
+				$method = ucfirst(strtolower($method));
 			} else {
 				// If the request method is either empty or not a string we
 				// have to avoid fatal errors by reverting the method.
-				$rm = Request::Read;
+				$method = Request::Read;
 			}
 
 			// Check that the request method is one of the accepted values,
 			// otherwise fallback to the default one.
-			$rm = in_array($rm, array(Request::Write, Request::Read)) ? $rm : Request::Read;
-			return $this->_rm = $rm;
+			$method = in_array($method, array(Request::Write, Request::Read)) ? $method : Request::Read;
+			return $this->_method = $method;
 		}
 
 		/**
@@ -131,7 +131,7 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		public function getMethod()
 		{
-			return $this->_rm;
+			return $this->_method;
 		}
 
 		/**

@@ -38,25 +38,25 @@ namespace Me\Raatiniemi\Ramverk\Request
 		{
 			// TODO: Handle custom request URI indexes.
 			// Retrieve the value for the specified request URI index.
-			$ru = isset($_GET['uri']) ? trim($_GET['uri'], '/') : NULL;
-			$this->setUri($ru);
+			$uri = isset($_GET['uri']) ? trim($_GET['uri'], '/') : NULL;
+			$this->setUri($uri);
 
 			// Retrieve the method used for the request.
-			$rm = Ramverk\Request::Read;
+			$method = Ramverk\Request::Read;
 			if(isset($_SERVER['REQUEST_METHOD'])) {
 				// Check which of the request methods are used.
 				// TODO: Add support for HEAD and PUT.
 				switch(strtolower($_SERVER['REQUEST_METHOD'])) {
 					case 'post':
-						$rm = Ramverk\Request::Write;
+						$method = Ramverk\Request::Write;
 						break;
 					case 'get':
 					default:
-						$rm = Ramverk\Request::Read;
+						$method = Ramverk\Request::Read;
 						break;
 				}
 			}
-			$this->setMethod($rm);
+			$this->setMethod($method);
 
 			// Remove the URI index and request method, we are done with these.
 			unset($_GET['uri'], $_SERVER['REQUEST_METHOD']);
