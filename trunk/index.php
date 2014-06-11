@@ -25,6 +25,11 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// Setup the basic application directory configurations.
 		$config = new Configuration\Container();
 
+		// To improve performance, use a non-development profile.
+		// A development profile is formatted as: 'development(\..*)'
+		// E.g. 'development' or 'development.developer'.
+		// $config->set('profile', 'production');
+
 		// Set the absolute path for the framework core and the application.
 		$config->set('directory.core', "{$directory}/src", FALSE, TRUE);
 		$config->set('directory.application', "{$directory}/trunk", FALSE, TRUE);
@@ -33,6 +38,8 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		$core = new Ramverk\Core($config);
 
 		// ---- controller->dispatch() code.
+
+		$controller = $core->getController();
 
 		// Retrieve the configuration handler factory.
 		$factory = $core->getConfigurationHandlerFactory();
@@ -44,52 +51,25 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		$namespace['base'] = 'Me\\Raatiniemi\\Ramverk';
 		$context = ucfirst(strtolower($config->get('context')));
 
-		$classes = array();
-		$classes['request'] = "{$namespace['base']}\\Request\\{$context}";
-		$classes['data'] = "{$namespace['base']}\\Request\\{$context}\\Data";
-		$classes['routing'] = "{$namespace['base']}\\Routing\\{$context}";
-
-		$reflection = array();
-		function createReflectionInstance($name, array $arguments=array()) {
-			global $reflection, $classes;
-
-			if(!isset($reflection[$name])) {
-				if(!isset($classes[$name])) {
-					throw new \Exception(sprintf(
-						'Class for name "%s" is not registered',
-						$name
-					));
-				}
-				$class = $classes[$name];
-
-				if(!class_exists($class)) {
-					throw new \Exception(sprintf(
-						'Class "%s" can not be found',
-						$name
-					));
-				}
-
-				$reflection[$name] = new \ReflectionClass($class);
-			}
-
-			return $reflection[$name]->newInstanceArgs($arguments);
-		}
+		$controller->setClass('request', "{$namespace['base']}\\Request\\{$context}");
+		$controller->setClass('request.data', "{$namespace['base']}\\Request\\{$context}\\Data");
+		$controller->setClass('routing', "{$namespace['base']}\\Routing\\{$context}");
 
 		// TODO: Retrieve the application configuration.
 		// The application configuration will contain the application base
 		// namespace, key for retrieving the uri, etc.
 
 		// Create new instance for the context based request data container.
-		$data = createReflectionInstance('data');
+		$data = $controller->createInstance('request.data');
 
 		// Create new instance for the context based request.
-		$request = createReflectionInstance('request', array($core->getContext(), $data));
+		$request = $controller->createInstance('request', array($core->getContext(), $data));
 
 		// Retrieve the application specific routing configuration.
 		$routes = $factory->callHandler('Routing', '%directory.application.config%/routing.xml');
 
 		// Create new instance for the context based routing.
-		$routing = createReflectionInstance('routing', array($request, $routes));
+		$routing = $controller->createInstance('routing', array($request, $routes));
 
 		// If a route have been found the 'parse'-method will return 'true'.
 		if(!$routing->parse()) {
@@ -118,10 +98,10 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// TODO: Add support for module and application specific namespace.
 
 		$namespace['module'] = "Me\\Raatiniemi\\Ramverk\\Trunk\\{$routing->getModule()}";
-		$classes['action'] = "{$namespace['module']}\\Action\\{$routing->getAction()}";
+		$controller->setClass('action', "{$namespace['module']}\\Action\\{$routing->getAction()}");
 
-		$action = createReflectionInstance('action');
-		$method = $routing->getActionMethod($reflection['action']);
+		$action = $controller->createInstance('action');
+		$method = $routing->getActionMethod($controller->getReflection('action'));
 
 		// Execute the action method.
 		call_user_func_array(array($action, $method), $routing->getParams());
