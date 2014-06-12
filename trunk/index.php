@@ -42,7 +42,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		$controller = $core->getController();
 
 		// Retrieve the configuration handler factory.
-		$factory = $core->getConfigurationHandlerFactory();
+		$factory = $controller->getConfigurationHandlerFactory();
 
 		// Setup the base namespace for the framework and the context name.
 		// Since the context name will represent certain elements of the
@@ -81,8 +81,6 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 			throw new \Exception('Page not found');
 		}
 
-		// -- setupModule code
-
 		// Setup the directory structure for the module.
 		// TODO: Check that the module base directory actually exists.
 		$config->set('directory.module', "%directory.application.module%/{$routing->getModule()}");
@@ -90,18 +88,37 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		$config->set('directory.module.config', '%directory.module%/config');
 		$config->set('directory.module.view', '%directory.module%/view');
 
-		// TODO: How should module configuration be handled?
-		// Should the configurations be imported to the existing configuration
-		// container, with prefix to minimize the risk of name conflicts. Or,
-		// should they be imported to a new configuration container.
+		// Check if module specific configuration is available.
+		$module = $config->expandDirectives('%directory.module.config%/module.xml');
+		if(is_readable($module)) {
+			$config->import($factory->callHandler('Module', $module));
+		}
 
-		// TODO: Add support for module and application specific namespace.
+		// TODO: Check if application should use namespaces.
+		// If the application should use namespaces there are a couple of requirements.
+		// 1.	The action, view, and model (etc.) have to be located with
+		// 		their respective namespaces. These are predefined namespaces.
+		// 2.	Coming soon...
+		// $useNamespace = $config->get('application.namespace.enabled', true);
 
-		$namespace['module'] = "Me\\Raatiniemi\\Ramverk\\Trunk\\{$routing->getModule()}";
+		// Attempt to retrieve the module namespace, with fallback to the
+		// application wide namespace, if any is available.
+		$namespace['module'] = $config->get('module.namespace', $config->get('application.namespace'));
 		$controller->setClass('action', "{$namespace['module']}\\Action\\{$routing->getAction()}");
 
+		// Retrieve the instance for the requested action.
 		$action = $controller->createInstance('action');
 		$method = $routing->getActionMethod($controller->getReflection('action'));
+
+		// If the method is 'executeWrite', i.e. the request is post and the
+		// action have a write method defined. No need to parse the request
+		// data if the request is post but no write method is available.
+		if($method === 'executeWrite') {
+		}
+
+		// TODO: How should the request data be passed to the action?
+		// Should everything be merged with $routing->getParams() or should
+		// the data be separated, i.e. URI data and POST data?
 
 		// Execute the action method.
 		call_user_func_array(array($action, $method), $routing->getParams());
