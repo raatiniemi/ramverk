@@ -4,10 +4,11 @@
 			<!--
 				TODO: Implement support for routing groups, i.e. with combined name-prefix and modules.
 			  -->
-			<route name="user.profile" pattern="^user/{id:\d+}$" module="User" action="Profile" />
-			<route name="user.profile" pattern="^user/{name:[a-z]+}$" module="User" action="Profile" />
 			<route name="user.login" pattern="^user/login$" module="User" action="Login" />
 			<route name="user.logout" pattern="^user/logout$" module="User" action="Logout" />
+
+			<route name="user.profile" pattern="^user/{id:\d+}$" module="User" action="Profile" />
+			<route name="user.profile" pattern="^user/{name:[a-z]+}$" module="User" action="Profile" />
 
 			<route name="index" pattern="^$" module="Index" action="Index" />
 		</routes>
