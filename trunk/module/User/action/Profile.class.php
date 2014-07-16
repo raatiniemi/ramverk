@@ -8,7 +8,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk\User\Action
 
 	class Profile extends Trunk\Action
 	{
-		public function executeRead(array $parameters=array())
+		public function executeRead()
 		{
 			return 'Success';
 		}

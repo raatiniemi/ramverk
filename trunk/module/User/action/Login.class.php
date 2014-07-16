@@ -8,9 +8,9 @@ namespace Me\Raatiniemi\Ramverk\Trunk\User\Action
 
 	class Login extends Trunk\Action
 	{
-		public function executeWrite(array $data=array())
+		public function executeWrite(array $parameters=array())
 		{
-			if(isset($data['username'], $data['password'])) {
+			if(isset($parameters['username'], $parameters['password'])) {
 				// TODO: Attempt to login...
 				$login = TRUE;
 				if($login) {
