@@ -92,13 +92,31 @@ namespace Me\Raatiniemi\Ramverk
 		 * not defined, the generic `execute` name will be returned.
 		 * @param ReflectionClass $reflection Reflection of the action.
 		 * @return string Action method.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getActionMethod(\ReflectionClass $reflection)
 		{
-			$method = sprintf('execute%s', $this->getRequest()->getMethod());
-			if(!$reflection->hasMethod($method)) {
-				$method = 'execute';
+			// Default method if none have been found.
+			$method = 'execute';
+
+			// Assemble the list of available action methods.
+			$availableMethods = array();
+			if($this->getRequest()->getMethod() === Request::Write) {
+				$availableMethods[] = Request::Write;
 			}
+			// The `executeRead` method should always be available as fallback,
+			// if none of the other action methods have been implemented.
+			$availableMethods[] = Request::Read;
+
+			// Iterate through the available action methods and try to find
+			// the first available.
+			foreach($availableMethods as $actionMethod) {
+				if($reflection->hasMethod("execute{$actionMethod}")) {
+					$method = "execute{$actionMethod}";
+					break;
+				}
+			}
+
 			return $method;
 		}
 
