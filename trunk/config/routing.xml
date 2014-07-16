@@ -8,7 +8,7 @@
 			<route name="user.logout" pattern="^user/logout$" module="User" action="Logout" />
 
 			<route name="user.profile" pattern="^user/{id:\d+}$" module="User" action="Profile" />
-			<route name="user.profile" pattern="^user/{name:[a-z]+}$" module="User" action="Profile" />
+			<route name="user.profile" pattern="^user/{name:[a-z0-9]+}$" module="User" action="Profile" />
 
 			<route name="index" pattern="^$" module="Index" action="Index" />
 		</routes>
