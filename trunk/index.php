@@ -121,7 +121,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// the data be separated, i.e. URI data and POST data?
 
 		// Execute the action method.
-		call_user_func_array(array($action, $method), $routing->getParams());
+		call_user_func_array(array($action, $method), array($routing->getParams()));
 	} catch(\Exception $e) {
 		// Render thrown exceptions with the specified template.
 		Ramverk\Exception::render($e, $config);
