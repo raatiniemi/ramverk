@@ -44,6 +44,7 @@
 			<autoload name="Container">%directory.core.library%/data/Container.class.php</autoload>
 
 			<autoload name="Dom\Utility\Value">%directory.core.library%/data/dom/utility/Value.trait.php</autoload>
+			<autoload name="Dom\Attribute">%directory.core.library%/data/dom/Attribute.class.php</autoload>
 			<autoload name="Dom\Document">%directory.core.library%/data/dom/Document.class.php</autoload>
 			<autoload name="Dom\Element">%directory.core.library%/data/dom/Element.class.php</autoload>
 			<autoload name="Dom\Node">%directory.core.library%/data/dom/Node.class.php</autoload>

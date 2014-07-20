@@ -38,6 +38,7 @@ namespace Me\Raatiniemi\Ramverk
 
 	// Include the extended DOM functionality.
 	require 'data/dom/utility/Value.trait.php';
+	require 'data/dom/Attribute.class.php';
 	require 'data/dom/Document.class.php';
 	require 'data/dom/Element.class.php';
 	require 'data/dom/Node.class.php';
