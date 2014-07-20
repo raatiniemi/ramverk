@@ -29,35 +29,29 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 */
 		public function execute(Dom\Document $document)
 		{
-			// Retrieve the autoload groups from the document. Every document must
-			// have atleast one autoload group, otherwise it's an invalid document.
-			$groups = $document->getElementsByTagName('autoloads');
-			if(empty($groups) || $groups->length === 0) {
-				// TODO: Write exception message.
-				// TODO: Better specify the exception object.
-				throw new Ramverk\Exception('');
-			}
-
 			$data = array();
-			foreach($groups as $group) {
-				// If the autoload group has defined a namespace, then this
-				// namespace will prefix every class within the group.
-				$namespace = $group->hasAttribute('namespace') ? "{$group->getAttribute('namespace')}\\" : NULL;
+			foreach($document->getConfigurationElements() as $configuration) {
+				// TODO: Check if the configuration have autoloads-items.
 
-				// Retrieve the autoload items from the group.
-				$items = $group->getElementsByTagName('autoload');
-				foreach($items as $item) {
-					// Every item must have the name of the class defined.
-					if(!$item->hasAttribute('name')) {
-						// TODO: Write exception message.
-						// TODO: Better specify the exception object.
-						throw new Ramverk\Exception('');
+				foreach($configuration->get('autoloads') as $group) {
+					// If the autoload group has defined a namespace, then this
+					// namespace will prefix every class within the group.
+					$namespace = $group->hasAttribute('namespace') ? "{$group->getAttribute('namespace')}\\" : NULL;
+
+					// Retrieve the autoload items from the group.
+					foreach($group->get('autoload') as $autoload) {
+						// Every item must have the name of the class defined.
+						if(!$autoload->hasAttribute('name')) {
+							// TODO: Write exception message.
+							// TODO: Better specify the exception object.
+							throw new Ramverk\Exception('');
+						}
+
+						// Prepend the group namespace (if any) to the class
+						// name, and expand the class path directives.
+						$name = "{$namespace}{$autoload->getAttribute('name')}";
+						$data[$name] = $this->expandDirectives($autoload->getValue());
 					}
-
-					// Prepend the group namespace (if any) to the class name,
-					// and expand the class path directives.
-					$name = "{$namespace}{$item->getAttribute('name')}";
-					$data[$name] = $this->expandDirectives($item->getValue());
 				}
 			}
 			// TODO: Should we throw an exception if $data is empty?
