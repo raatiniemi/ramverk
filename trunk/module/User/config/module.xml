@@ -1,5 +1,7 @@
 <configurations>
 	<configuration>
-		<setting name="namespace">Me\Raatiniemi\Ramverk\Trunk\User</setting>
+		<settings>
+			<setting name="namespace">Me\Raatiniemi\Ramverk\Trunk\User</setting>
+		</settings>
 	</configuration>
 </configurations>
