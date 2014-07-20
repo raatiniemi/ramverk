@@ -9,7 +9,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 	use Me\Raatiniemi\Ramverk\Data\Dom;
 
 	/**
-	 * Handler for autoload configuration.
+	 * Handler for module configuration.
 	 *
 	 * @package Ramverk
 	 * @subpackage Configuration
