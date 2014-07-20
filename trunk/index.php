@@ -81,15 +81,11 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 					throw new \Exception("Core configuration property '{$name}' have not been defined");
 				}
 			}
+
+			// Since no route could be found we have to use the 404 route.
+			// This way we can deliver different responses depending on the accepted content-type.
 			$routing->setModule($config->get('actions.404_module'));
 			$routing->setAction($config->get('actions.404_action'));
-
-			// TODO: No route have been found, handle it.
-			// Initialize the module and action with the 404. This way we can
-			// send the 404 page with the requested content type, e.g. pages
-			// requested with application/json in the accept header will
-			// receive the the 404 with application/json.
-//			throw new \Exception('Page not found');
 		}
 
 		// Setup the directory structure for the module.
@@ -110,17 +106,26 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 			$config->import($factory->callHandler('Module', $module));
 		}
 
-		// TODO: Check if application should use namespaces.
-		// If the application should use namespaces there are a couple of requirements.
-		// 1.	The action, view, and model (etc.) have to be located with
-		// 		their respective namespaces. These are predefined namespaces.
-		// 2.	Coming soon...
-		// $useNamespace = $config->get('application.namespace.enabled', true);
+		// TODO: Import the module specific autoload configuration.
 
-		// Attempt to retrieve the module namespace, with fallback to the
-		// application wide namespace, if any is available.
-		$namespace['module'] = $config->get('module.namespace', $config->get('core.namespace'));
-		$controller->setClass('action', "{$namespace['module']}\\Action\\{$routing->getAction()}");
+		// Check whether the module should use namespaces.
+		// If namespaces are going to be used, every class have to be located under the namespace.
+		if(($shouldNamespace = $config->get('module.namespace.enabled', $config->get('core.namespace.enabled', TRUE)))) {
+			// Attempt to retrieve the module specific namespace, if it has
+			// been defined, otherwise use the core with the module name as suffix.
+			$namespace['module'] = $config->get('module.namespace');
+			if(empty($namespace['module']) && $config->has('core.namespace')) {
+				$namespace['module'] = "{$config->get('core.namespace')}\\{$routing->getModule()}";
+			}
+		}
+
+		// Check if namespaces should be used and if we have a module namespace available.
+		// If namespaces are used, the action have to be located under the "Module\\Action"-namespace.
+		if($shouldNamespace && isset($namespace['module'])) {
+			$controller->setClass('action', "{$namespace['module']}\\Action\\{$routing->getAction()}");
+		} else {
+			$controller->setClass('action', $routing->getAction());
+		}
 
 		// Retrieve the instance for the requested action.
 		$action = $controller->createInstance('action');

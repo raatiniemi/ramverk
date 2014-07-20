@@ -13,6 +13,7 @@
 		</system_actions>
 
 		<settings>
+			<setting name="namespace.enabled">true</setting>
 			<setting name="namespace">Me\Raatiniemi\Ramverk\Trunk</setting>
 		</settings>
 	</configuration>
