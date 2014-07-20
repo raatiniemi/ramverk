@@ -4,6 +4,9 @@
 			<autoload name="Action">%directory.application%/library/action/Action.class.php</autoload>
 			<autoload name="View">%directory.application%/library/view/View.class.php</autoload>
 		</autoloads>
+		<autoloads namespace="Me\Raatiniemi\Ramverk\Trunk\Error">
+			<autoload name="Action\NotFound">%directory.application.module%/Error/action/NotFound.class.php</autoload>
+		</autoloads>
 		<autoloads namespace="Me\Raatiniemi\Ramverk\Trunk\User">
 			<autoload name="Action\Index">%directory.application.module%/User/action/Index.class.php</autoload>
 			<autoload name="Action\Login">%directory.application.module%/User/action/Login.class.php</autoload>
