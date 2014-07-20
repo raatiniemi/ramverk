@@ -44,7 +44,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// Retrieve the configuration handler factory.
 		$factory = $controller->getConfigurationHandlerFactory();
 
-		// Import the core application configuration.
+		// Retrieve the core application configuration.
 		$config->import($factory->callHandler('Core', '%directory.application.config%/core.xml'));
 
 		// Setup the base namespace for the framework and the context name.
@@ -120,12 +120,9 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		}
 
 		// Check if namespaces should be used and if we have a module namespace available.
-		// If namespaces are used, the action have to be located under the "Module\\Action"-namespace.
-		if($shouldNamespace && isset($namespace['module'])) {
-			$controller->setClass('action', "{$namespace['module']}\\Action\\{$routing->getAction()}");
-		} else {
-			$controller->setClass('action', $routing->getAction());
-		}
+		// If namespaces are used, the action have to be located under the "$module\Action"-namespace.
+		$prefix = ($shouldNamespace && isset($namespace['module'])) ? "{$namespace['module']}\\Action\\" : NULL;
+		$controller->setClass('action', "{$prefix}{$routing->getAction()}");
 
 		// Retrieve the instance for the requested action.
 		$action = $controller->createInstance('action');
