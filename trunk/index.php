@@ -44,6 +44,9 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// Retrieve the configuration handler factory.
 		$factory = $controller->getConfigurationHandlerFactory();
 
+		// Import the core application configuration.
+		$config->import($factory->callHandler('Core', '%directory.application.config%/core.xml'));
+
 		// Setup the base namespace for the framework and the context name.
 		// Since the context name will represent certain elements of the
 		// structure it has to be formated accordingly, i.e. first letter in
@@ -73,12 +76,20 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 
 		// If a route have been found the 'parse'-method will return 'true'.
 		if(!$routing->parse()) {
+			foreach(array('actions.404_module', 'actions.404_action') as $name) {
+				if(!$config->has($name)) {
+					throw new \Exception("Core configuration property '{$name}' have not been defined");
+				}
+			}
+			$routing->setModule($config->get('actions.404_module'));
+			$routing->setAction($config->get('actions.404_action'));
+
 			// TODO: No route have been found, handle it.
 			// Initialize the module and action with the 404. This way we can
 			// send the 404 page with the requested content type, e.g. pages
 			// requested with application/json in the accept header will
 			// receive the the 404 with application/json.
-			throw new \Exception('Page not found');
+//			throw new \Exception('Page not found');
 		}
 
 		// Setup the directory structure for the module.
@@ -87,6 +98,11 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		$config->set('directory.module.action', '%directory.module%/action');
 		$config->set('directory.module.config', '%directory.module%/config');
 		$config->set('directory.module.view', '%directory.module%/view');
+
+		$moduleDirectory = $config->expandDirectives('%directory.module%');
+		if(!is_dir($moduleDirectory) || !is_readable($moduleDirectory)) {
+			throw new \Exception('Module directory is not available');
+		}
 
 		// Check if module specific configuration is available.
 		$module = $config->expandDirectives('%directory.module.config%/module.xml');
@@ -103,7 +119,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 
 		// Attempt to retrieve the module namespace, with fallback to the
 		// application wide namespace, if any is available.
-		$namespace['module'] = $config->get('module.namespace', $config->get('application.namespace'));
+		$namespace['module'] = $config->get('module.namespace', $config->get('core.namespace'));
 		$controller->setClass('action', "{$namespace['module']}\\Action\\{$routing->getAction()}");
 
 		// Retrieve the instance for the requested action.
