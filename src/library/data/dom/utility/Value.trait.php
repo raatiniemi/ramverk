@@ -51,12 +51,14 @@ namespace Me\Raatiniemi\Ramverk\Data\Dom\Utility
 		 */
 		protected function handleTypecast($value)
 		{
-			if(preg_match('/^(true|false)$/i', $value)) {
-				$value = strtolower($value) === 'true' ? TRUE : FALSE;
-			} elseif(preg_match('/^([0-9]+)$/', $value)) {
-				$value = (integer)$value;
-			} elseif(preg_match('/^([0-9\.]+)$/', $value)) {
-				$value = (double)$value;
+			if(!empty($value)) {
+				if(preg_match('/^(true|false)$/i', $value)) {
+					$value = strtolower($value) === 'true' ? TRUE : FALSE;
+				} elseif(preg_match('/^([0-9]+)$/', $value)) {
+					$value = (integer)$value;
+				} elseif(preg_match('/^([0-9\.]+)$/', $value)) {
+					$value = (double)$value;
+				}
 			}
 
 			return $value;
