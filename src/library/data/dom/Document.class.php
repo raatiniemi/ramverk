@@ -19,10 +19,13 @@ namespace Me\Raatiniemi\Ramverk\Data\Dom
 		 * @var array
 		 */
 		protected $_classes = array(
+			'DOMAttr' => 'Attribute',
 			'DOMDocument' => 'Document',
 			'DOMElement' => 'Element',
 			'DOMNode' => 'Node'
 		);
+
+		protected $_xpath;
 
 		/**
 		 * Initialize the DOM document.
@@ -39,6 +42,37 @@ namespace Me\Raatiniemi\Ramverk\Data\Dom
 			foreach($this->_classes as $dom => $extended) {
 				$this->registerNodeClass($dom, __NAMESPACE__ . "\\{$extended}");
 			}
+
+			$this->_xpath = new \DOMXPath($this);
+		}
+
+		/**
+		 * Retrieve the XPath.
+		 * @return DOMXPath
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		public function getXPath()
+		{
+			return $this->_xpath;
+		}
+
+		/**
+		 * Retrieve the configuration elements from the document.
+		 * @return array Array with configuration elements.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		public function getConfigurationElements()
+		{
+			$nodes = array();
+
+			// Iterate through the child nodes and retrieve the configuration elements.
+			foreach($this->childNodes as $node) {
+				if($node->nodeType === XML_ELEMENT_NODE && $node->localName === 'configuration') {
+					$nodes[] = $node;
+				}
+			}
+
+			return $nodes;
 		}
 	}
 }
