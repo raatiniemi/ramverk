@@ -158,7 +158,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @param string $module Name of the module.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function setModule($module)
+		public function setModule($module)
 		{
 			$this->_module = $module;
 		}
@@ -178,7 +178,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @param string $action Name of the action.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function setAction($action)
+		public function setAction($action)
 		{
 			$this->_action = $action;
 		}
@@ -190,7 +190,7 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		public function getAction()
 		{
-			return ucfirst(strtolower($this->_action));
+			return $this->_action;
 		}
 
 		/**
