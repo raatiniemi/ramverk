@@ -15,6 +15,9 @@
 		<settings>
 			<setting name="namespace.enabled">true</setting>
 			<setting name="namespace">Me\Raatiniemi\Ramverk\Trunk</setting>
+
+			<!-- Index used to retrieve the URI, ?index=URI -->
+			<setting name="uri_index">uri</setting>
 		</settings>
 	</configuration>
 </configurations>

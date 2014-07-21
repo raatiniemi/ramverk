@@ -69,17 +69,6 @@ namespace Me\Raatiniemi\Ramverk
 		}
 
 		/**
-		 * Processes the incoming raw data and populate the request data container.
-		 *
-		 * The incoming raw data is dependant on the application context, e.g.
-		 * the web context handles the data differently than the console context.
-		 *
-		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-		 * @abstract
-		 */
-		abstract protected function processRawData();
-
-		/**
 		 * Set the request URI.
 		 * @param string $uri Request URI.
 		 * @return string Request URI.
@@ -153,6 +142,17 @@ namespace Me\Raatiniemi\Ramverk
 		{
 			return $this->_rd;
 		}
+
+		/**
+		 * Processes the incoming raw data and populate the request data container.
+		 *
+		 * The incoming raw data is dependant on the application context, e.g.
+		 * the web context handles the data differently than the console context.
+		 *
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 * @abstract
+		 */
+		abstract protected function processRawData();
 	}
 }
 // End of file: Request.class.php

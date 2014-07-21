@@ -36,9 +36,9 @@ namespace Me\Raatiniemi\Ramverk\Request
 		 */
 		protected function processRawData()
 		{
-			// TODO: Handle custom request URI indexes.
 			// Retrieve the value for the specified request URI index.
-			$uri = isset($_GET['uri']) ? trim($_GET['uri'], '/') : NULL;
+			$index = $this->getConfig()->get('core.uri_index', 'uri');
+			$uri = isset($_GET[$index]) ? trim($_GET[$index], '/') : NULL;
 			$this->setUri($uri);
 
 			// Retrieve the method used for the request.
@@ -59,7 +59,7 @@ namespace Me\Raatiniemi\Ramverk\Request
 			$this->setMethod($method);
 
 			// Remove the URI index and request method, we are done with these.
-			unset($_GET['uri'], $_SERVER['REQUEST_METHOD']);
+			unset($_GET[$index], $_SERVER['REQUEST_METHOD']);
 
 			// Begin assembling the request data.
 			$data = array();
