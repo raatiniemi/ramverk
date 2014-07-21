@@ -52,6 +52,29 @@ namespace Me\Raatiniemi\Ramverk\Data\Dom
 			$query = sprintf('child::*[local-name() = "%s"]', $name);
 			return $this->ownerDocument->getXPath()->query($query, $this);
 		}
+
+		/**
+		 * Check whether the element have direct child elements with specified name.
+		 * @param string $name Name of child elements to check.
+		 * @return boolean True if child elements exists, otherwise false.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		public function has($name)
+		{
+			return $this->hasChildren($name);
+		}
+
+		/**
+		 * Check whether the element have direct child elements with specified name.
+		 * @param string $name Name of child elements to check.
+		 * @return boolean True if child elements exists, otherwise false.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		public function hasChildren($name)
+		{
+			$query = sprintf('count(child::*[local-name() = "%s"])', $name);
+			return $this->ownerDocument->getXPath()->evaluate($query, $this) > 0;
+		}
 	}
 }
 // End of file: Element.class.php

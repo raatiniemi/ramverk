@@ -31,8 +31,6 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		{
 			$data = array();
 			foreach($document->getConfigurationElements() as $configuration) {
-				// TODO: Check if the configuration have autoloads-items.
-
 				foreach($configuration->get('autoloads') as $group) {
 					// If the autoload group has defined a namespace, then this
 					// namespace will prefix every class within the group.
