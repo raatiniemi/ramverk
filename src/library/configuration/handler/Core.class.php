@@ -28,39 +28,54 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		public function execute(Dom\Document $document)
 		{
 			$data = array();
-			$prefix = 'core';
+			foreach($document->getConfigurationElements() as $configuration) {
+				// Check whether the configuration have `system_actions` defined.
+				if($configuration->hasChild('system_actions')) {
+					$actions = $configuration->getChild('system_actions');
+					if($actions->hasChildren('system_action')) {
+						foreach($actions->getChildren('system_action') as $action) {
+							// The system action have to be defined with a name.
+							if(!$action->hasAttribute('name')) {
+								// TODO: Throw exception, no name system action is not allowed.
+							}
 
-			$groups = $document->getElementsByTagName('configuration');
-			foreach($groups as $group) {
-				$actions = $group->getElementsByTagName('system_action');
-				if(!empty($actions)) {
-					foreach($actions as $action) {
-						if(!$action->hasAttribute('name')) {
-							// TODO: Throw exception, no name action is not allowed.
+							// The pre-defined system action have to define a module.
+							if($action->hasChild('module')) {
+								// TODO: Throw exception, system action without defined module is not allowed.
+							}
+
+							// The pre-defined system action have to define a action.
+							if($action->hasChild('action')) {
+								// TODO: Throw exception, system action without defined action is not allowed.
+							}
+
+							// Retrieve the module and action for the system action.
+							$name = strtolower($action->getAttribute('name'));
+							$data["actions.{$name}_module"] = $action->getChild('module')->getValue();
+							$data["actions.{$name}_action"] = $action->getChild('action')->getValue();
 						}
-
-						// TODO: Simplify the process of retrieving sub element values.
-						// $action->getChild('module')->getValue();
-						// Throw exception if the child is not found?
-						$name = strtolower($action->getAttribute('name'));
-						$data["actions.{$name}_module"] = $action->getElementsByTagName('module')->item(0)->getValue();
-						$data["actions.{$name}_action"] = $action->getElementsByTagName('action')->item(0)->getValue();
 					}
 				}
 
-				$settings = $group->getElementsByTagName('setting');
-				if(!empty($settings)) {
-					foreach($settings as $setting) {
-						if(!$setting->hasAttribute('name')) {
-							// TODO: Throw exception, no name action is not allowed.
-						}
+				// Check whether the configuration have `settings` defined.
+				if($configuration->hasChild('settings')) {
+					$settings = $configuration->getChild('settings');
+					if($settings->hasChildren('setting')) {
+						foreach($settings->getChildren('setting') as $setting) {
+							// Settings have to be defined with a name.
+							if($setting->hasAttribute('name')) {
+								// TODO: Throw exception, setting without name is not allowed.
+							}
 
-						// TODO: Add support for local prefix.
-						$name = strtolower($setting->getAttribute('name'));
-						$data["{$prefix}.{$name}"] = $setting->getValue();
+							// Retrieve the value for the setting.
+							$name = strtolower($setting->getAttribute('name'));
+							$data["core.{$name}"] = $setting->getValue();
+						}
 					}
 				}
 			}
+			// TODO: Validate the configuration data.
+			// Module and action for the default and 404 system action have to be defined.
 			return $data;
 		}
 	}
