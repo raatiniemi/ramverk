@@ -23,7 +23,7 @@ namespace Me\Raatiniemi\Ramverk\Data\Dom\Utility
 		 */
 		public function getValue()
 		{
-			return isset($this->nodeValue) ? $this->handleTypecast($this->nodeValue) : NULL;
+			return isset($this->nodeValue) ? $this->handleTypecast($this->nodeValue) : null;
 		}
 
 		/**
@@ -32,14 +32,13 @@ namespace Me\Raatiniemi\Ramverk\Data\Dom\Utility
 		 * @param mixed $default Default value.
 		 * @return mixed Value of the attribute or default value.
 		 */
-		public function getAttribute($name, $default=NULL)
+		public function getAttribute($name, $default = null)
 		{
-			$value = $default;
+			// Attempt to retrieve the value for the attribute if it's available.
+			$value = $this->hasAttribute($name) ? parent::getAttribute($name) : $default;
 
-			if($this->hasAttribute($name)) {
-				$value = parent::getAttribute($name);
-			}
-
+			// Since the `getAttribute`-method always return a string we have
+			// to handle the cast to the correct type manually.
 			return $this->handleTypecast($value);
 		}
 
@@ -51,16 +50,17 @@ namespace Me\Raatiniemi\Ramverk\Data\Dom\Utility
 		 */
 		protected function handleTypecast($value)
 		{
-			if(!empty($value)) {
-				if(preg_match('/^(true|false)$/i', $value)) {
-					$value = strtolower($value) === 'true' ? TRUE : FALSE;
-				} elseif(preg_match('/^([0-9]+)$/', $value)) {
+			// Check that the value is not empty and actually is a string. Will
+			// silence the warnings with preg_match and non-string subjects.
+			if (!empty($value) && is_string($value)) {
+				if (preg_match('/^(true|false)$/i', $value)) {
+					$value = strtolower($value) === 'true' ? true : false;
+				} elseif (preg_match('/^([0-9]+)$/', $value)) {
 					$value = (integer)$value;
-				} elseif(preg_match('/^([0-9\.]+)$/', $value)) {
+				} elseif (preg_match('/^([0-9\.]+)$/', $value)) {
 					$value = (double)$value;
 				}
 			}
-
 			return $value;
 		}
 	}
