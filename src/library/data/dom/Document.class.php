@@ -15,45 +15,52 @@ namespace Me\Raatiniemi\Ramverk\Data\Dom
 	class Document extends \DOMDocument
 	{
 		/**
-		 * List of replacement classes for PHP DOM functionality.
+		 * Class extensions for PHP DOM classes.
 		 * @var array
 		 */
-		protected $_classes = array(
+		private $classes = array(
 			'DOMAttr' => 'Attribute',
 			'DOMDocument' => 'Document',
 			'DOMElement' => 'Element',
 			'DOMNode' => 'Node'
 		);
 
-		protected $_xpath;
+		/**
+		 * XPath-handler for the document.
+		 * @var DOMXPath
+		 */
+		private $xpath;
 
 		/**
-		 * Initialize the DOM document.
+		 * Initialize the DOM document with version and encoding.
 		 * @param string $version XML version.
 		 * @param string $encoding XML encoding.
 		 * @see DOMDocument::__construct()
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct($version='1.0', $encoding='UTF-8')
+		public function __construct($version = '1.0', $encoding = 'UTF-8')
 		{
 			parent::__construct($version, $encoding);
 
-			// Register all of the DOM classes with the extended functionality.
-			foreach($this->_classes as $dom => $extended) {
-				$this->registerNodeClass($dom, __NAMESPACE__ . "\\{$extended}");
+			// Iterate through the class extensions and register them.
+			foreach($this->classes as $base => $extended) {
+				$this->registerNodeClass($base, __NAMESPACE__ . "\\{$extended}");
 			}
-
-			$this->_xpath = new \DOMXPath($this);
 		}
 
 		/**
-		 * Retrieve the XPath.
-		 * @return DOMXPath
+		 * Retrieve the document XPath-handler.
+		 * @return DOMXPath XPath-handler.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function getXPath()
 		{
-			return $this->_xpath;
+			// Check if the XPath-handler have been correctly initialized.
+			if($this->xpath === null || !($this->xpath instanceof \DOMXPath)) {
+				// Initialize the XPath-handler with the document.
+				$this->xpath = new \DOMXPath($this);
+			}
+			return $this->xpath;
 		}
 
 		/**
@@ -71,7 +78,6 @@ namespace Me\Raatiniemi\Ramverk\Data\Dom
 					$nodes[] = $node;
 				}
 			}
-
 			return $nodes;
 		}
 	}
