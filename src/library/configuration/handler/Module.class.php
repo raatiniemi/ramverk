@@ -28,28 +28,25 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 */
 		public function execute(Dom\Document $document)
 		{
-			// Retrieve the configuration group from the document. Every module
-			// configuration document must have one and only one configuration
-			// group, otherwise it's an invalid document.
-			$group = $document->getElementsByTagName('configuration');
-			if(empty($group) || $group->length <> 1) {
-				// TODO: Write exception message.
-				// TODO: Better specify the exception object.
-				throw new Ramverk\Exception('');
-			}
-
 			$data = array();
-			foreach($group->item(0)->getElementsByTagName('setting') as $item) {
-				// Every setting item must have the name attribute.
-				if(!$item->hasAttribute('name')) {
-					// TODO: Write exception message.
-					// TODO: Better specify the exception object.
-					throw new Ramverk\Exception('');
-				}
+			foreach($document->getConfigurationElements() as $configuration) {
+				// Check whether the configuration have `settings` defined.
+				if($configuration->has('settings')) {
+					foreach($configuration->get('settings') as $settings) {
+						if($settings->has('setting')) {
+							foreach($settings->get('setting') as $setting) {
+								// Every setting item must have the name attribute.
+								if(!$setting->hasAttribute('name')) {
+									// TODO: Throw exception, no name setting is not allowed.
+								}
 
-				// Retrieve the setting name and value.
-				$name = $item->getAttribute('name');
-				$data["module.{$name}"] = $this->expandDirectives($item->getValue());
+								// Retrieve the setting name and value.
+								$name = $setting->getAttribute('name');
+								$data["module.{$name}"] = $this->expandDirectives($setting->getValue());
+							}
+						}
+					}
+				}
 			}
 			return $data;
 		}
