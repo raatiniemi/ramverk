@@ -21,7 +21,7 @@ namespace Me\Raatiniemi\Ramverk\Request\Web
 		 * Stores the request HTTP headers.
 		 * @var array
 		 */
-		private $_headers;
+		private $headers;
 
 		/**
 		 * Retrieve the request HTTP headers.
@@ -31,7 +31,7 @@ namespace Me\Raatiniemi\Ramverk\Request\Web
 		public function getHeaders()
 		{
 			// We should only attempt to parse the HTTP headers once.
-			if($this->_headers === NULL) {
+			if($this->headers === null) {
 				$headers = array();
 
 				// Not all of the platforms have the `getallheaders` function
@@ -55,9 +55,9 @@ namespace Me\Raatiniemi\Ramverk\Request\Web
 
 				// We have to change the case for the keys to only lowercase, this
 				// will ease the extraction of header values.
-				$this->_headers = array_change_key_case($headers);
+				$this->headers = array_change_key_case($headers);
 			}
-			return $this->_headers;
+			return $this->headers;
 		}
 
 		/**
@@ -67,7 +67,7 @@ namespace Me\Raatiniemi\Ramverk\Request\Web
 		 * @return string Value for HTTP header.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function getHeader($name, $default=NULL)
+		public function getHeader($name, $default = null)
 		{
 			// Every HTTP header key is stored with lowercase letters.
 			$name = strtolower($name);

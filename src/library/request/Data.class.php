@@ -21,7 +21,7 @@ namespace Me\Raatiniemi\Ramverk\Request
 		/**
 		 * @var array
 		 */
-		private $_data;
+		private $data;
 
 		/**
 		 * Raw request data.
@@ -31,7 +31,7 @@ namespace Me\Raatiniemi\Ramverk\Request
 		 * specify which data should be accessible.
 		 * @var array
 		 */
-		private $_raw;
+		private $raw;
 
 		/**
 		 * Initialize the data containers.
@@ -39,8 +39,8 @@ namespace Me\Raatiniemi\Ramverk\Request
 		 */
 		public function __construct()
 		{
-			$this->_data = array();
-			$this->_raw = array();
+			$this->data = array();
+			$this->raw = array();
 		}
 
 		/**
@@ -50,7 +50,7 @@ namespace Me\Raatiniemi\Ramverk\Request
 		 */
 		public function setRaw(array $data)
 		{
-			return $this->_raw = $data;
+			return $this->raw = $data;
 		}
 	}
 }
