@@ -26,6 +26,7 @@ namespace Me\Raatiniemi\Ramverk
 		public static function render(\Exception $e, Configuration\Container $config)
 		{
 			// Require the exception template.
+			// TODO: Find a better way to expandDirectives from non-config object.
 			require $config->expandDirectives('%exception.template%');
 
 			// Exit the application with the specified code.
