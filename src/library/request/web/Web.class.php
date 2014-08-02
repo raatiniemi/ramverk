@@ -20,6 +20,12 @@ namespace Me\Raatiniemi\Ramverk\Request
 	class Web extends Ramverk\Request
 	{
 		/**
+		 * Stores the request uri.
+		 * @var string
+		 */
+		private $uri;
+
+		/**
 		 * Initialize the web request object.
 		 * @param Me\Raatiniemi\Ramverk\Core\Context $ct Application context.
 		 * @param Me\Raatiniemi\Ramverk\Request\Web\Data $rd Request data.
@@ -28,6 +34,27 @@ namespace Me\Raatiniemi\Ramverk\Request
 		public function __construct(Core\Context $ct, Web\Data $rd)
 		{
 			parent::__construct($ct, $rd);
+		}
+
+		/**
+		 * Set the request URI.
+		 * @param string $uri Request URI.
+		 * @return string Request URI.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		protected function setUri($uri)
+		{
+			return $this->uri = $uri;
+		}
+
+		/**
+		 * Retrieve the request URI.
+		 * @return string Request URI.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		public function getUri()
+		{
+			return $this->uri;
 		}
 
 		/**

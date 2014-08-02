@@ -35,12 +35,6 @@ namespace Me\Raatiniemi\Ramverk
 		const Read = 'Read';
 
 		/**
-		 * Stores the request uri.
-		 * @var string
-		 */
-		private $_uri;
-
-		/**
 		 * Stores the request method.
 		 * @var string
 		 */
@@ -66,27 +60,6 @@ namespace Me\Raatiniemi\Ramverk
 			// Process the raw request data, save what is neccessary and discard
 			// everything else. Handles content type specific data.
 			$this->processRawData();
-		}
-
-		/**
-		 * Set the request URI.
-		 * @param string $uri Request URI.
-		 * @return string Request URI.
-		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-		 */
-		protected function setUri($uri)
-		{
-			return $this->_uri = $uri;
-		}
-
-		/**
-		 * Retrieve the request URI.
-		 * @return string Request URI.
-		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-		 */
-		public function getUri()
-		{
-			return $this->_uri;
 		}
 
 		/**
