@@ -26,13 +26,13 @@ namespace Me\Raatiniemi\Ramverk
 		 * Registered classes with their name.
 		 * @var array
 		 */
-		private $_classes;
+		private $classes;
 
 		/**
 		 * Reflections of class instances.
 		 * @var array
 		 */
-		private $_reflections;
+		private $reflections;
 
 		/**
 		 * Initialize the controller.
@@ -43,8 +43,8 @@ namespace Me\Raatiniemi\Ramverk
 		{
 			$this->setContext($ct);
 
-			$this->_classes = array();
-			$this->_reflections = array();
+			$this->classes = array();
+			$this->reflections = array();
 		}
 
 		/**
@@ -56,7 +56,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return Instance of the class.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function createInstance($name, array $arguments=array())
+		public function createInstance($name, array $arguments = array())
 		{
 			// Check if the reflection already have been instansiated.
 			if(!$this->hasReflection($name)) {
@@ -94,7 +94,7 @@ namespace Me\Raatiniemi\Ramverk
 		{
 			// Check if the reflection already have been instansiated.
 			if(!$this->hasReflection($name)) {
-				$this->_reflections[$name] = $reflection;
+				$this->reflections[$name] = $reflection;
 			} else {
 				// TODO: Reflection is already defined, handle it.
 			}
@@ -116,7 +116,7 @@ namespace Me\Raatiniemi\Ramverk
 				));
 			}
 
-			return $this->_reflections[$name];
+			return $this->reflections[$name];
 		}
 
 		/**
@@ -127,11 +127,11 @@ namespace Me\Raatiniemi\Ramverk
 		public function getReflections()
 		{
 			// Verify that the reflection have been instansiated.
-			if(!is_array($this->_reflections)) {
-				$this->_reflections = array();
+			if(!is_array($this->reflections)) {
+				$this->reflections = array();
 			}
 
-			return $this->_reflections;
+			return $this->reflections;
 		}
 
 		/**
@@ -156,7 +156,7 @@ namespace Me\Raatiniemi\Ramverk
 		{
 			// Check if the class already have been registered.
 			if(!$this->hasClass($name)) {
-				$this->_classes[$name] = $class;
+				$this->classes[$name] = $class;
 			} else {
 				// TODO: Class is already defined, handle it.
 			}
@@ -179,7 +179,7 @@ namespace Me\Raatiniemi\Ramverk
 				));
 			}
 
-			return $this->_classes[$name];
+			return $this->classes[$name];
 		}
 
 		/**
@@ -190,11 +190,11 @@ namespace Me\Raatiniemi\Ramverk
 		public function getClasses()
 		{
 			// Check that the classes actually is an array.
-			if(!is_array($this->_classes)) {
-				$this->_classes = array();
+			if(!is_array($this->classes)) {
+				$this->classes = array();
 			}
 
-			return $this->_classes;
+			return $this->classes;
 		}
 
 		/**
