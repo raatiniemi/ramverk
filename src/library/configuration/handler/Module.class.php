@@ -30,21 +30,16 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		{
 			$data = array();
 			foreach($document->getConfigurationElements() as $configuration) {
-				// Check whether the configuration have `settings` defined.
-				if($configuration->has('settings')) {
-					foreach($configuration->get('settings') as $settings) {
-						if($settings->has('setting')) {
-							foreach($settings->get('setting') as $setting) {
-								// Every setting item must have the name attribute.
-								if(!$setting->hasAttribute('name')) {
-									// TODO: Throw exception, no name setting is not allowed.
-								}
-
-								// Retrieve the setting name and value.
-								$name = $setting->getAttribute('name');
-								$data["module.{$name}"] = $this->expandDirectives($setting->getValue());
-							}
+				foreach($configuration->get('settings') as $settings) {
+					foreach($settings->get('setting') as $setting) {
+						// Every setting item must have the name attribute.
+						if(!$setting->hasAttribute('name')) {
+							// TODO: Throw exception, no name setting is not allowed.
 						}
+
+						// Retrieve the setting name and value.
+						$name = $setting->getAttribute('name');
+						$data["module.{$name}"] = $this->expandDirectives($setting->getValue());
 					}
 				}
 			}

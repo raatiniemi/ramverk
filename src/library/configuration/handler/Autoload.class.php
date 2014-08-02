@@ -31,28 +31,24 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		{
 			$data = array();
 			foreach($document->getConfigurationElements() as $configuration) {
-				if($configuration->has('autoloads')) {
-					foreach($configuration->get('autoloads') as $group) {
-						// If the autoload group has defined a namespace, then this
-						// namespace will prefix every class within the group.
-						$namespace = $group->hasAttribute('namespace') ? "{$group->getAttribute('namespace')}\\" : null;
+				foreach($configuration->get('autoloads') as $group) {
+					// If the autoload group has defined a namespace, then this
+					// namespace will prefix every class within the group.
+					$namespace = $group->hasAttribute('namespace') ? "{$group->getAttribute('namespace')}\\" : null;
 
-						if($group->has('autoload')) {
-							// Retrieve the autoload items from the group.
-							foreach($group->get('autoload') as $autoload) {
-								// Every item must have the name of the class defined.
-								if(!$autoload->hasAttribute('name')) {
-									// TODO: Write exception message.
-									// TODO: Better specify the exception object.
-									throw new Ramverk\Exception('');
-								}
-
-								// Prepend the group namespace (if any) to the class
-								// name, and expand the class path directives.
-								$name = "{$namespace}{$autoload->getAttribute('name')}";
-								$data[$name] = $this->expandDirectives($autoload->getValue());
-							}
+					// Retrieve the autoload items from the group.
+					foreach($group->get('autoload') as $autoload) {
+						// Every item must have the name of the class defined.
+						if(!$autoload->hasAttribute('name')) {
+							// TODO: Write exception message.
+							// TODO: Better specify the exception object.
+							throw new Ramverk\Exception('');
 						}
+
+						// Prepend the group namespace (if any) to the class
+						// name, and expand the class path directives.
+						$name = "{$namespace}{$autoload->getAttribute('name')}";
+						$data[$name] = $this->expandDirectives($autoload->getValue());
 					}
 				}
 			}

@@ -27,29 +27,23 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 */
 		public function execute(Dom\Document $document)
 		{
-			// Attempt to retrieve the route groups from the document.
 			$data = array();
-			$groups = $document->getElementsByTagName('routes');
-			if(!empty($groups)) {
-				foreach($groups as $group) {
-					// Retrieve the route items from the group.
-					$items = $group->getElementsByTagName('route');
-					foreach($items as $item) {
-						$route = array();
+			foreach($document->getConfigurationElements() as $configuration) {
+				foreach($configuration->get('routes') as $routes) {
+					foreach($routes->get('route') as $route) {
+						$item = array();
 
 						// Verify that the route have all of the required attributes.
 						foreach(array('name', 'pattern', 'module', 'action') as $attribute) {
-							if(!$item->hasAttribute($attribute)) {
-								// TODO: Write exception message.
-								// TODO: Better specify the exception object.
-								throw new Ramverk\Exception('');
+							if(!$route->hasAttribute($attribute)) {
+								// TODO: Throw exception, required attribute is missing.
 							}
 							// Assign the attribute value to the route configuration.
-							$route[$attribute] = $item->getAttribute($attribute);
+							$item[$attribute] = $route->getAttribute($attribute);
 						}
 
-						// Add the route configuration to the route.
-						$data[] = $route;
+						// Add the route configuration to the routes.
+						$data[] = $item;
 					}
 				}
 			}
