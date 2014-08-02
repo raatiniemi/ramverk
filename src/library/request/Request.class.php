@@ -35,16 +35,16 @@ namespace Me\Raatiniemi\Ramverk
 		const Read = 'Read';
 
 		/**
-		 * Stores the request method.
-		 * @var string
-		 */
-		private $_method;
-
-		/**
 		 * Stores the request data.
 		 * @var Me\Raatiniemi\Ramverk\Request\Data
 		 */
-		private $_rd;
+		private $rd;
+
+		/**
+		 * Stores the request method.
+		 * @var string
+		 */
+		private $method;
 
 		/**
 		 * Initialize the request.
@@ -60,6 +60,26 @@ namespace Me\Raatiniemi\Ramverk
 			// Process the raw request data, save what is neccessary and discard
 			// everything else. Handles content type specific data.
 			$this->processRawData();
+		}
+
+		/**
+		 * Set the request data container.
+		 * @param Me\Raatiniemi\Ramverk\Request\Data $rd Request data container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		private function setData(Request\Data $rd)
+		{
+			$this->rd = $rd;
+		}
+
+		/**
+		 * Retrieve the request data container.
+		 * @return Me\Raatiniemi\Ramverk\Request\Data Request data container.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		protected function getData()
+		{
+			return $this->rd;
 		}
 
 		/**
@@ -83,7 +103,7 @@ namespace Me\Raatiniemi\Ramverk
 			// Check that the request method is one of the accepted values,
 			// otherwise fallback to the default one.
 			$method = in_array($method, array(Request::Write, Request::Read)) ? $method : Request::Read;
-			return $this->_method = $method;
+			return $this->method = $method;
 		}
 
 		/**
@@ -93,27 +113,7 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		public function getMethod()
 		{
-			return $this->_method;
-		}
-
-		/**
-		 * Set the request data container.
-		 * @param Me\Raatiniemi\Ramverk\Request\Data $rd Request data container.
-		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-		 */
-		private function setData(Request\Data $rd)
-		{
-			$this->_rd = $rd;
-		}
-
-		/**
-		 * Retrieve the request data container.
-		 * @return Me\Raatiniemi\Ramverk\Request\Data Request data container.
-		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-		 */
-		protected function getData()
-		{
-			return $this->_rd;
+			return $this->method;
 		}
 
 		/**
