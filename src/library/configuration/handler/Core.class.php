@@ -34,7 +34,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 					$actions = $configuration->getChild('system_actions');
 					if($actions->hasChildren('system_action')) {
 						foreach($actions->getChildren('system_action') as $action) {
-							// The system action have to be defined with a name.
+							// The pre-defined system action have to be defined with a name.
 							if(!$action->hasAttribute('name')) {
 								// TODO: Throw exception, no name system action is not allowed.
 							}
