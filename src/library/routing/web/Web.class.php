@@ -85,7 +85,6 @@ namespace Me\Raatiniemi\Ramverk\Routing
 						}
 						$this->setParams($data);
 					}
-
 					break;
 				}
 			}

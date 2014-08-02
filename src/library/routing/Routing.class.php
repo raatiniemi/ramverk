@@ -22,31 +22,31 @@ namespace Me\Raatiniemi\Ramverk
 		 * The request.
 		 * @var Me\Raatiniemi\Ramverk\Request
 		 */
-		private $_rq;
+		private $rq;
 
 		/**
 		 * The available request routes.
 		 * @var array
 		 */
-		private $_routes;
+		private $routes;
 
 		/**
 		 * Name of the module retrieved from parsing the request routing.
 		 * @var string
 		 */
-		private $_module;
+		private $module;
 
 		/**
 		 * Name of the action retrieved from parsing the request routing.
 		 * @var string
 		 */
-		private $_action;
+		private $action;
 
 		/**
 		 * Parameters retrieved from parsing the request routing.
 		 * @var array
 		 */
-		private $_params;
+		private $params;
 
 		/**
 		 * Initialize the routing.
@@ -54,7 +54,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @param array $routes The available routing routes.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct(Request $rq, array $routes=array())
+		public function __construct(Request $rq, array $routes = array())
 		{
 			$this->setRequest($rq);
 			$this->setRoutes($routes);
@@ -68,7 +68,7 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		private function setRequest(Request $rq)
 		{
-			$this->_rq = $rq;
+			$this->rq = $rq;
 		}
 
 		/**
@@ -78,7 +78,7 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		protected function getRequest()
 		{
-			return $this->_rq;
+			return $this->rq;
 		}
 
 		/**
@@ -90,6 +90,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * If the request method is POST and the action have defined the method
 		 * `executeWrite` that name will be returned. However, if the method is
 		 * not defined, the generic `execute` name will be returned.
+		 *
 		 * @param ReflectionClass $reflection Reflection of the action.
 		 * @return string Action method.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
@@ -125,12 +126,13 @@ namespace Me\Raatiniemi\Ramverk
 		 *
 		 * The criteria on whether a route have been found is that both the
 		 * module and action have been set.
+		 *
 		 * @return boolean True if route have been found, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		public function hasRoute()
 		{
-			return (bool)isset($this->_module, $this->_action);
+			return (bool)isset($this->module, $this->action);
 		}
 
 		/**
@@ -138,9 +140,9 @@ namespace Me\Raatiniemi\Ramverk
 		 * @param array $routes Available routes.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		private function setRoutes(array $routes=array())
+		private function setRoutes(array $routes = array())
 		{
-			$this->_routes = $routes;
+			$this->routes = $routes;
 		}
 
 		/**
@@ -150,7 +152,7 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		protected function getRoutes()
 		{
-			return $this->_routes;
+			return $this->routes;
 		}
 
 		/**
@@ -160,7 +162,7 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		public function setModule($module)
 		{
-			$this->_module = $module;
+			$this->module = $module;
 		}
 
 		/**
@@ -170,7 +172,7 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		public function getModule()
 		{
-			return ucfirst(strtolower($this->_module));
+			return ucfirst(strtolower($this->module));
 		}
 
 		/**
@@ -180,7 +182,7 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		public function setAction($action)
 		{
-			$this->_action = $action;
+			$this->action = $action;
 		}
 
 		/**
@@ -190,7 +192,7 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		public function getAction()
 		{
-			return $this->_action;
+			return $this->action;
 		}
 
 		/**
@@ -198,9 +200,9 @@ namespace Me\Raatiniemi\Ramverk
 		 * @param array $params Request parameters.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function setParams(array $params=array())
+		protected function setParams(array $params = array())
 		{
-			$this->_params = $params;
+			$this->params = $params;
 		}
 
 		/**
@@ -210,7 +212,7 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		public function getParams()
 		{
-			return $this->_params;
+			return $this->params;
 		}
 
 		/**
