@@ -24,9 +24,35 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		public static function render(\Exception $e, Configuration $config)
 		{
-			// Require the exception template.
-			// TODO: Find a better way to expandDirectives from non-config object.
-			require $config->expandDirectives('%exception.template%');
+			// There are a few different templates we can use.
+			// First, the default exception template, defined from within the core.
+			// Second, exception template defined from within the application code.
+			// Third, exception template defined from within the application core configuration.
+			//
+			// If none of the application specified templates have been defined
+			// the default template will be used as fallback.
+			$template = $config->get('exception.template.default');
+			$template = $config->get('exception.template', $template);
+			$template = $config->get('core.exception.template', $template);
+			$template = $config->expandDirectives($template);
+
+			// Check that the specified template is readable.
+			if(!is_readable($template)) {
+				$template = $config->get('exception.template.default');
+				$template = $config->expandDirectives($template);
+			}
+
+			// Since it's possible to override the default template we have to
+			// do another check to see that it's readable.
+			if(is_readable($template)) {
+				// Everything seems fine, include the template.
+				require $template;
+			} else {
+				// None of the specified templates are readable, something is wrong.
+				echo 'The exception template can\'t be found, please check ';
+				echo 'the permissions for the template directories and ';
+				echo 'verify that the template files exists.';
+			}
 
 			// Exit the application with the specified code.
 			exit($e->getCode());
