@@ -7,7 +7,7 @@ namespace Me\Raatiniemi\Ramverk
 	use Me\Raatiniemi\Ramverk\Loader;
 
 	/**
-	 * Initialize the core functionality.
+	 * Initialize and setup the core functionality for the framework.
 	 *
 	 * @package Ramverk
 	 * @subpackage Core
@@ -36,7 +36,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @param string $context Context for the application, optional.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct(Configuration $config, $profile=NULL, $context=NULL)
+		public function __construct(Configuration $config, $profile = null, $context = null)
 		{
 			// Check if the configuration container have been supplied with a profile.
 			if(!$config->has('profile')) {
@@ -59,14 +59,12 @@ namespace Me\Raatiniemi\Ramverk
 			// configurations we can only allow for specific context names to
 			// be used, i.e. 'web', 'console', etc.
 			//
-			// Howevery, it should be possible to supply additional context
+			// However, it should be possible to supply additional context
 			// names through the application configuration.
 
-			// Check if the configuration container have been supplied with an exception template.
-			if(!$config->has('exception.template')) {
-				// If no exception template have been defined, use the default.
-				$template = $config->get('exception.template.default', '%directory.core.template%/exception/plaintext.php');
-				$config->set('exception.template', $template);
+			// Check whether the default exception template have been defined.
+			if(!$config->has('exception.template.default')) {
+				$config->set('exception.template.default', '%directory.core.template%/exception/plaintext.php');
 			}
 
 			// Setup the default directory structure.
