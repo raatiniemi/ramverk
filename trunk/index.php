@@ -5,7 +5,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk;
-	use Me\Raatiniemi\Ramverk\Configuration;
+	use Me\Raatiniemi\Ramverk\Configuration as Config;
 	use Me\Raatiniemi\Ramverk\Request;
 	use Me\Raatiniemi\Ramverk\Response;
 	use Me\Raatiniemi\Ramverk\Routing;
@@ -23,7 +23,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		require "{$directory}/src/ramverk.php";
 
 		// Setup the basic application directory configurations.
-		$config = new Configuration\Container();
+		$config = new Config();
 
 		// To improve performance, use a non-development profile.
 		// A development profile is formatted as: 'development(\..*)'
@@ -45,7 +45,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		$factory = $controller->getConfigurationHandlerFactory();
 
 		// Retrieve the core application configuration.
-		$config->import($factory->callHandler('Core', '%directory.application.config%/core.xml'));
+		$config->fromArray($factory->callHandler('Core', '%directory.application.config%/core.xml'));
 
 		// Setup the base namespace for the framework and the context name.
 		// Since the context name will represent certain elements of the

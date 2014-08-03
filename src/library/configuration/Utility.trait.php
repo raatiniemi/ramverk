@@ -56,7 +56,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 		 * By using a method instead of direct property access enable us to do
 		 * initial setup and redirect to another container.
 		 *
-		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
+		 * @return Me\Raatiniemi\Ramverk\Configuration Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
 		abstract public function getConfig();

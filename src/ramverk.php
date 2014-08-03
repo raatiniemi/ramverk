@@ -21,13 +21,10 @@ namespace Me\Raatiniemi\Ramverk
 	// With these included the autoload functionality can handle the rest.
 	require 'loader/Autoload.trait.php';
 	require 'configuration/Utility.trait.php';
+	require 'configuration/Configuration.class.php';
 	require 'core/context/Handler.trait.php';
 	require 'core/Core.class.php';
 	require 'core/Context.class.php';
-
-	// Include the configuration container with its core dependencies.
-	require 'data/Container.class.php';
-	require 'configuration/Container.class.php';
 
 	// Include the configuration handlers required by the core.
 	require 'configuration/handler/Cache.class.php';

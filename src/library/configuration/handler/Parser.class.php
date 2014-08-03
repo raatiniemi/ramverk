@@ -56,12 +56,12 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 
 		/**
 		 * Initialize the parser for configuration handlers.
-		 * @param Me\Raatiniemi\Ramverk\Configuration\Container $config Configuration container.
+		 * @param Me\Raatiniemi\Ramverk\Configuration $config Configuration container.
 		 * @param string $profile Profile for the application.
 		 * @param string $context Context for the application.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct(Configuration\Container $config, $profile, $context)
+		public function __construct(Ramverk\Configuration $config, $profile, $context)
 		{
 			$this->_config = $config;
 			$this->_profile = $profile;

@@ -42,8 +42,6 @@
 			<autoload name="Handler\Factory">%directory.core.library%/configuration/handler/Factory.class.php</autoload>
 		</autoloads>
 		<autoloads namespace="Me\Raatiniemi\Ramverk\Data">
-			<autoload name="Container">%directory.core.library%/data/Container.class.php</autoload>
-
 			<autoload name="Dom\Utility\Value">%directory.core.library%/data/dom/utility/Value.trait.php</autoload>
 			<autoload name="Dom\Attribute">%directory.core.library%/data/dom/Attribute.class.php</autoload>
 			<autoload name="Dom\Document">%directory.core.library%/data/dom/Document.class.php</autoload>

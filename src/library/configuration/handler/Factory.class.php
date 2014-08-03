@@ -56,12 +56,12 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 
 		/**
 		 * Initialize the configuration handler factory.
-		 * @param Me\Raatiniemi\Ramverk\Configuration\Container $config Configuration container.
+		 * @param Me\Raatiniemi\Ramverk\Configuration $config Configuration container.
 		 * @param Me\Raatiniemi\Ramverk\Configuration\Handler\Cache $cache Caching for configuration handler data.
 		 * @param Me\Raatiniemi\Ramverk\Configuration\Handler\Parser $parser Parser for configuration handlers.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct(Configuration\Container $config, Cache $cache, Parser $parser)
+		public function __construct(Configuration $config, Cache $cache, Parser $parser)
 		{
 			$this->_config = $config;
 			$this->_cache = $cache;

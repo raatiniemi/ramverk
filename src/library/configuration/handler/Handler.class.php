@@ -4,6 +4,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
+	use Me\Raatiniemi\Ramverk;
 	use Me\Raatiniemi\Ramverk\Data\Dom;
 
 	/**
@@ -33,7 +34,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 		 * @param Me\Raatiniemi\Ramverk\Configuration\Container $config Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct(Container $config)
+		public function __construct(Ramverk\Configuration $config)
 		{
 			$this->_config = $config;
 		}

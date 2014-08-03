@@ -4,7 +4,6 @@ namespace Me\Raatiniemi\Ramverk
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Me\Raatiniemi\Ramverk\Configuration;
 	use Me\Raatiniemi\Ramverk\Loader;
 
 	/**
@@ -32,12 +31,12 @@ namespace Me\Raatiniemi\Ramverk
 
 		/**
 		 * Initialize the ramverk core.
-		 * @param Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
+		 * @param Me\Raatiniemi\Ramverk\Configuration Configuration container.
 		 * @param string $profile Profile for the application, optional.
 		 * @param string $context Context for the application, optional.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct(Configuration\Container $config, $profile=NULL, $context=NULL)
+		public function __construct(Configuration $config, $profile=NULL, $context=NULL)
 		{
 			// Check if the configuration container have been supplied with a profile.
 			if(!$config->has('profile')) {

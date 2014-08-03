@@ -26,7 +26,7 @@ namespace Me\Raatiniemi\Ramverk\Core
 
 		/**
 		 * Configuration container.
-		 * @var Me\Raatiniemi\Ramverk\Configuration\Container.
+		 * @var Me\Raatiniemi\Ramverk\Configuration.
 		 */
 		protected $_config;
 
@@ -38,10 +38,10 @@ namespace Me\Raatiniemi\Ramverk\Core
 
 		/**
 		 * Initialize the application context.
-		 * @param Me\Raatiniemi\Ramverk\Configuration\Container $config Configuration container.
+		 * @param Me\Raatiniemi\Ramverk\Configuration $config Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct(Configuration\Container $config)
+		public function __construct(Ramverk\Configuration $config)
 		{
 			$this->_config = $config;
 		}
