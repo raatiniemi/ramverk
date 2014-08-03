@@ -4,7 +4,6 @@ namespace Me\Raatiniemi\Ramverk
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Me\Raatiniemi\Ramverk\Configuration;
 
 	/**
 	 * Base for framework exceptions.
@@ -23,7 +22,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @param Me\Raatiniemi\Ramverk\Configuration\Container $config Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public static function render(\Exception $e, Configuration\Container $config)
+		public static function render(\Exception $e, Configuration $config)
 		{
 			// Require the exception template.
 			// TODO: Find a better way to expandDirectives from non-config object.
