@@ -9,9 +9,8 @@ namespace Me\Raatiniemi\Ramverk\Test
 	require_once 'vendor/simpletest/autorun.php';
 
 	// Include the library classes required for the unit test cases.
-	require_once 'src/library/data/Container.class.php';
 	require_once 'src/library/configuration/Utility.trait.php';
-	require_once 'src/library/configuration/Container.class.php';
+	require_once 'src/library/configuration/Configuration.class.php';
 	require_once 'src/library/configuration/handler/Handler.class.php';
 	require_once 'src/library/configuration/handler/Autoload.class.php';
 	require_once 'src/library/configuration/handler/Core.class.php';
@@ -40,12 +39,11 @@ namespace Me\Raatiniemi\Ramverk\Test
 		 * List of file paths for the test cases, relative from project root.
 		 * @var array
 		 */
-		private $_testCases = array(
-			'test/library/configuration/handler/Autoload.test.php',
-			'test/library/configuration/handler/Core.test.php',
-			'test/library/configuration/handler/Routing.test.php',
-			'test/library/configuration/Container.test.php',
-			'test/library/data/Container.test.php'
+		private $cases = array(
+			// 'test/library/configuration/handler/Autoload.test.php',
+			// 'test/library/configuration/handler/Core.test.php',
+			// 'test/library/configuration/handler/Routing.test.php',
+			'test/library/configuration/Configuration.test.php'
 		);
 
 		public function __construct()
@@ -53,8 +51,8 @@ namespace Me\Raatiniemi\Ramverk\Test
 			parent::__construct(__CLASS__);
 
 			// Iterate through each of the test case files and add them.
-			foreach($this->_testCases as $testCase) {
-				$this->addFile($testCase);
+			foreach($this->cases as $case) {
+				$this->addFile($case);
 			}
 		}
 	}

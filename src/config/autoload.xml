@@ -3,6 +3,8 @@
 		<autoloads namespace="Me\Raatiniemi\Ramverk">
 			<autoload name="Action">%directory.core.library%/action/Action.class.php</autoload>
 
+			<autoload name="Configuration">%directory.core.library%/configuration/Configuration.class.php</autoload>
+
 			<autoload name="Controller">%directory.core.library%/controller/Controller.class.php</autoload>
 
 			<autoload name="Core">%directory.core.library%/core/Core.class.php</autoload>
@@ -27,7 +29,6 @@
 			<autoload name="View">%directory.core.library%/view/View.class.php</autoload>
 		</autoloads>
 		<autoloads namespace="Me\Raatiniemi\Ramverk\Configuration">
-			<autoload name="Container">%directory.core.library%/configuration/Container.class.php</autoload>
 			<autoload name="Utility">%directory.core.library%/configuration/Utility.trait.php</autoload>
 
 			<autoload name="Handler">%directory.core.library%/configuration/handler/Handler.class.php</autoload>

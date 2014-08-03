@@ -8,7 +8,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 	use Me\Raatiniemi\Ramverk\Configuration\Handler;
 	use Me\Raatiniemi\Ramverk\Data\Dom;
 
-	\Mock::generate('\\Me\\Raatiniemi\\Ramverk\\Configuration\\Container', 'MockContainer');
+	\Mock::generate('\\Me\\Raatiniemi\\Ramverk\\Configuration', 'MockConfiguration');
 
 	/**
 	 * Unit test case for the autoload configuration handler.
@@ -30,7 +30,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 				'</autoloads>'
 			);
 
-			$container = new \MockContainer();
+			$container = new \MockConfiguration();
 			$autoload = new Handler\Autoload($container);
 
 			$this->assertEqual($autoload->execute($document), array('Foo' => 'Foo.php'));
@@ -45,7 +45,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 				'</autoloads>'
 			);
 
-			$container = new \MockContainer();
+			$container = new \MockConfiguration();
 			$autoload = new Handler\Autoload($container);
 
 			$this->expectException();
@@ -57,7 +57,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 			$document = new Dom\Document();
 			$document->loadXML('<configuration></configuration>');
 
-			$container = new \MockContainer();
+			$container = new \MockConfiguration();
 			$autoload = new Handler\Autoload($container);
 
 			$this->expectException();
@@ -73,7 +73,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 				'</autoloads>'
 			);
 
-			$container = new \MockContainer();
+			$container = new \MockConfiguration();
 			$autoload = new Handler\Autoload($container);
 
 			$this->assertEqual($autoload->execute($document), array('Foo\\Bar' => 'foo/Bar.php'));
@@ -88,7 +88,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 				'</autoloads>'
 			);
 
-			$container = new \MockContainer();
+			$container = new \MockConfiguration();
 			$autoload = new Handler\Autoload($container);
 
 			$this->assertEqual($autoload->execute($document), array('Foo\\Bar' => 'foo/Bar.php'));
