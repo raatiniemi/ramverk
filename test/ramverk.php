@@ -42,7 +42,7 @@ namespace Me\Raatiniemi\Ramverk\Test
 		private $cases = array(
 			'test/library/configuration/handler/Autoload.test.php',
 			'test/library/configuration/handler/Core.test.php',
-			// 'test/library/configuration/handler/Routing.test.php',
+			'test/library/configuration/handler/Routing.test.php',
 			'test/library/configuration/Configuration.test.php'
 		);
 

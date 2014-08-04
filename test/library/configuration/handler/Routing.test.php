@@ -4,11 +4,10 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Me\Raatiniemi\Ramverk\Configuration;
 	use Me\Raatiniemi\Ramverk\Configuration\Handler;
 	use Me\Raatiniemi\Ramverk\Data\Dom;
 
-	\Mock::generate('\\Me\\Raatiniemi\\Ramverk\\Configuration\\Container', 'MockContainer');
+	\Mock::generate('\\Me\\Raatiniemi\\Ramverk\\Configuration', 'MockConfig');
 
 	/**
 	 * Unit test case for the routing configuration handler.
@@ -21,101 +20,184 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 	 */
 	class Routing extends \UnitTestCase
 	{
-		public function testEmptyRoutingDocument()
-		{
-			$document = new Dom\Document();
-			$document->loadXML('<routes></routes>');
-
-			$container = new \MockContainer();
-			$routing = new Handler\Routing($container);
-
-			$this->assertEqual($routing->execute($document), array());
-		}
-
-		public function testValidRoute()
+		public function testSimpleRoute()
 		{
 			$document = new Dom\Document();
 			$document->loadXML(
-				'<routes>'.
-					'<route name="index" pattern="^$" module="index" action="index" />'.
-				'</routes>'
+				'<configuration>
+					<routes>
+						<route name="foo" pattern="^$" module="bar" action="baz" />
+					</routes>
+				</configuration>'
 			);
 
-			$container = new \MockContainer();
-			$routing = new Handler\Routing($container);
+			$config = new \MockConfig();
+			$routing = new Handler\Routing($config);
 
 			$this->assertEqual($routing->execute($document), array(
 				array(
-					'name' => 'index',
+					'name' => 'foo',
 					'pattern' => '^$',
-					'module' => 'index',
-					'action' => 'index'
+					'module' => 'bar',
+					'action' => 'baz'
 				)
 			));
 		}
 
-		public function testRouteMissingName()
+		public function testEmptyRoutes()
 		{
 			$document = new Dom\Document();
 			$document->loadXML(
-				'<routes>'.
-					'<route pattern="^$" module="index" action="index" />'.
-				'</routes>'
+				'<configuration>
+					<routes>
+					</routes>
+				</configuration>'
 			);
 
-			$container = new \MockContainer();
-			$routing = new Handler\Routing($container);
+			$config = new \MockConfig();
+			$routing = new Handler\Routing($config);
+
+			$this->assertEqual($routing->execute($document), array());
+		}
+
+		public function testRouteWithoutName()
+		{
+			$document = new Dom\Document();
+			$document->loadXML(
+				'<configuration>
+					<routes>
+						<route pattern="^$" module="foo" action="bar" />
+					</routes>
+				</configuration>'
+			);
+
+			$config = new \MockConfig();
+			$routing = new Handler\Routing($config);
 
 			$this->expectException();
 			$routing->execute($document);
 		}
 
-		public function testRouteMissingPattern()
+		public function testRouteWithoutPattern()
 		{
 			$document = new Dom\Document();
 			$document->loadXML(
-				'<routes>'.
-					'<route name="index" module="index" action="index" />'.
-				'</routes>'
+				'<configuration>
+					<routes>
+						<route name="foo" module="bar" action="baz" />
+					</routes>
+				</configuration>'
 			);
 
-			$container = new \MockContainer();
-			$routing = new Handler\Routing($container);
+			$config = new \MockConfig();
+			$routing = new Handler\Routing($config);
 
 			$this->expectException();
 			$routing->execute($document);
 		}
 
-		public function testRouteMissingModule()
+		public function testRouteWithoutModule()
 		{
 			$document = new Dom\Document();
 			$document->loadXML(
-				'<routes>'.
-					'<route name="index" pattern="^$" action="index" />'.
-				'</routes>'
+				'<configuration>
+					<routes>
+						<route name="foo" pattern="^$" action="bar" />
+					</routes>
+				</configuration>'
 			);
 
-			$container = new \MockContainer();
-			$routing = new Handler\Routing($container);
+			$config = new \MockConfig();
+			$routing = new Handler\Routing($config);
 
 			$this->expectException();
 			$routing->execute($document);
 		}
 
-		public function testRouteMissingAction()
+		public function testRouteWithoutAction()
 		{
 			$document = new Dom\Document();
 			$document->loadXML(
-				'<routes>'.
-					'<route name="index" pattern="^$" module="index" />'.
-				'</routes>'
+				'<configuration>
+					<routes>
+						<route name="foo" pattern="bar" module="baz" />
+					</routes>
+				</configuration>'
 			);
 
-			$container = new \MockContainer();
-			$routing = new Handler\Routing($container);
+			$config = new \MockConfig();
+			$routing = new Handler\Routing($config);
 
 			$this->expectException();
 			$routing->execute($document);
+		}
+
+		public function testNestedRoute()
+		{
+			$document = new Dom\Document();
+			$document->loadXML(
+				'<configuration>
+					<routes>
+						<route name="foo" pattern="^bar" module="baz">
+							<route name=".qux" pattern="/{id:\d+}$" action="quux" />
+						</route>
+					</routes>
+				</configuration>'
+			);
+
+			$config = new \MockConfig();
+			$routing = new Handler\Routing($config);
+
+			$route = array(
+				'name' => 'foo.qux',
+				'pattern' => '^bar/{id:\d+}$',
+				'module' => 'baz',
+				'action' => 'quux'
+			);
+			$this->assertEqual($routing->execute($document), array($route));
+		}
+
+		public function testNestedRoutes()
+		{
+			$document = new Dom\Document();
+			$document->loadXML(
+				'<configuration>
+					<routes>
+						<route name="foo" pattern="^bar" module="baz">
+							<route name=".qux" pattern="/{id:\d+}$" action="quux" />
+							<route name=".corge" pattern="/{name:\w+}$" action="grault" />
+						</route>
+						<route name="waldo" module="fred">
+							<route name=".xyzzy" pattern="^{id:\d+}$" action="thud" />
+						</route>
+					</routes>
+				</configuration>'
+			);
+
+			$config = new \MockConfig();
+			$routing = new Handler\Routing($config);
+
+			$routes = array(
+				array(
+					'name' => 'foo.qux',
+					'pattern' => '^bar/{id:\d+}$',
+					'module' => 'baz',
+					'action' => 'quux'
+				),
+				array(
+					'name' => 'foo.corge',
+					'pattern' => '^bar/{name:\w+}$',
+					'module' => 'baz',
+					'action' => 'grault'
+				),
+				array(
+					'name' => 'waldo.xyzzy',
+					'pattern' => '^{id:\d+}$',
+					'module' => 'fred',
+					'action' => 'thud'
+				)
+			);
+			$this->assertEqual($routing->execute($document), $routes);
 		}
 	}
 }

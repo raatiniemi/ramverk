@@ -30,24 +30,103 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 			$data = array();
 			foreach($document->getConfigurationElements() as $configuration) {
 				foreach($configuration->get('routes') as $routes) {
-					foreach($routes->get('route') as $route) {
-						$item = array();
-
-						// Verify that the route have all of the required attributes.
-						foreach(array('name', 'pattern', 'module', 'action') as $attribute) {
-							if(!$route->hasAttribute($attribute)) {
-								// TODO: Throw exception, required attribute is missing.
-							}
-							// Assign the attribute value to the route configuration.
-							$item[$attribute] = $route->getAttribute($attribute);
-						}
-
-						// Add the route configuration to the routes.
-						$data[] = $item;
+					if($routes->has('route')) {
+						// Retrieve the routes from the document section.
+						$data = array_merge($data, $this->getRoutes($routes->get('route')));
 					}
 				}
 			}
 			return $data;
+		}
+
+		/**
+		 * Retrieve route components from the configuration.
+		 * @param DOMNodeList $nodes List of route components to extract data.
+		 * @param array $parent Previous route component.
+		 * @return array Route components.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		private function getRoutes(\DOMNodeList $nodes, array $parent = array()) {
+			$routes = array();
+			foreach($nodes as $node) {
+				$route = $parent;
+
+				// Check if the route have defined subroutes.
+				if($node->has('route')) {
+					// Iterate through the name and pattern.
+					foreach(array('name', 'pattern') as $attribute) {
+						if($node->hasAttribute($attribute)) {
+							// The name and pattern of the parent route component (if
+							// any) should prefix the current route component.
+							$prefix = isset($route[$attribute]) ? $route[$attribute] : null;
+							$route[$attribute] = "{$prefix}{$node->getAttribute($attribute)}";
+						}
+					}
+
+					// Iterate through the module and action. The module and
+					// action values of the current route component should
+					// replace the parent route components values, if defined.
+					foreach(array('module', 'action') as $attribute) {
+						if($node->hasAttribute($attribute)) {
+							$route[$attribute] = $node->getAttribute($attribute);
+						}
+					}
+
+					// Retrieve the subroutes and merge with the available routes.
+					$routes = array_merge($routes, $this->getRoutes($node->get('route'), $route));
+				} else {
+					// Add the route to the available routes.
+					$routes[] = $this->getRoute($node, $parent);
+				}
+			}
+			return $routes;
+		}
+
+		/**
+		 * Retrieve the route component.
+		 * @param Me\Raatiniemi\Ramverk\Data\Dom\Element $node Dom element for the route component.
+		 * @param array $route Parent route component, if any.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If route component is missing name or pattern.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If route component is missing module or action.
+		 * @return array Route component.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		private function getRoute(Dom\Element $node, array $route = array()) {
+			// Iterate through the name and pattern.
+			foreach(array('name', 'pattern') as $attribute) {
+				if($node->hasAttribute($attribute)) {
+					// The name and pattern of the parent route component (if
+					// any) should prefix the current route component.
+					$prefix = isset($route[$attribute]) ? $route[$attribute] : null;
+					$route[$attribute] = "{$prefix}{$node->getAttribute($attribute)}";
+				}
+
+				// Both the name and pattern have to be defined on every route.
+				// It can be inherited from a parent route component, but every
+				// route must have them.
+				if(!isset($route[$attribute])) {
+					// TODO: Write exception message.
+					throw new Ramverk\Exception;
+				}
+			}
+
+			// Iterate through the module and action. The module and action
+			// values of the current route component should replace the parent
+			// route components values, if defined.
+			foreach(array('module', 'action') as $attribute) {
+				if($node->hasAttribute($attribute)) {
+					$route[$attribute] = $node->getAttribute($attribute);
+				}
+
+				// Both the module and action have to be defined on every route.
+				// It can be inherited from a parent route component, but every
+				// route must have them.
+				if(!isset($route[$attribute])) {
+					// TODO: Write exception message.
+					throw new Ramverk\Exception;
+				}
+			}
+			return $route;
 		}
 	}
 }
