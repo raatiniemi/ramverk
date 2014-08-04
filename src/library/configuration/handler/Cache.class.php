@@ -14,8 +14,6 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 	 *
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
-	 *
-	 * @todo Migrate most of the functionality to a more generic caching class.
 	 */
 	class Cache
 	{
@@ -23,13 +21,13 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * Profile for the application.
 		 * @var string
 		 */
-		protected $_profile;
+		private $profile;
 
 		/**
 		 * Context for the application.
 		 * @var string
 		 */
-		protected $_context;
+		private $context;
 
 		/**
 		 * Initialize the cache for configuration handlers.
@@ -39,8 +37,8 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 */
 		public function __construct($profile, $context)
 		{
-			$this->_profile = $profile;
-			$this->_context = $context;
+			$this->profile = $profile;
+			$this->context = $context;
 		}
 
 		/**
@@ -56,8 +54,8 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 			return sprintf(
 				'%s_%s_%s_%s.php',
 				basename($filename),
-				$this->_profile,
-				$this->_context,
+				$this->profile,
+				$this->context,
 				sha1($filename)
 			);
 		}
@@ -82,6 +80,8 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 */
 		public function read($cachename)
 		{
+			$data = null;
+
 			// Before attempting to read the cache file we have to check that
 			// it exists and is readable (permission issues).
 			if(is_readable($cachename)) {
@@ -93,14 +93,12 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 					// TODO: Better specify the Exception-object.
 					throw new Ramverk\Exception(sprintf(
 						'The cached configuration file "%s" did not return '.
-						'valid configuration data.',
+						'valid configuration data',
 						basename($cachename)
 					));
 				}
-
-				return $data;
 			}
-			return NULL;
+			return $data;
 		}
 
 		/**
@@ -117,31 +115,36 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 			// Check if the cache directory exists. If it doesn't
 			// attempt to create it.
 			if(!is_dir($directory)) {
-				if(!mkdir($directory, 0777, TRUE)) {
+				if(!mkdir($directory, 0777, true)) {
 					// TODO: Better specify the Exception-object.
 					throw new Ramverk\Exception(sprintf(
-						'Cache directory "%s" do not exists and can not be created.',
+						'Cache directory "%s" do not exists and can not be created',
 						$directory
 					));
 				}
+			}
+
+			// Now that the directory exists, we need to check that we have
+			// permission to actually write the data to the cache file.
+			if(!is_writable($directory) || (file_exists($cachename) && !is_writable($cachename))) {
+				// TODO: Write exception message.
+				throw new Ramverk\Exception;
 			}
 
 			// Build the content of the cache file. The file should should
 			// return an array with the configuration.
 			$data = sprintf('<?php return %s;', var_export($data, 1));
 
-			// TODO: Check if $cachename is writable.
 			// The file_put_contents function returns the amount of bytes
-			// written and false on failure.
-			if(file_put_contents($cachename, $data) === FALSE) {
+			// written or false on failure.
+			if(file_put_contents($cachename, $data) === false) {
 				// TODO: Better specify the Exception-object.
 				throw new Ramverk\Exception(sprintf(
-					'Unable to write data to cache file "%s".',
+					'Unable to write data to cache file "%s"',
 					$cachename
 				));
 			}
-
-			return TRUE;
+			return true;
 		}
 	}
 }
