@@ -14,7 +14,7 @@ namespace Me\Raatiniemi\Ramverk
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	final class Configuration
+	class Configuration
 	{
 		// +------------------------------------------------------------------+
 		// | Trait use-directives.                                            |
