@@ -33,26 +33,43 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 				if($configuration->hasChild('system_actions')) {
 					$actions = $configuration->getChild('system_actions');
 					if($actions->hasChildren('system_action')) {
-						foreach($actions->getChildren('system_action') as $action) {
+						foreach($actions->getChildren('system_action') as $item) {
 							// The pre-defined system action have to be defined with a name.
-							if(!$action->hasAttribute('name')) {
-								// TODO: Throw exception, no name system action is not allowed.
+							if(!$item->hasAttribute('name')) {
+								// TODO: Write exception message.
+								throw new Ramverk\Exception();
 							}
 
 							// The pre-defined system action have to define a module.
-							if($action->hasChild('module')) {
-								// TODO: Throw exception, system action without defined module is not allowed.
+							if(!$item->hasChild('module')) {
+								// TODO: Write exception message.
+								throw new Ramverk\Exception();
+							}
+
+							// Retrieve the module for the pre-defined system action.
+							$module = $item->getChild('module')->getValue();
+							if(empty($module)) {
+								// TODO: Write exception message.
+								throw new Ramverk\Exception();
 							}
 
 							// The pre-defined system action have to define a action.
-							if($action->hasChild('action')) {
-								// TODO: Throw exception, system action without defined action is not allowed.
+							if(!$item->hasChild('action')) {
+								// TODO: Write exception message.
+								throw new Ramverk\Exception();
 							}
 
-							// Retrieve the module and action for the system action.
-							$name = strtolower($action->getAttribute('name'));
-							$data["actions.{$name}_module"] = $action->getChild('module')->getValue();
-							$data["actions.{$name}_action"] = $action->getChild('action')->getValue();
+							// Retrieve the action for the pre-defined system action.
+							$action = $item->getChild('action')->getValue();
+							if(empty($action)) {
+								// TODO: Write exception message.
+								throw new Ramverk\Exception();
+							}
+
+							// Assemble the system action with module and action.
+							$name = strtolower($item->getAttribute('name'));
+							$data["actions.{$name}_module"] = $module;
+							$data["actions.{$name}_action"] = $action;
 						}
 					}
 				}
@@ -63,8 +80,9 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 					if($settings->hasChildren('setting')) {
 						foreach($settings->getChildren('setting') as $setting) {
 							// Settings have to be defined with a name.
-							if($setting->hasAttribute('name')) {
-								// TODO: Throw exception, setting without name is not allowed.
+							if(!$setting->hasAttribute('name')) {
+								// TODO: Write exception message.
+								throw new Ramverk\Exception();
 							}
 
 							// Retrieve the value for the setting.
@@ -74,8 +92,14 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 					}
 				}
 			}
-			// TODO: Validate the configuration data.
-			// Module and action for the default and 404 system action have to be defined.
+
+			// Verify that the default and 404 system actions have been defined.
+			foreach(array('actions.default', 'actions.404') as $prefix) {
+				if(!isset($data["{$prefix}_module"], $data["{$prefix}_action"])) {
+					// TODO: Write exception message.
+					throw new Ramverk\Exception();
+				}
+			}
 			return $data;
 		}
 	}
