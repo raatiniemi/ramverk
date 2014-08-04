@@ -27,7 +27,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * Application controller.
 		 * @var Me\Raatiniemi\Ramverk\Controller
 		 */
-		private $_controller;
+		private $controller;
 
 		/**
 		 * Initialize the ramverk core.
@@ -145,16 +145,20 @@ namespace Me\Raatiniemi\Ramverk
 		 */
 		public function getController()
 		{
-			if($this->_controller === NULL) {
-				$class = __NAMESPACE__ . '\\Controller';
-				if(!class_exists($class)) {
-					throw new \Exception('Can not find controller');
+			// The application controller should only be initialized once.
+			if($this->controller === null) {
+				// Check that the controller class actually exists, and attempt
+				// to autoload it the event it do not exists.
+				$name = 'Me\\Raatiniemi\\Ramverk\\Controller';
+				if(!class_exists($name)) {
+					throw new Exception('Class for the application controller could not be found');
 				}
 
-				$reflection = new \ReflectionClass($class);
-				$this->_controller = $reflection->newInstanceArgs(array($this->getContext()));
+				// Initialize the class reflection and instansiate the controller.
+				$reflection = new \ReflectionClass($name);
+				$this->controller = $reflection->newInstanceArgs(array($this->getContext()));
 			}
-			return $this->_controller;
+			return $this->controller;
 		}
 	}
 }
