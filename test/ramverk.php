@@ -43,7 +43,8 @@ namespace Me\Raatiniemi\Ramverk\Test
 			'test/library/configuration/handler/Autoload.test.php',
 			'test/library/configuration/handler/Core.test.php',
 			'test/library/configuration/handler/Routing.test.php',
-			'test/library/configuration/Configuration.test.php'
+			'test/library/configuration/Configuration.test.php',
+			'test/library/configuration/Utility.test.php'
 		);
 
 		public function __construct()

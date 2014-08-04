@@ -1,5 +1,5 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Test\Configuration
+namespace Me\Raatiniemi\Ramverk\Test
 {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
