@@ -31,8 +31,8 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 		// $config->set('profile', 'production');
 
 		// Set the absolute path for the framework core and the application.
-		$config->set('directory.core', "{$directory}/src", FALSE, TRUE);
-		$config->set('directory.application', "{$directory}/trunk", FALSE, TRUE);
+		$config->set('directory.core', "{$directory}/src", false, true);
+		$config->set('directory.application', "{$directory}/trunk", false, true);
 
 		// Initialize the framework core.
 		$core = new Ramverk\Core($config);
@@ -84,7 +84,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 
 		// Check whether the module should use namespaces.
 		// If namespaces are going to be used, every class have to be located under the namespace.
-		if(($shouldNamespace = $config->get('module.namespace.enabled', $config->get('core.namespace.enabled', TRUE)))) {
+		if(($shouldNamespace = $config->get('module.namespace.enabled', $config->get('core.namespace.enabled', true)))) {
 			// Attempt to retrieve the module specific namespace, if it has
 			// been defined, otherwise use the core with the module name as suffix.
 			$namespace['module'] = $config->get('module.namespace');
@@ -95,7 +95,7 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 
 		// Check if namespaces should be used and if we have a module namespace available.
 		// If namespaces are used, the action have to be located under the "$module\Action"-namespace.
-		$prefix = ($shouldNamespace && isset($namespace['module'])) ? "{$namespace['module']}\\Action\\" : NULL;
+		$prefix = ($shouldNamespace && isset($namespace['module'])) ? "{$namespace['module']}\\Action\\" : null;
 		$controller->setClass('action', "{$prefix}{$routing->getAction()}");
 
 		// Retrieve the instance for the requested action.
