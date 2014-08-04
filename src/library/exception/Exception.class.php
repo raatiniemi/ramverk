@@ -49,9 +49,15 @@ namespace Me\Raatiniemi\Ramverk
 				require $template;
 			} else {
 				// None of the specified templates are readable, something is wrong.
-				echo 'The exception template can\'t be found, please check ';
-				echo 'the permissions for the template directories and ';
-				echo 'verify that the template files exists.';
+				echo 'The exception template can\'t be found, please check the permissions for the template<br>'. PHP_EOL;
+				echo 'directories and verify that the template files exists.<br><br>'. PHP_EOL;
+
+				// Retrieve the exception message, if available, and print it.
+				$message = $e->getMessage();
+				if(!empty($message)) {
+					echo 'Message from thrown exception:<br>'. PHP_EOL;
+					echo $e->getMessage();
+				}
 			}
 
 			// Exit the application with the specified code.
