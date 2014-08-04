@@ -76,12 +76,6 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 
 		// If a route have been found the 'parse'-method will return 'true'.
 		if(!$routing->parse()) {
-			foreach(array('actions.404_module', 'actions.404_action') as $name) {
-				if(!$config->has($name)) {
-					throw new \Exception("Core configuration property '{$name}' have not been defined");
-				}
-			}
-
 			// Since no route could be found we have to use the 404 route.
 			// This way we can deliver different responses depending on the accepted content-type.
 			$routing->setModule($config->get('actions.404_module'));
