@@ -209,8 +209,54 @@ namespace Me\Raatiniemi\Ramverk
 			return isset($classes[$name]);
 		}
 
+		/**
+		 * Initialize the module, setup the directory structure, import configuration, etc.
+		 * @param string $module Name of the module.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		public function initializeModule($module)
+		{
+			// Setup the directory structure for the module.
+			$config = $this->getConfig();
+			$config->set('directory.module', "%directory.application.module%/{$module}");
+			$config->set('directory.module.action', '%directory.module%/action');
+			$config->set('directory.module.config', '%directory.module%/config');
+			$config->set('directory.module.view', '%directory.module%/view');
+
+			// Check that the module directory exists and is readable.
+			$directory = $config->expand('%directory.module%');
+			if(!is_dir($directory) || !is_readable($directory)) {
+				throw new Exception(sprintf(
+					'The directory for the module "%s" do not exists or is '.
+					'not readable. Verify that the module exists and check '.
+					'the permissions',
+					$module
+				));
+			}
+
+			// Import the module specific configuration if available.
+			$module = $config->expand('%directory.module.config%/module.xml');
+			if(is_readable($module)) {
+				$factory = $this->getConfigurationHandlerFactory();
+				$config->fromArray($factory->callHandler('Module', $module));
+			}
+
+			// Check if module specific autoload configuration is available.
+			$autoload = $config->expand('%directory.module.config%/autoload.xml');
+			if(is_readable($autoload)) {
+				$this->setAutoloadFile($autoload);
+				spl_autoload_register(array($this, 'autoload'), true, true);
+			}
+		}
+
 		public function dispatch()
 		{
+			// Retrieve the configuration container and the configuration handler factory.
+			$c = $this->getConfig();
+			$f = $this->getConfigurationHandlerFactory();
+
+			// Import the application core configurations.
+			$c->fromArray($f->callHandler('Core', '%directory.application.config%/core.xml'));
 		}
 	}
 }

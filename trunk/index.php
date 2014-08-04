@@ -36,16 +36,13 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 
 		// Initialize the framework core.
 		$core = new Ramverk\Core($config);
+		$controller = $core->getController();
+		$controller->dispatch();
 
 		// ---- controller->dispatch() code.
 
-		$controller = $core->getController();
-
 		// Retrieve the configuration handler factory.
 		$factory = $controller->getConfigurationHandlerFactory();
-
-		// Retrieve the core application configuration.
-		$config->fromArray($factory->callHandler('Core', '%directory.application.config%/core.xml'));
 
 		// Setup the base namespace for the framework and the context name.
 		// Since the context name will represent certain elements of the
@@ -82,25 +79,8 @@ namespace Me\Raatiniemi\Ramverk\Trunk
 			$routing->setAction($config->get('actions.404_action'));
 		}
 
-		// Setup the directory structure for the module.
-		// TODO: Check that the module base directory actually exists.
-		$config->set('directory.module', "%directory.application.module%/{$routing->getModule()}");
-		$config->set('directory.module.action', '%directory.module%/action');
-		$config->set('directory.module.config', '%directory.module%/config');
-		$config->set('directory.module.view', '%directory.module%/view');
-
-		$moduleDirectory = $config->expandDirectives('%directory.module%');
-		if(!is_dir($moduleDirectory) || !is_readable($moduleDirectory)) {
-			throw new \Exception('Module directory is not available');
-		}
-
-		// Check if module specific configuration is available.
-		$module = $config->expandDirectives('%directory.module.config%/module.xml');
-		if(is_readable($module)) {
-			$config->import($factory->callHandler('Module', $module));
-		}
-
-		// TODO: Import the module specific autoload configuration.
+		// Now that we've found the right module we can initialize it.
+		$controller->initializeModule($routing->getModule());
 
 		// Check whether the module should use namespaces.
 		// If namespaces are going to be used, every class have to be located under the namespace.
