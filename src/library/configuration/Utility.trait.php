@@ -4,6 +4,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
+	use Me\Raatiniemi\Ramverk;
 
 	/**
 	 * Utilities for working with the configuration container.
@@ -59,7 +60,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 		 * @return Me\Raatiniemi\Ramverk\Configuration Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		abstract public function getConfig();
+		abstract protected function getConfig();
 	}
 }
 // End of file: Utility.trait.php

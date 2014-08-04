@@ -27,7 +27,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 		 * Configuration container.
 		 * @var Me\Raatiniemi\Ramverk\Configuration\Container
 		 */
-		protected $_config;
+		protected $config;
 
 		/**
 		 * Initialize the configuration handler.
@@ -36,7 +36,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 		 */
 		public function __construct(Ramverk\Configuration $config)
 		{
-			$this->_config = $config;
+			$this->config = $config;
 		}
 
 		/**
@@ -44,9 +44,9 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function getConfig()
+		protected function getConfig()
 		{
-			return $this->_config;
+			return $this->config;
 		}
 
 		/**
