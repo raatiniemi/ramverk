@@ -15,6 +15,7 @@ namespace Me\Raatiniemi\Ramverk\Test
 	require_once 'src/library/configuration/handler/Autoload.class.php';
 	require_once 'src/library/configuration/handler/Core.class.php';
 	require_once 'src/library/configuration/handler/Routing.class.php';
+	require_once 'src/library/configuration/handler/Cache.class.php';
 
 	require_once 'src/library/data/dom/utility/Value.trait.php';
 	require_once 'src/library/data/dom/Attribute.class.php';
@@ -43,6 +44,7 @@ namespace Me\Raatiniemi\Ramverk\Test
 			'test/library/configuration/handler/Autoload.test.php',
 			'test/library/configuration/handler/Core.test.php',
 			'test/library/configuration/handler/Routing.test.php',
+			'test/library/configuration/handler/Cache.test.php',
 			'test/library/configuration/Configuration.test.php',
 			'test/library/configuration/Utility.test.php'
 		);

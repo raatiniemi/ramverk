@@ -37,6 +37,21 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 */
 		public function __construct($profile, $context)
 		{
+			// Check that the profile is valid.
+			if(!is_string($profile) || empty($profile)) {
+				throw new \InvalidArgumentException(
+					'Profile given to configuration handler cache is invalid'
+				);
+			}
+
+			// Check that the context is valid.
+			// TODO: Validate against the available context names.
+			if(!is_string($context) || empty($context)) {
+				throw new \InvalidArgumentException(
+					'Application context given to configuration handler cache is invalid'
+				);
+			}
+
 			$this->profile = $profile;
 			$this->context = $context;
 		}
@@ -66,6 +81,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @param string $cachename Absolute path to the cache file.
 		 * @return boolean True if the cache file should be updated, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 * @todo Check if $filename exists, throw exception if it do not.
 		 */
 		public function isModified($filename, $cachename)
 		{
