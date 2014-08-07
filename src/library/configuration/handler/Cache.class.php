@@ -151,7 +151,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 			// Check if the cache directory exists. If it doesn't
 			// attempt to create it.
 			if(!is_dir($directory)) {
-				if(!mkdir($directory, 0777, true)) {
+				if(!is_writable($directory) || !mkdir($directory, 0777, true)) {
 					// TODO: Better specify the Exception-object.
 					throw new Ramverk\Exception(sprintf(
 						'Cache directory "%s" do not exists and can not be created',

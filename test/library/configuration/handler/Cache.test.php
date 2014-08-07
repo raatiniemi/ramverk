@@ -264,6 +264,36 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 
 			$this->assertEqual($data, $cache->read($file));
 		}
+
+		// Write
+
+		public function testWriteToNonExistingDirectoryWithoutPermissions()
+		{
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$this->expectException();
+			$cache->write('/root/baz/qux', array());
+		}
+
+		public function testWriteToDirectoryWithoutPermissions()
+		{
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$this->expectException();
+			$cache->write('/root/baz', array());
+		}
+
+		// TODO: Figure out a way to test cache file exists but is not writeable.
+		// TODO: Figure out a way to test file_put_contents will fail.
+
+		public function testWrite()
+		{
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$data = array('foo' => 'bar');
+			$this->assertTrue($cache->write("{$this->directory}/baz", $data));
+			$this->assertEqual($cache->read("{$this->directory}/baz"), $data);
+		}
 	}
 }
 // End of file: Cache.test.php
