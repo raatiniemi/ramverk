@@ -85,6 +85,26 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 */
 		public function isModified($filename, $cachename)
 		{
+			// Verify that the configuration file have been supplied.
+			if(empty($filename)) {
+				// TODO: Write exception message.
+				throw new Ramverk\Exception();
+			}
+
+			// Verify that the configuration file exists.
+			if(!is_readable($filename)) {
+				// TODO: Write exception message.
+				throw new Ramverk\Exception();
+			}
+
+			// Verify that the cache file have been supplied.
+			if(empty($cachename)) {
+				// TODO: Write exception message.
+				throw new Ramverk\Exception();
+			}
+
+			// True will be returned if the cache file do not exists, or if the
+			// configuration file has a newer modification time than the cache.
 			return !is_readable($cachename) || filemtime($filename) > filemtime($cachename);
 		}
 

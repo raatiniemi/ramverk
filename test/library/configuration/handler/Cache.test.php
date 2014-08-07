@@ -155,6 +155,30 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 
 		// Is modified
 
+		public function testIsModifiedWithEmptyFilename()
+		{
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$this->expectException();
+			$cache->isModified('', 'baz');
+		}
+
+		public function testIsModifiedWithEmptyCachename()
+		{
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$this->expectException();
+			$cache->isModified(__FILE__, '');
+		}
+
+		public function testIsModifiedWithNonExistingFilename()
+		{
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$this->expectException();
+			$cache->isModified('baz', 'qux');
+		}
+
 		public function testIsModifiedWithoutCache()
 		{
 			$cache = new Handler\Cache('foo', 'bar');
