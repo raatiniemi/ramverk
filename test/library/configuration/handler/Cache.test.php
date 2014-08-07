@@ -184,7 +184,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 			$cache = new Handler\Cache('foo', 'bar');
 
 			$file = "{$this->directory}/config";
-			file_put_contents($file, '');
+			$this->assertTrue(file_put_contents($file, '') !== false);
 
 			$this->assertTrue($cache->isModified($file, '/tmp/foo'));
 		}
@@ -196,9 +196,9 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 			$file['cache'] = "{$this->directory}/cache";
 			$file['config'] = "{$this->directory}/config";
 
-			file_put_contents($file['cache'], '');
+			$this->assertTrue(file_put_contents($file['cache'], '') !== false);
 			sleep(1);
-			file_put_contents($file['config'], '');
+			$this->assertTrue(file_put_contents($file['config'], '') !== false);
 
 			clearstatcache();
 			$this->assertTrue($cache->isModified($file['config'], $file['cache']));
@@ -211,12 +211,58 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 			$file['cache'] = "{$this->directory}/cache";
 			$file['config'] = "{$this->directory}/config";
 
-			file_put_contents($file['config'], '');
+			$this->assertTrue(file_put_contents($file['config'], '') !== false);
 			sleep(1);
-			file_put_contents($file['cache'], '');
+			$this->assertTrue(file_put_contents($file['cache'], '') !== false);
 
 			clearstatcache();
 			$this->assertFalse($cache->isModified($file['config'], $file['cache']));
+		}
+
+		// Read
+
+		public function testReadNonExistingCache()
+		{
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$this->assertNull($cache->read('baz'));
+		}
+
+		public function testReadEmptyCache()
+		{
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$file = "{$this->directory}/cache";
+			$this->assertTrue(file_put_contents($file, '') !== false);
+
+			$this->expectException();
+			$cache->read($file);
+		}
+
+		public function testReadEmptyConfigurationCache()
+		{
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$data = array();
+
+			$file = "{$this->directory}/cache";
+			$content = sprintf('<?php return %s;', var_export($data, 1));
+			$this->assertTrue(file_put_contents($file, $content) !== false);
+
+			$this->assertEqual($data, $cache->read($file));
+		}
+
+		public function testReadCache()
+		{
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$data = array('baz' => 'qux');
+
+			$file = "{$this->directory}/cache";
+			$content = sprintf('<?php return %s;', var_export($data, 1));
+			$this->assertTrue(file_put_contents($file, $content) !== false);
+
+			$this->assertEqual($data, $cache->read($file));
 		}
 	}
 }
