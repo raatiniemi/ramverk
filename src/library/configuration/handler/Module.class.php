@@ -34,7 +34,8 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 					foreach($settings->get('setting') as $setting) {
 						// Every setting item must have the name attribute.
 						if(!$setting->hasAttribute('name')) {
-							// TODO: Throw exception, no name setting is not allowed.
+							// TODO: Write exception message.
+							throw new Ramverk\Exception();
 						}
 
 						// Retrieve the setting name and value.

@@ -14,6 +14,7 @@ namespace Me\Raatiniemi\Ramverk\Test
 	require_once 'src/library/configuration/handler/Handler.class.php';
 	require_once 'src/library/configuration/handler/Autoload.class.php';
 	require_once 'src/library/configuration/handler/Core.class.php';
+	require_once 'src/library/configuration/handler/Module.class.php';
 	require_once 'src/library/configuration/handler/Routing.class.php';
 	require_once 'src/library/configuration/handler/Cache.class.php';
 
@@ -43,6 +44,7 @@ namespace Me\Raatiniemi\Ramverk\Test
 		private $cases = array(
 			'test/library/configuration/handler/Autoload.test.php',
 			'test/library/configuration/handler/Core.test.php',
+			'test/library/configuration/handler/Module.test.php',
 			'test/library/configuration/handler/Routing.test.php',
 			'test/library/configuration/handler/Cache.test.php',
 			'test/library/configuration/Configuration.test.php',
