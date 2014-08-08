@@ -77,8 +77,8 @@ namespace Me\Raatiniemi\Ramverk\Core
 
 					// Loop though each of the files within the cache directory.
 					foreach(new \DirectoryIterator($directory) as $file) {
-						// Dot files (i.e. ".." and ".") should not be included.
-						if($file->isDot()) {
+						// Dotfiles (i.e. "." and "..") and directories should be excluded.
+						if($file->isDot() || $file->isDir()) {
 							continue;
 						}
 
@@ -87,7 +87,7 @@ namespace Me\Raatiniemi\Ramverk\Core
 						if($file->isFile() && preg_match('/([a-z0-9\.\_]+)\.php/i', $file->getPathname())) {
 							// Check that we are able to write to the file.
 							$path = $file->getPathname();
-							if(is_writable($path)) {
+							if(!is_writable($path)) {
 								// TODO: Write exception message.
 								throw new Ramverk\Exception();
 							}
