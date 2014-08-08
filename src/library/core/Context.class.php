@@ -84,8 +84,14 @@ namespace Me\Raatiniemi\Ramverk\Core
 
 						// Check that the path name match the expected patterns,
 						// we don't want to remove e.g. the .gitignore file.
-						if(preg_match('/([a-z0-9\.\_]+)\.php/i', $file->getPathname())) {
-							unlink($file->getPathname());
+						if($file->isFile() && preg_match('/([a-z0-9\.\_]+)\.php/i', $file->getPathname())) {
+							// Check that we are able to write to the file.
+							$path = $file->getPathname();
+							if(is_writable($path)) {
+								// TODO: Write exception message.
+								throw new Ramverk\Exception();
+							}
+							unlink($path);
 						}
 					}
 				}
