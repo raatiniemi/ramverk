@@ -1,6 +1,5 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
-{
+namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
@@ -15,12 +14,10 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	class Cache extends \UnitTestCase
-	{
+	class CacheTest extends \PHPUnit_Framework_TestCase {
 		private $directory = '/tmp/ramverk';
 
-		private function clearDirectory()
-		{
+		private function clearDirectory() {
 			if(is_dir($this->directory)) {
 				$directory = new \DirectoryIterator($this->directory);
 				foreach($directory as $info) {
@@ -59,240 +56,374 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 			}
 		}
 
-		public function setUp()
-		{
+		public function setUp() {
 			$this->clearDirectory();
 		}
 
-		public function tearDown()
-		{
+		public function tearDown() {
 			$this->clearDirectory();
 		}
 
-		public function testInitializeWithArrayAsProfile()
-		{
-			$this->expectException();
+		// Initialize
+
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testInitializeWithArrayAsProfile() {
 			new Handler\Cache(array(), null);
 		}
 
-		public function testInitializeWithIntegerAsProfile()
-		{
-			$this->expectException();
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testInitializeWithIntegerAsProfile() {
 			new Handler\Cache(1337, null);
 		}
 
-		public function testInitializeWithDoubleAsProfile()
-		{
-			$this->expectException();
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testInitializeWithDoubleAsProfile() {
 			new Handler\Cache(13.37, null);
 		}
 
-		public function testInitializeWithObjectAsProfile()
-		{
-			$this->expectException();
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testInitializeWithObjectAsProfile() {
 			new Handler\Cache(new \stdClass, null);
 		}
 
-		public function testInitializeWithNullAsProfile()
-		{
-			$this->expectException();
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testInitializeWithNullAsProfile() {
 			new Handler\Cache(null, null);
 		}
 
-		public function testInitializeWithEmptyProfile()
-		{
-			$this->expectException();
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testInitializeWithEmptyProfile() {
 			new Handler\Cache('', null);
 		}
 
-		public function testInitializeWithArrayAsContext()
-		{
-			$this->expectException();
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testInitializeWithArrayAsContext() {
 			new Handler\Cache('foo', array());
 		}
 
-		public function testInitializeWithIntegerAsContext()
-		{
-			$this->expectException();
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testInitializeWithIntegerAsContext() {
 			new Handler\Cache('foo', 1337);
 		}
 
-		public function testInitializeWithDoubleAsContext()
-		{
-			$this->expectException();
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testInitializeWithDoubleAsContext() {
 			new Handler\Cache('foo', 13.37);
 		}
 
-		public function testInitializeWithObjectAsContext()
-		{
-			$this->expectException();
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testInitializeWithObjectAsContext() {
 			new Handler\Cache('foo', new \stdClass);
 		}
 
-		public function testInitializeWithNullAsContext()
-		{
-			$this->expectException();
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testInitializeWithNullAsContext() {
 			new Handler\Cache('foo', null);
 		}
 
-		public function testInitializeWithEmptyContext()
-		{
-			$this->expectException();
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testInitializeWithEmptyContext() {
 			new Handler\Cache('foo', '');
 		}
 
 		// Generate name
 
-		public function testGenerateName()
-		{
+		public function testGenerateName() {
 			$cache = new Handler\Cache('foo', 'bar');
-
-			$this->assertEqual(
-				$cache->generateName('/baz/qux.xml'),
+			$this->assertEquals(
+				$cache->generateName(new \SplFileInfo('/baz/qux.xml')),
 				'qux.xml_foo_bar_8b3287a42642ee9dd7f4b5b4fd4c8cef18993a43.php'
 			);
 		}
 
+		public function testGenerateNameFailed() {
+			$cache = new Handler\Cache('foo', 'bar');
+			$this->assertNotEquals(
+				$cache->generateName(new \SplFileInfo('baz')),
+				'qux.xml_foo_bar_8b3287a42642ee9dd7f4b5b4fd4c8cef18993a43.php'
+			);
+		}
+
+		/**
+		 * @expectedException PHPUnit_Framework_Error
+		 */
+		public function testGenerateNameWithoutFilename() {
+			$cache = new Handler\Cache('foo', 'bar');
+			$cache->generateName(null);
+		}
+
 		// Is modified
 
-		public function testIsModifiedWithEmptyFilename()
-		{
+		/**
+		 * @expectedException PHPUnit_Framework_Error
+		 */
+		public function testIsModifiedWithoutConfigurationFile() {
 			$cache = new Handler\Cache('foo', 'bar');
-
-			$this->expectException();
-			$cache->isModified('', 'baz');
+			$cache->isModified(null, null);
 		}
 
-		public function testIsModifiedWithEmptyCachename()
-		{
+		/**
+		 * @expectedException PHPUnit_Framework_Error
+		 */
+		public function testIsModifiedWithoutCacheFile() {
 			$cache = new Handler\Cache('foo', 'bar');
-
-			$this->expectException();
-			$cache->isModified(__FILE__, '');
+			$filename = new \SplFileInfo(__FILE__);
+			$cache->isModified($filename, null);
 		}
 
-		public function testIsModifiedWithNonExistingFilename()
-		{
+		/**
+		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 */
+		public function testIsModifiedWithoutExistingConfigurationFile() {
 			$cache = new Handler\Cache('foo', 'bar');
-
-			$this->expectException();
-			$cache->isModified('baz', 'qux');
+			$filename = new \SplFileInfo('baz');
+			$cachename = new \SplFileInfo('qux');
+			$cache->isModified($filename, $cachename);
 		}
 
-		public function testIsModifiedWithoutCache()
-		{
+		public function testIsModifiedWithoutExistingCacheFile() {
 			$cache = new Handler\Cache('foo', 'bar');
+			$filename = new \SplFileInfo(__FILE__);
+			$cachename = new \SplFileInfo('bar');
 
-			$file = "{$this->directory}/config";
-			$this->assertTrue(file_put_contents($file, '') !== false);
-
-			$this->assertTrue($cache->isModified($file, '/tmp/foo'));
+			$this->assertTrue($cache->isModified($filename, $cachename));
 		}
 
-		public function testIsModifiedWithOldCache()
-		{
+		public function testIsModifiedWithOldCacheFile() {
 			$cache = new Handler\Cache('foo', 'bar');
 
-			$file['cache'] = "{$this->directory}/cache";
-			$file['config'] = "{$this->directory}/config";
+			$builder = $this->getMockBuilder('SplFileInfo');
 
-			$this->assertTrue(file_put_contents($file['cache'], '') !== false);
-			sleep(1);
-			$this->assertTrue(file_put_contents($file['config'], '') !== false);
+			$filename = $builder->setConstructorArgs(array('config'))->getMock();
+			$filename->method('isFile')->willReturn(true);
+			$filename->method('isReadable')->willReturn(true);
+			$filename->method('getMTime')->willReturn(time() + 1);
 
-			clearstatcache();
-			$this->assertTrue($cache->isModified($file['config'], $file['cache']));
+			$cachename = $builder->setConstructorArgs(array('cache'))->getMock();
+			$cachename->method('isFile')->willReturn(true);
+			$cachename->method('isReadable')->willReturn(true);
+			$cachename->method('getMTime')->willReturn(time());
+
+			$this->assertTrue($cache->isModified($filename, $cachename));
 		}
 
-		public function testIsModifiedWithNewCache()
-		{
+		public function testIsModifiedWithNewCache() {
 			$cache = new Handler\Cache('foo', 'bar');
 
-			$file['cache'] = "{$this->directory}/cache";
-			$file['config'] = "{$this->directory}/config";
+			$builder = $this->getMockBuilder('SplFileInfo');
 
-			$this->assertTrue(file_put_contents($file['config'], '') !== false);
-			sleep(1);
-			$this->assertTrue(file_put_contents($file['cache'], '') !== false);
+			$filename = $builder->setConstructorArgs(array('config'))->getMock();
+			$filename->method('isFile')->willReturn(true);
+			$filename->method('isReadable')->willReturn(true);
+			$filename->method('getMTime')->willReturn(time());
 
-			clearstatcache();
-			$this->assertFalse($cache->isModified($file['config'], $file['cache']));
+			$cachename = $builder->setConstructorArgs(array('cache'))->getMock();
+			$cachename->method('isFile')->willReturn(true);
+			$cachename->method('isReadable')->willReturn(true);
+			$cachename->method('getMTime')->willReturn(time() + 1);
+
+			$this->assertFalse($cache->isModified($filename, $cachename));
 		}
 
 		// Read
 
-		public function testReadNonExistingCache()
-		{
+		public function testReadNonExistingCache() {
 			$cache = new Handler\Cache('foo', 'bar');
+			$cachename = new \SplFileInfo('baz');
 
-			$this->assertNull($cache->read('baz'));
+			$this->assertNull($cache->read($cachename));
 		}
 
-		public function testReadEmptyCache()
-		{
+		/**
+		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 */
+		public function testReadEmptyCache() {
 			$cache = new Handler\Cache('foo', 'bar');
+			$cachename = new \SplFileInfo("{$this->directory}/cache");
 
-			$file = "{$this->directory}/cache";
-			$this->assertTrue(file_put_contents($file, '') !== false);
-
-			$this->expectException();
-			$cache->read($file);
+			$this->assertTrue(file_put_contents($cachename->getPathname(), '') !== false);
+			$cache->read($cachename);
 		}
 
-		public function testReadEmptyConfigurationCache()
-		{
+		public function testReadEmptyConfigurationCache() {
 			$cache = new Handler\Cache('foo', 'bar');
+			$cachename = new \SplFileInfo("{$this->directory}/cache");
 
 			$data = array();
-
-			$file = "{$this->directory}/cache";
 			$content = sprintf('<?php return %s;', var_export($data, 1));
-			$this->assertTrue(file_put_contents($file, $content) !== false);
-
-			$this->assertEqual($data, $cache->read($file));
+			$this->assertTrue(file_put_contents($cachename->getPathname(), $content) !== false);
+			$this->assertEquals($data, $cache->read($cachename));
 		}
 
-		public function testReadCache()
-		{
+		public function testReadCache() {
 			$cache = new Handler\Cache('foo', 'bar');
+			$cachename = new \SplFileInfo("{$this->directory}/cache");
 
 			$data = array('baz' => 'qux');
-
-			$file = "{$this->directory}/cache";
 			$content = sprintf('<?php return %s;', var_export($data, 1));
-			$this->assertTrue(file_put_contents($file, $content) !== false);
+			$this->assertTrue(file_put_contents($cachename->getPathname(), $content) !== false);
+			$this->assertEquals($data, $cache->read($cachename));
+		}
 
-			$this->assertEqual($data, $cache->read($file));
+		/**
+		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 */
+		public function testReadCacheWithDirectory() {
+			$cache = new Handler\Cache('foo', 'bar');
+			$cachename = new \SplFileInfo($this->directory);
+
+			$cache->read($cachename);
 		}
 
 		// Write
 
-		public function testWriteToNonExistingDirectoryWithoutPermissions()
-		{
+		/**
+		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 */
+		public function testWriteToNonExistingDirectoryWithoutPermissions() {
 			$cache = new Handler\Cache('foo', 'bar');
 
-			$this->expectException();
-			$cache->write('/root/baz/qux', array());
+			$builder = $this->getMockBuilder('SplFileInfo');
+
+			$directory = $builder->setConstructorArgs(array('directory'))->getMock();
+			$directory->method('isDir')->willReturn(false);
+			$directory->method('isWritable')->willReturn(false);
+
+			$cachename = $builder->setConstructorArgs(array('cache'))->getMock();
+			$cachename->method('getPathInfo')->willReturn($directory);
+
+			$cache->write($cachename, array());
 		}
 
-		public function testWriteToDirectoryWithoutPermissions()
-		{
+		/**
+		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 */
+		public function testWriteToDirectoryWithoutPermissions() {
 			$cache = new Handler\Cache('foo', 'bar');
 
-			$this->expectException();
-			$cache->write('/root/baz', array());
+			$builder = $this->getMockBuilder('SplFileInfo');
+
+			$directory = $builder->setConstructorArgs(array('directory'))->getMock();
+			$directory->method('isDir')->willReturn(true);
+			$directory->method('isWritable')->willReturn(false);
+
+			$cachename = $builder->setConstructorArgs(array('cache'))->getMock();
+			$cachename->method('getPathInfo')->willReturn($directory);
+
+			$cache->write($cachename, array());
 		}
 
-		// TODO: Figure out a way to test cache file exists but is not writeable.
-		// TODO: Figure out a way to test file_put_contents will fail.
-
-		public function testWrite()
-		{
+		/**
+		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 */
+		public function testWriteToCacheFileWithoutFile() {
 			$cache = new Handler\Cache('foo', 'bar');
 
-			$data = array('foo' => 'bar');
-			$this->assertTrue($cache->write("{$this->directory}/baz", $data));
-			$this->assertEqual($cache->read("{$this->directory}/baz"), $data);
+			$builder = $this->getMockBuilder('SplFileInfo');
+
+			$directory = $builder->setConstructorArgs(array('directory'))->getMock();
+			$directory->method('isDir')->willReturn(true);
+			$directory->method('isWritable')->willReturn(true);
+
+			$cachename = $builder->setConstructorArgs(array('cache'))->getMock();
+			$cachename->method('getPathInfo')->willReturn($directory);
+			$cachename->method('isReadable')->willReturn(true);
+			$cachename->method('isFile')->willReturn(false);
+
+			$cache->write($cachename, array());
+		}
+
+		/**
+		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 */
+		public function testWriteToCacheFileWithoutPermissions() {
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$builder = $this->getMockBuilder('SplFileInfo');
+
+			$directory = $builder->setConstructorArgs(array('directory'))->getMock();
+			$directory->method('isDir')->willReturn(true);
+			$directory->method('isWritable')->willReturn(true);
+
+			$cachename = $builder->setConstructorArgs(array('cache'))->getMock();
+			$cachename->method('getPathInfo')->willReturn($directory);
+			$cachename->method('isReadable')->willReturn(true);
+			$cachename->method('isFile')->willReturn(true);
+			$cachename->method('isWritable')->willReturn(false);
+
+			$cache->write($cachename, array());
+		}
+
+		public function testWrite() {
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$fileBuilder = $this->getMockBuilder('SplFileInfo');
+
+			$directory = $fileBuilder->setConstructorArgs(array('directory'))->getMock();
+			$directory->method('isDir')->willReturn(true);
+			$directory->method('isWritable')->willReturn(true);
+
+			$objectBuilder = $this->getMockBuilder('SplFileObject');
+			$file = $objectBuilder->setConstructorArgs(array(__FILE__))->getMock();
+			$file->method('fwrite')->willReturn(1337);
+
+			$cachename = $fileBuilder->setConstructorArgs(array('cache'))->getMock();
+			$cachename->method('getPathInfo')->willReturn($directory);
+			$cachename->method('isReadable')->willReturn(false);
+			$cachename->method('openFile')->willReturn($file);
+
+			$this->assertTrue($cache->write($cachename, array('baz' => 'qux')));
+		}
+
+		/**
+		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 */
+		public function testWriteFailed() {
+			$cache = new Handler\Cache('foo', 'bar');
+
+			$fileBuilder = $this->getMockBuilder('SplFileInfo');
+
+			$directory = $fileBuilder->setConstructorArgs(array('directory'))->getMock();
+			$directory->method('isDir')->willReturn(true);
+			$directory->method('isWritable')->willReturn(true);
+
+			$objectBuilder = $this->getMockBuilder('SplFileObject');
+			$file = $objectBuilder->setConstructorArgs(array(__FILE__))->getMock();
+			$file->method('fwrite')->willReturn(null);
+
+			$cachename = $fileBuilder->setConstructorArgs(array('directory'))->getMock();
+			$cachename->method('getPathInfo')->willReturn($directory);
+			$cachename->method('isReadable')->willReturn(true);
+			$cachename->method('isFile')->willReturn(true);
+			$cachename->method('isWritable')->willReturn(true);
+			$cachename->method('openFile')->willReturn($file);
+			$cachename->method('getBasename')->willReturn('cache');
+
+			$this->assertTrue($cache->write($cachename, array('baz' => 'qux')));
 		}
 	}
 }
