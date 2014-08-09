@@ -1,13 +1,12 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Configuration\Handler
-{
+namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk;
 
 	/**
-	 * Handles caching of configuration data from handlers.
+	 * Handles caching of the configuration data from configuration handlers.
 	 *
 	 * @package Ramverk
 	 * @subpackage Configuration
@@ -15,36 +14,34 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	class Cache
-	{
+	class Cache {
 		/**
-		 * Profile for the application.
+		 * Profile name for the application.
 		 * @var string
 		 */
 		private $profile;
 
 		/**
-		 * Context for the application.
+		 * Context name for the application.
 		 * @var string
 		 */
 		private $context;
 
 		/**
 		 * Initialize the cache for configuration handlers.
-		 * @param string $profile Profile for the application.
-		 * @param string $context Context for the application.
+		 * @param string $profile Profile name for the application.
+		 * @param string $context Context name for the application.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct($profile, $context)
-		{
-			// Check that the profile is valid.
+		public function __construct($profile, $context) {
+			// Verify that the supplied application profile is valid.
 			if(!is_string($profile) || empty($profile)) {
 				throw new \InvalidArgumentException(
 					'Profile given to configuration handler cache is invalid'
 				);
 			}
 
-			// Check that the context is valid.
+			// Verify that the supplied application context is valid.
 			// TODO: Validate against the available context names.
 			if(!is_string($context) || empty($context)) {
 				throw new \InvalidArgumentException(
@@ -58,70 +55,71 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 
 		/**
 		 * Assemble the name for the cache file.
-		 * @param string $filename Name of the configuration file.
+		 * @param SplFileInfo $filename Configuration file.
 		 * @return string Generated cache name.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function generateName($filename)
-		{
+		public function generateName(\SplFileInfo $filename) {
 			// Build the name for the cache file in the following format:
 			// configurationfile_profile_context_sha1(filename).php
 			return sprintf(
 				'%s_%s_%s_%s.php',
-				basename($filename),
+				basename($filename->getBasename()),
 				$this->profile,
 				$this->context,
-				sha1($filename)
+				sha1($filename->getPathname())
 			);
 		}
 
 		/**
 		 * Check whether the cache file should be updated.
-		 * @param string $filename Absolute path to the configuration file.
-		 * @param string $cachename Absolute path to the cache file.
+		 * @param SplFileInfo $filename Configuration file.
+		 * @param SplFileInfo $cachename Cache file.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If configuration file do not exists or is not readable.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If cache file do not exists but is not a regular file.
 		 * @return boolean True if the cache file should be updated, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-		 * @todo Check if $filename exists, throw exception if it do not.
 		 */
-		public function isModified($filename, $cachename)
-		{
-			// Verify that the configuration file have been supplied.
-			if(empty($filename)) {
+		public function isModified(\SplFileInfo $filename, \SplFileInfo $cachename) {
+			// Verify that the configuration file exists and is readable.
+			if(!$filename->isFile() || !$filename->isReadable()) {
 				// TODO: Write exception message.
 				throw new Ramverk\Exception();
 			}
 
-			// Verify that the configuration file exists.
-			if(!is_readable($filename)) {
-				// TODO: Write exception message.
-				throw new Ramverk\Exception();
-			}
-
-			// Verify that the cache file have been supplied.
-			if(empty($cachename)) {
+			// If the cache file exists, it also have to be a file.
+			if($cachename->isReadable() && !$cachename->isFile()) {
 				// TODO: Write exception message.
 				throw new Ramverk\Exception();
 			}
 
 			// True will be returned if the cache file do not exists, or if the
-			// configuration file has a newer modification time than the cache.
-			return !is_readable($cachename) || filemtime($filename) > filemtime($cachename);
+			// configuration file has been modified after the cache file was modified.
+			return !$cachename->isReadable() || $filename->getMTime() > $cachename->getMTime();
 		}
 
 		/**
 		 * Read data from the cache file.
-		 * @param string $cachename Absolute path to the cache file.
-		 * @return array Array with the configuration data, or NULL.
+		 * @param SplFileInfo $cachename Cache file.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If cache file exists but is not a regular file.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If cached data is not an array.
+		 * @return array Array with the configuration data, or null.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function read($cachename)
-		{
+		public function read(\SplFileInfo $cachename) {
 			$data = null;
 
 			// Before attempting to read the cache file we have to check that
 			// it exists and is readable (permission issues).
-			if(is_readable($cachename)) {
-				$data = require($cachename);
+			if($cachename->isReadable()) {
+				//
+				if(!$cachename->isFile()) {
+					// TODO: Write exception message.
+					throw new Ramverk\Exception();
+				}
+
+				//
+				$data = require($cachename->getPathname());
 
 				// All of the cached configuration data is stored as an array.
 				// Hence, if we get back anything else something is wrong.
@@ -130,7 +128,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 					throw new Ramverk\Exception(sprintf(
 						'The cached configuration file "%s" did not return '.
 						'valid configuration data',
-						basename($cachename)
+						$cachename->getBasename()
 					));
 				}
 			}
@@ -139,30 +137,38 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 
 		/**
 		 * Write the configuration data to the cache file.
-		 * @param string $cachename Absolute path to the cache file.
+		 * @param SplFileInfo $cachename Cache file.
 		 * @param array $data Configuration data to be cached.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If cache directory do not exists and can not be created.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If cache directory is not writable.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If cache file exists but is either not a regular file or is writable.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If write cache data to file fails.
 		 * @return boolean True if caching was successful, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function write($cachename, array $data)
-		{
-			$directory = dirname($cachename);
-
+		public function write(\SplFileInfo $cachename, array $data) {
 			// Check if the cache directory exists. If it doesn't
 			// attempt to create it.
-			if(!is_dir($directory)) {
-				if(!is_writable($directory) || !mkdir($directory, 0777, true)) {
+			$directory = $cachename->getPathInfo();
+			if(!$directory->isDir()) {
+				if(!$directory->isWritable() || !mkdir($directory->getRealPath(), 0777, true)) {
 					// TODO: Better specify the Exception-object.
 					throw new Ramverk\Exception(sprintf(
 						'Cache directory "%s" do not exists and can not be created',
-						$directory
+						$directory->getRealPath()
 					));
 				}
 			}
 
 			// Now that the directory exists, we need to check that we have
 			// permission to actually write the data to the cache file.
-			if(!is_writable($directory) || (file_exists($cachename) && !is_writable($cachename))) {
+
+			if(!$directory->isWritable()) {
+				// TODO: Write exception message.
+				throw new Ramverk\Exception;
+			}
+
+			if($cachename->isReadable() && (!$cachename->isFile() || !$cachename->isWritable())) {
 				// TODO: Write exception message.
 				throw new Ramverk\Exception;
 			}
@@ -173,11 +179,12 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 
 			// The file_put_contents function returns the amount of bytes
 			// written or false on failure.
-			if(file_put_contents($cachename, $data) === false) {
+			$file = $cachename->openFile();
+			if($file->fwrite($data) === null) {
 				// TODO: Better specify the Exception-object.
 				throw new Ramverk\Exception(sprintf(
 					'Unable to write data to cache file "%s"',
-					$cachename
+					$cachename->getBasename()
 				));
 			}
 			return true;
