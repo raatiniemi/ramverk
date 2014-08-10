@@ -1,6 +1,5 @@
 <?php
-namespace Me\Raatiniemi\Ramverk
-{
+namespace Me\Raatiniemi\Ramverk {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
@@ -14,8 +13,7 @@ namespace Me\Raatiniemi\Ramverk
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	class Configuration
-	{
+	class Configuration {
 		// +------------------------------------------------------------------+
 		// | Trait use-directives.                                            |
 		// +------------------------------------------------------------------+
@@ -37,8 +35,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * Initialize the configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct()
-		{
+		public function __construct() {
 			$this->config = array();
 			$this->readonly = array();
 		}
@@ -54,8 +51,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return boolean True if directive is set, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function set($name, $value, $override = false, $readonly = false)
-		{
+		public function set($name, $value, $override = false, $readonly = false) {
 			// Verify that the directive is an actual string.
 			if(!is_string($name)) {
 				throw new \InvalidArgumentException(sprintf(
@@ -98,8 +94,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return mixed Value of the directive, or the default value.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function get($name, $default = null)
-		{
+		public function get($name, $default = null) {
 			return $this->has($name) ? $this->config[$name] : $default;
 		}
 
@@ -109,8 +104,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return boolean True if the directive exists, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function has($name)
-		{
+		public function has($name) {
 			return isset($this->config[$name]);
 		}
 
@@ -120,8 +114,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return boolean True if the readonly directive exists, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function hasReadonly($name)
-		{
+		public function hasReadonly($name) {
 			return isset($this->readonly[$name]);
 		}
 
@@ -133,8 +126,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return boolean True if directives have been imported, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function fromArray(array $data, $override = false)
-		{
+		public function fromArray(array $data, $override = false) {
 			$imported = true;
 
 			foreach($data as $directive => $value) {
@@ -150,8 +142,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return array Configuration directives with their values.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function toArray()
-		{
+		public function toArray() {
 			return (array)$this->config;
 		}
 
@@ -165,8 +156,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return string String with configuration directives expanded.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function expand($value)
-		{
+		public function expand($value) {
 			return $this->expandDirectives($value);
 		}
 
@@ -175,8 +165,7 @@ namespace Me\Raatiniemi\Ramverk
 		 * @return Me\Raatiniemi\Ramverk\Configuration Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function getConfig()
-		{
+		protected function getConfig() {
 			return $this;
 		}
 	}

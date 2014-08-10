@@ -1,6 +1,5 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Configuration
-{
+namespace Me\Raatiniemi\Ramverk\Configuration {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
@@ -15,8 +14,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	trait Utility
-	{
+	trait Utility {
 		/**
 		 * Expands configuration directives.
 		 *
@@ -27,8 +25,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 		 * @return string String with configuration directives expanded.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function expandDirectives($value)
-		{
+		public function expandDirectives($value) {
 			do {
 				$oldValue = $value;
 
