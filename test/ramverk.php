@@ -5,7 +5,9 @@ namespace Me\Raatiniemi\Ramverk\Test
 	$path = realpath(__DIR__ . '/..');
 	set_include_path($path . PATH_SEPARATOR . get_include_path());
 
-	// Include the library classes required for the unit test cases.
+	require_once 'src/library/utility/File.class.php';
+	require_once 'src/library/utility/Filesystem.class.php';
+
 	require_once 'src/library/configuration/Utility.trait.php';
 	require_once 'src/library/configuration/Configuration.class.php';
 	require_once 'src/library/configuration/handler/Handler.class.php';

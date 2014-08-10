@@ -4,6 +4,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler {
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk\Configuration\Handler;
+	use Me\Raatiniemi\Ramverk\Utility;
 
 	/**
 	 * Unit test case for the core configuration handler.
@@ -14,7 +15,11 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler {
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	class CacheTest extends \PHPUnit_Framework_TestCase {
+	class Cache extends \PHPUnit_Framework_TestCase {
+		private $file = 'Me\\Raatiniemi\\Ramverk\\Utility\\File';
+
+		private $cache = 'Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Cache';
+
 		private $directory = '/tmp/ramverk';
 
 		private function clearDirectory() {
@@ -153,17 +158,31 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler {
 		// Generate name
 
 		public function testGenerateName() {
-			$cache = new Handler\Cache('foo', 'bar');
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
+
+			$file = $stub->getMock();
+			$file->method('getBasename')->willReturn('qux.xml');
+			$file->method('getPathname')->willReturn('/baz/qux.xml');
+
+			$handler = new Handler\Cache('foo', 'bar');
 			$this->assertEquals(
-				$cache->generateName(new \SplFileInfo('/baz/qux.xml')),
+				$handler->generateName($file),
 				'qux.xml_foo_bar_8b3287a42642ee9dd7f4b5b4fd4c8cef18993a43.php'
 			);
 		}
 
 		public function testGenerateNameFailed() {
-			$cache = new Handler\Cache('foo', 'bar');
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
+
+			$file = $stub->getMock();
+			$file->method('getBasename')->willReturn('qux.xml');
+			$file->method('getPathname')->willReturn('qux.xml');
+
+			$handler = new Handler\Cache('foo', 'bar');
 			$this->assertNotEquals(
-				$cache->generateName(new \SplFileInfo('baz')),
+				$handler->generateName($file),
 				'qux.xml_foo_bar_8b3287a42642ee9dd7f4b5b4fd4c8cef18993a43.php'
 			);
 		}
@@ -172,8 +191,8 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler {
 		 * @expectedException PHPUnit_Framework_Error
 		 */
 		public function testGenerateNameWithoutFilename() {
-			$cache = new Handler\Cache('foo', 'bar');
-			$cache->generateName(null);
+			$handler = new Handler\Cache('foo', 'bar');
+			$handler->generateName(null);
 		}
 
 		// Is modified
@@ -182,121 +201,152 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler {
 		 * @expectedException PHPUnit_Framework_Error
 		 */
 		public function testIsModifiedWithoutConfigurationFile() {
-			$cache = new Handler\Cache('foo', 'bar');
-			$cache->isModified(null, null);
+			$handler = new Handler\Cache('foo', 'bar');
+			$handler->isModified(null, null);
 		}
 
 		/**
 		 * @expectedException PHPUnit_Framework_Error
 		 */
 		public function testIsModifiedWithoutCacheFile() {
-			$cache = new Handler\Cache('foo', 'bar');
-			$filename = new \SplFileInfo(__FILE__);
-			$cache->isModified($filename, null);
+			$file = new Utility\File(__FILE__);
+
+			$handler = new Handler\Cache('foo', 'bar');
+			$handler->isModified($file, null);
 		}
 
 		/**
 		 * @expectedException Me\Raatiniemi\Ramverk\Exception
 		 */
 		public function testIsModifiedWithoutExistingConfigurationFile() {
-			$cache = new Handler\Cache('foo', 'bar');
-			$filename = new \SplFileInfo('baz');
-			$cachename = new \SplFileInfo('qux');
-			$cache->isModified($filename, $cachename);
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
+
+			$file = $stub->getMock();
+			$file->method('isFile')->willReturn(false);
+
+			$cache = $stub->getMock();
+
+			$handler = new Handler\Cache('foo', 'bar');
+			$handler->isModified($file, $cache);
 		}
 
 		public function testIsModifiedWithoutExistingCacheFile() {
-			$cache = new Handler\Cache('foo', 'bar');
-			$filename = new \SplFileInfo(__FILE__);
-			$cachename = new \SplFileInfo('bar');
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
 
-			$this->assertTrue($cache->isModified($filename, $cachename));
+			$file = $stub->getMock();
+			$file->method('isFile')->willReturn(true);
+			$file->method('isReadable')->willReturn(true);
+
+			$cache = $stub->getMock();
+			$cache->method('isReadable')->willReturn(false);
+
+			$handler = new Handler\Cache('foo', 'bar');
+			$this->assertTrue($handler->isModified($file, $cache));
 		}
 
 		public function testIsModifiedWithOldCacheFile() {
-			$cache = new Handler\Cache('foo', 'bar');
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
 
-			$builder = $this->getMockBuilder('SplFileInfo');
+			$file = $stub->getMock();
+			$file->method('isFile')->willReturn(true);
+			$file->method('isReadable')->willReturn(true);
+			$file->method('getMTime')->willReturn(time() + 1);
 
-			$filename = $builder->setConstructorArgs(array('config'))->getMock();
-			$filename->method('isFile')->willReturn(true);
-			$filename->method('isReadable')->willReturn(true);
-			$filename->method('getMTime')->willReturn(time() + 1);
+			$cache = $stub->getMock();
+			$cache->method('isFile')->willReturn(true);
+			$cache->method('isReadable')->willReturn(true);
+			$cache->method('getMTime')->willReturn(time());
 
-			$cachename = $builder->setConstructorArgs(array('cache'))->getMock();
-			$cachename->method('isFile')->willReturn(true);
-			$cachename->method('isReadable')->willReturn(true);
-			$cachename->method('getMTime')->willReturn(time());
-
-			$this->assertTrue($cache->isModified($filename, $cachename));
+			$handler = new Handler\Cache('foo', 'bar');
+			$this->assertTrue($handler->isModified($file, $cache));
 		}
 
 		public function testIsModifiedWithNewCache() {
-			$cache = new Handler\Cache('foo', 'bar');
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
 
-			$builder = $this->getMockBuilder('SplFileInfo');
+			$file = $stub->getMock();
+			$file->method('isFile')->willReturn(true);
+			$file->method('isReadable')->willReturn(true);
+			$file->method('getMTime')->willReturn(time());
 
-			$filename = $builder->setConstructorArgs(array('config'))->getMock();
-			$filename->method('isFile')->willReturn(true);
-			$filename->method('isReadable')->willReturn(true);
-			$filename->method('getMTime')->willReturn(time());
+			$cache = $stub->getMock();
+			$cache->method('isReadable')->willReturn(true);
+			$cache->method('isFile')->willReturn(true);
+			$cache->method('getMTime')->willReturn(time() + 1);
 
-			$cachename = $builder->setConstructorArgs(array('cache'))->getMock();
-			$cachename->method('isFile')->willReturn(true);
-			$cachename->method('isReadable')->willReturn(true);
-			$cachename->method('getMTime')->willReturn(time() + 1);
+			$handler = new Handler\Cache('foo', 'bar');
+			$this->assertFalse($handler->isModified($file, $cache));
+		}
 
-			$this->assertFalse($cache->isModified($filename, $cachename));
+		/**
+		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 */
+		public function testIsModifiedWithoutRegularCachefile() {
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
+
+			$file = $stub->getMock();
+			$file->method('isFile')->willReturn(true);
+			$file->method('isReadable')->willReturn(true);
+
+			$cache = $stub->getMock();
+			$cache->method('isReadable')->willReturn(true);
+			$cache->method('isFile')->willReturn(false);
+
+			$handler = new Handler\Cache('foo', 'bar');
+			$handler->isModified($file, $cache);
 		}
 
 		// Read
 
 		public function testReadNonExistingCache() {
-			$cache = new Handler\Cache('foo', 'bar');
-			$cachename = new \SplFileInfo('baz');
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
 
-			$this->assertNull($cache->read($cachename));
+			$file = $stub->getMock();
+			$file->method('isReadable')->willReturn(false);
+
+			$cache = new Handler\Cache('foo', 'bar');
+			$this->assertNull($cache->read($file));
 		}
 
 		/**
 		 * @expectedException Me\Raatiniemi\Ramverk\Exception
 		 */
-		public function testReadEmptyCache() {
-			$cache = new Handler\Cache('foo', 'bar');
-			$cachename = new \SplFileInfo("{$this->directory}/cache");
+		public function testReadCacheWithInvalidData() {
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
 
-			$this->assertTrue(file_put_contents($cachename->getPathname(), '') !== false);
-			$cache->read($cachename);
-		}
+			$file = $stub->getMock();
+			$file->method('isReadable')->willReturn(true);
 
-		public function testReadEmptyConfigurationCache() {
-			$cache = new Handler\Cache('foo', 'bar');
-			$cachename = new \SplFileInfo("{$this->directory}/cache");
+			$stub = $this->getMockBuilder($this->cache)
+				->disableOriginalConstructor()
+				->setMethods(array('import'));
 
-			$data = array();
-			$content = sprintf('<?php return %s;', var_export($data, 1));
-			$this->assertTrue(file_put_contents($cachename->getPathname(), $content) !== false);
-			$this->assertEquals($data, $cache->read($cachename));
-		}
+			$cache = $stub->getMock();
+			$cache->method('import')->willReturn(null);
 
-		public function testReadCache() {
-			$cache = new Handler\Cache('foo', 'bar');
-			$cachename = new \SplFileInfo("{$this->directory}/cache");
-
-			$data = array('baz' => 'qux');
-			$content = sprintf('<?php return %s;', var_export($data, 1));
-			$this->assertTrue(file_put_contents($cachename->getPathname(), $content) !== false);
-			$this->assertEquals($data, $cache->read($cachename));
+			$cache->read($file);
 		}
 
 		/**
 		 * @expectedException Me\Raatiniemi\Ramverk\Exception
 		 */
-		public function testReadCacheWithDirectory() {
-			$cache = new Handler\Cache('foo', 'bar');
-			$cachename = new \SplFileInfo($this->directory);
+		public function testReadCacheWithoutRegularFile() {
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
 
-			$cache->read($cachename);
+			$file = $stub->getMock();
+			$file->method('isReadable')->willReturn(true);
+			$file->method('isFile')->willReturn(false);
+
+			$handler = new Handler\Cache('foo', 'bar');
+			$handler->read($file);
 		}
 
 		// Write
@@ -304,126 +354,163 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler {
 		/**
 		 * @expectedException Me\Raatiniemi\Ramverk\Exception
 		 */
-		public function testWriteToNonExistingDirectoryWithoutPermissions() {
-			$cache = new Handler\Cache('foo', 'bar');
+		public function testWriteDirectoryWithoutPermissions() {
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
 
-			$builder = $this->getMockBuilder('SplFileInfo');
-
-			$directory = $builder->setConstructorArgs(array('directory'))->getMock();
-			$directory->method('isDir')->willReturn(false);
+			$directory = $stub->getMock();
+			$directory->method('isDir')->willReturn(true);
 			$directory->method('isWritable')->willReturn(false);
 
-			$cachename = $builder->setConstructorArgs(array('cache'))->getMock();
-			$cachename->method('getPathInfo')->willReturn($directory);
+			$file = $stub->getMock();
+			$file->method('getPathInfo')->willReturn($directory);
 
-			$cache->write($cachename, array());
+			$handler = new Handler\Cache('foo', 'bar');
+			$handler->write($file, array());
 		}
 
 		/**
 		 * @expectedException Me\Raatiniemi\Ramverk\Exception
 		 */
-		public function testWriteToDirectoryWithoutPermissions() {
-			$cache = new Handler\Cache('foo', 'bar');
+		public function testWriteWithDirectoryCreationFailure() {
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
 
-			$builder = $this->getMockBuilder('SplFileInfo');
-
-			$directory = $builder->setConstructorArgs(array('directory'))->getMock();
-			$directory->method('isDir')->willReturn(true);
+			$directory = $stub->getMock();
+			$directory->method('isDir')->willReturn(false);
 			$directory->method('isWritable')->willReturn(false);
 
-			$cachename = $builder->setConstructorArgs(array('cache'))->getMock();
-			$cachename->method('getPathInfo')->willReturn($directory);
+			$file = $stub->getMock();
+			$file->method('getPathInfo')->willReturn($directory);
 
-			$cache->write($cachename, array());
+			$stub = $this->getMockBuilder($this->cache)
+				->disableOriginalConstructor()
+				->setMethods(array('mkdir'));
+
+			$handler = $stub->getMock();
+			$handler->method('mkdir')->willReturn(false);
+
+			$handler->write($file, array());
+		}
+
+		/**
+		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 */
+		public function testWriteWithDirectoryAsFile() {
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
+
+			$directory = $stub->getMock();
+			$directory->method('isDir')->willReturn(false);
+			$directory->method('isFile')->willReturn(true);
+
+			$file = $stub->getMock();
+			$file->method('getPathInfo')->willReturn($directory);
+
+			$handler = new Handler\Cache('foo', 'bar');
+			$handler->write($file, array());
+		}
+
+		public function testWriteWithDirectoryCreation() {
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
+
+			$directory = $stub->getMock();
+			$directory->method('isDir')->willReturn(false);
+			$directory->method('isFile')->willReturn(false);
+			$directory->method('isWritable')->willReturn(true);
+
+			$file = $stub->getMock();
+			$file->method('getPathInfo')->willReturn($directory);
+			$file->method('write')->willReturn(1337);
+
+			$stub = $this->getMockBuilder($this->cache)
+				->disableOriginalConstructor()
+				->setMethods(array('mkdir'));
+
+			$handler = $stub->getMock();
+			$handler->method('mkdir')->willReturn(true);
+
+			$handler->write($file, array());
 		}
 
 		/**
 		 * @expectedException Me\Raatiniemi\Ramverk\Exception
 		 */
 		public function testWriteToCacheFileWithoutFile() {
-			$cache = new Handler\Cache('foo', 'bar');
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
 
-			$builder = $this->getMockBuilder('SplFileInfo');
-
-			$directory = $builder->setConstructorArgs(array('directory'))->getMock();
+			$directory = $stub->getMock();
 			$directory->method('isDir')->willReturn(true);
 			$directory->method('isWritable')->willReturn(true);
 
-			$cachename = $builder->setConstructorArgs(array('cache'))->getMock();
-			$cachename->method('getPathInfo')->willReturn($directory);
-			$cachename->method('isReadable')->willReturn(true);
-			$cachename->method('isFile')->willReturn(false);
+			$file = $stub->getMock();
+			$file->method('getPathInfo')->willReturn($directory);
+			$file->method('isReadable')->willReturn(true);
+			$file->method('isFile')->willReturn(false);
 
-			$cache->write($cachename, array());
+			$handler = new Handler\Cache('foo', 'bar');
+			$handler->write($file, array());
 		}
 
 		/**
 		 * @expectedException Me\Raatiniemi\Ramverk\Exception
 		 */
 		public function testWriteToCacheFileWithoutPermissions() {
-			$cache = new Handler\Cache('foo', 'bar');
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
 
-			$builder = $this->getMockBuilder('SplFileInfo');
-
-			$directory = $builder->setConstructorArgs(array('directory'))->getMock();
+			$directory = $stub->getMock();
 			$directory->method('isDir')->willReturn(true);
 			$directory->method('isWritable')->willReturn(true);
 
-			$cachename = $builder->setConstructorArgs(array('cache'))->getMock();
-			$cachename->method('getPathInfo')->willReturn($directory);
-			$cachename->method('isReadable')->willReturn(true);
-			$cachename->method('isFile')->willReturn(true);
-			$cachename->method('isWritable')->willReturn(false);
+			$file = $stub->getMock();
+			$file->method('getPathInfo')->willReturn($directory);
+			$file->method('isReadable')->willReturn(true);
+			$file->method('isFile')->willReturn(true);
+			$file->method('isWritable')->willReturn(false);
 
-			$cache->write($cachename, array());
+			$handler = new Handler\Cache('foo', 'bar');
+			$handler->write($file, array());
 		}
 
 		public function testWrite() {
-			$cache = new Handler\Cache('foo', 'bar');
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
 
-			$fileBuilder = $this->getMockBuilder('SplFileInfo');
-
-			$directory = $fileBuilder->setConstructorArgs(array('directory'))->getMock();
+			$directory = $stub->getMock();
 			$directory->method('isDir')->willReturn(true);
 			$directory->method('isWritable')->willReturn(true);
 
-			$objectBuilder = $this->getMockBuilder('SplFileObject');
-			$file = $objectBuilder->setConstructorArgs(array(__FILE__))->getMock();
-			$file->method('fwrite')->willReturn(1337);
+			$file = $stub->getMock();
+			$file->method('getPathInfo')->willReturn($directory);
+			$file->method('isReadable')->willReturn(false);
+			$file->method('write')->willReturn(1337);
 
-			$cachename = $fileBuilder->setConstructorArgs(array('cache'))->getMock();
-			$cachename->method('getPathInfo')->willReturn($directory);
-			$cachename->method('isReadable')->willReturn(false);
-			$cachename->method('openFile')->willReturn($file);
-
-			$this->assertTrue($cache->write($cachename, array('baz' => 'qux')));
+			$handler = new Handler\Cache('foo', 'bar');
+			$this->assertTrue($handler->write($file, array('baz' => 'qux')));
 		}
 
 		/**
 		 * @expectedException Me\Raatiniemi\Ramverk\Exception
 		 */
 		public function testWriteFailed() {
-			$cache = new Handler\Cache('foo', 'bar');
+			$stub = $this->getMockBuilder($this->file)
+				->setConstructorArgs(array(__FILE__));
 
-			$fileBuilder = $this->getMockBuilder('SplFileInfo');
-
-			$directory = $fileBuilder->setConstructorArgs(array('directory'))->getMock();
+			$directory = $stub->getMock();
 			$directory->method('isDir')->willReturn(true);
 			$directory->method('isWritable')->willReturn(true);
 
-			$objectBuilder = $this->getMockBuilder('SplFileObject');
-			$file = $objectBuilder->setConstructorArgs(array(__FILE__))->getMock();
-			$file->method('fwrite')->willReturn(null);
+			$file = $stub->getMock();
+			$file->method('getPathInfo')->willReturn($directory);
+			$file->method('isReadable')->willReturn(false);
+			$file->method('write')->willReturn(null);
+			$file->method('getBasename')->willReturn('cache');
 
-			$cachename = $fileBuilder->setConstructorArgs(array('directory'))->getMock();
-			$cachename->method('getPathInfo')->willReturn($directory);
-			$cachename->method('isReadable')->willReturn(true);
-			$cachename->method('isFile')->willReturn(true);
-			$cachename->method('isWritable')->willReturn(true);
-			$cachename->method('openFile')->willReturn($file);
-			$cachename->method('getBasename')->willReturn('cache');
-
-			$this->assertTrue($cache->write($cachename, array('baz' => 'qux')));
+			$handler = new Handler\Cache('foo', 'bar');
+			$handler->write($file, array());
 		}
 	}
 }
