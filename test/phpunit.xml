@@ -10,6 +10,7 @@
 	<testsuites>
 		<testsuite name="configuration">
 			<file>library/configuration/handler/Cache.test.php</file>
+			<file>library/configuration/Configuration.test.php</file>
 		</testsuite>
 		<testsuite name="utility">
 			<file>library/utility/File.test.php</file>

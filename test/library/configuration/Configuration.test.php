@@ -1,6 +1,5 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Test
-{
+namespace Me\Raatiniemi\Ramverk\Test {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
@@ -15,210 +14,182 @@ namespace Me\Raatiniemi\Ramverk\Test
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	class Configuration extends \UnitTestCase
-	{
+	class Configuration extends \PHPUnit_Framework_TestCase {
 		// Set
 
-		public function testSet()
-		{
+		public function testSet() {
 			$config = new Config();
 			$this->assertTrue($config->set('foo', 'bar'));
 		}
 
-		public function testSetAlreadyExisting()
-		{
+		public function testSetAlreadyExisting() {
 			$config = new Config();
 			$config->set('foo', 'bar');
 
 			$this->assertFalse($config->set('foo', 'baz'));
-			$this->assertEqual($config->get('foo'), 'bar');
+			$this->assertEquals($config->get('foo'), 'bar');
 		}
 
-		public function testSetOverride()
-		{
+		public function testSetOverride() {
 			$config = new Config();
 			$config->set('foo', 'bar');
 
 			$this->assertTrue($config->set('foo', 'baz', true));
-			$this->assertEqual($config->get('foo'), 'baz');
+			$this->assertEquals($config->get('foo'), 'baz');
 		}
 
-		public function testSetReadonly()
-		{
+		/**
+		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 */
+		public function testSetReadonly() {
 			$config = new Config();
 			$config->set('foo', 'bar', false, true);
-
-			$this->expectException();
 			$config->set('foo', 'bar', true);
 		}
 
-		public function testSetWithArrayAsName()
-		{
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testSetWithArrayAsName() {
 			$config = new Config();
-
-			$this->expectException();
 			$config->set(array(), 'foo');
 		}
 
-		public function testSetWithBooleanAsName()
-		{
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testSetWithBooleanAsName() {
 			$config = new Config();
-
-			$this->expectException();
 			$config->set(true, 'foo');
 		}
 
-		public function testSetWithIntegerAsName()
-		{
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testSetWithIntegerAsName() {
 			$config = new Config();
-
-			$this->expectException();
 			$config->set(1337, 'foo');
 		}
 
-		public function testSetWithDoubleAsName()
-		{
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testSetWithDoubleAsName() {
 			$config = new Config();
-
-			$this->expectException();
 			$config->set(13.37, 'foo');
 		}
 
-		public function testSetWithObjectAsName()
-		{
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testSetWithObjectAsName() {
 			$config = new Config();
-
-			$this->expectException();
 			$config->set(new \stdClass(), 'foo');
 		}
 
 		// Get
 
-		public function testGet()
-		{
+		public function testGet() {
 			$config = new Config();
-
 			$this->assertTrue($config->set('foo', 'bar'));
-			$this->assertEqual($config->get('foo'), 'bar');
+			$this->assertEquals($config->get('foo'), 'bar');
 		}
 
-		public function testGetNonExisting()
-		{
+		public function testGetNonExisting() {
 			$config = new Config();
-
 			$this->assertNull($config->get('foo'));
 		}
 
-		public function testGetDefault()
-		{
+		public function testGetDefault() {
 			$config = new Config();
-
-			$this->assertEqual($config->get('foo', 'bar'), 'bar');
+			$this->assertEquals($config->get('foo', 'bar'), 'bar');
 		}
 
 		// Has
 
-		public function testHas()
-		{
+		public function testHas() {
 			$config = new Config();
 			$config->set('foo', 'bar');
-
 			$this->assertTrue($config->has('foo'));
-			$this->assertEqual($config->get('foo'), 'bar');
+			$this->assertEquals($config->get('foo'), 'bar');
 		}
 
-		public function testHasNot()
-		{
+		public function testHasNot() {
 			$config = new Config();
-
 			$this->assertFalse($config->has('foo'));
 			$this->assertNull($config->get('foo'));
 		}
 
-		public function testHasReadonly()
-		{
+		public function testHasReadonly() {
 			$config = new Config();
-
 			$this->assertTrue($config->set('foo', 'bar', false, true));
 			$this->assertTrue($config->hasReadonly('foo'));
 		}
 
-		public function testHasNotReadonly()
-		{
+		public function testHasNotReadonly() {
 			$config = new Config();
-
 			$this->assertFalse($config->hasReadonly('foo'));
 			$this->assertNull($config->get('foo'));
 		}
 
 		// From array
 
-		public function testFromArray()
-		{
+		public function testFromArray() {
 			$config = new Config();
-
 			$this->assertTrue($config->fromArray(array('foo' => 'bar')));
-			$this->assertEqual($config->get('foo'), 'bar');
+			$this->assertEquals($config->get('foo'), 'bar');
 		}
 
-		public function testFromArrayWithAlreadyExisting()
-		{
+		public function testFromArrayWithAlreadyExisting() {
 			$config = new Config();
-
 			$this->assertTrue($config->set('foo', 'bar'));
 			$this->assertFalse($config->fromArray(array('foo' => 'baz')));
-			$this->assertEqual($config->get('foo'), 'bar');
+			$this->assertEquals($config->get('foo'), 'bar');
 		}
 
-		public function testFromArrayWithOverride()
-		{
+		public function testFromArrayWithOverride() {
 			$config = new Config();
-
 			$this->assertTrue($config->set('foo', 'bar'));
 			$this->assertTrue($config->fromArray(array('foo' => 'baz'), true));
-			$this->assertEqual($config->get('foo'), 'baz');
+			$this->assertEquals($config->get('foo'), 'baz');
 		}
 
-		public function testFromArrayWithBooleanAsName()
-		{
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testFromArrayWithBooleanAsName() {
 			$config = new Config();
-
-			$this->expectException();
 			$config->fromArray(array(true => 'foo'));
 		}
 
-		public function testFromArrayWithIntegerAsName()
-		{
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testFromArrayWithIntegerAsName() {
 			$config = new Config();
-
-			$this->expectException();
 			$config->fromArray(array(1337 => 'foo'));
 		}
 
-		public function testFromArrayWithDoubleAsName()
-		{
+		/**
+		 * @expectedException InvalidArgumentException
+		 */
+		public function testFromArrayWithDoubleAsName() {
 			$config = new Config();
-
-			$this->expectException();
 			$config->fromArray(array(13.37 => 'foo'));
 		}
 
 		// To array
 
-		public function testExport()
-		{
+		public function testExport() {
 			$data = array('foo' => 'bar', 'baz' => 'qux');
 			$config = new Config();
 			$config->fromArray($data);
-
-			$this->assertEqual($config->toArray(), $data);
+			$this->assertEquals($config->toArray(), $data);
 		}
 
-		public function testExportEmpty()
-		{
+		public function testExportEmpty() {
 			$config = new Config();
-
-			$this->assertEqual($config->toArray(), array());
+			$this->assertEquals($config->toArray(), array());
 		}
 	}
 }
