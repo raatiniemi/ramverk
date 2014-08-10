@@ -13,6 +13,13 @@ namespace Me\Raatiniemi\Ramverk\Utility {
 	 * @copyright (c) 2013-2014, Authors
 	 */
 	class File extends \SplFileObject {
+		/**
+		 * Read the contents of the file.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If file is not readable.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If unable to read row from file.
+		 * @return string Contents of the file.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
 		public function read() {
 			// Check that the file is readable.
 			if(!$this->isReadable()) {
@@ -41,6 +48,14 @@ namespace Me\Raatiniemi\Ramverk\Utility {
 			return implode(PHP_EOL, $rows);
 		}
 
+		/**
+		 * Write data to file.
+		 * @param string $data Data to write to file.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If file is not writeable.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If write to file fails.
+		 * @return int Number of bytes written to the file.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
 		public function write($data) {
 			// Check that the file is writable.
 			if(!$this->isWritable()) {
