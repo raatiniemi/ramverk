@@ -4,6 +4,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 	use Me\Raatiniemi\Ramverk;
+	use Me\Raatiniemi\Ramverk\Utility;
 
 	/**
 	 * Handles caching of the configuration data from configuration handlers.
@@ -14,7 +15,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	class Cache {
+	class Cache extends Utility\Filesystem {
 		/**
 		 * Profile name for the application.
 		 * @var string
@@ -55,71 +56,71 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 
 		/**
 		 * Assemble the name for the cache file.
-		 * @param SplFileInfo $filename Configuration file.
+		 * @param Me\Raatiniemi\Ramverk\Utility\File $file Configuration file.
 		 * @return string Generated cache name.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function generateName(\SplFileInfo $filename) {
+		public function generateName(Utility\File $file) {
 			// Build the name for the cache file in the following format:
 			// configurationfile_profile_context_sha1(filename).php
 			return sprintf(
 				'%s_%s_%s_%s.php',
-				basename($filename->getBasename()),
+				basename($file->getBasename()),
 				$this->profile,
 				$this->context,
-				sha1($filename->getPathname())
+				sha1($file->getPathname())
 			);
 		}
 
 		/**
 		 * Check whether the cache file should be updated.
-		 * @param SplFileInfo $filename Configuration file.
-		 * @param SplFileInfo $cachename Cache file.
+		 * @param Me\Raatiniemi\Ramverk\Utility\File $file Configuration file.
+		 * @param Me\Raatiniemi\Ramverk\Utility\File $cache Cache file.
 		 * @throws Me\Raatiniemi\Ramverk\Exception If configuration file do not exists or is not readable.
-		 * @throws Me\Raatiniemi\Ramverk\Exception If cache file do not exists but is not a regular file.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If cache file do exists but is not a regular file.
 		 * @return boolean True if the cache file should be updated, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function isModified(\SplFileInfo $filename, \SplFileInfo $cachename) {
+		public function isModified(Utility\File $file, Utility\File $cache) {
 			// Verify that the configuration file exists and is readable.
-			if(!$filename->isFile() || !$filename->isReadable()) {
+			if(!$file->isFile() || !$file->isReadable()) {
 				// TODO: Write exception message.
 				throw new Ramverk\Exception();
 			}
 
 			// If the cache file exists, it also have to be a file.
-			if($cachename->isReadable() && !$cachename->isFile()) {
+			if($cache->isReadable() && !$cache->isFile()) {
 				// TODO: Write exception message.
 				throw new Ramverk\Exception();
 			}
 
 			// True will be returned if the cache file do not exists, or if the
 			// configuration file has been modified after the cache file was modified.
-			return !$cachename->isReadable() || $filename->getMTime() > $cachename->getMTime();
+			return !$cache->isReadable() || $file->getMTime() > $cache->getMTime();
 		}
 
 		/**
 		 * Read data from the cache file.
-		 * @param SplFileInfo $cachename Cache file.
+		 * @param Me\Raatiniemi\Ramverk\Utility\File $file Cache file.
 		 * @throws Me\Raatiniemi\Ramverk\Exception If cache file exists but is not a regular file.
 		 * @throws Me\Raatiniemi\Ramverk\Exception If cached data is not an array.
-		 * @return array Array with the configuration data, or null.
+		 * @return array Array with the configuration data, or null if file do not exists.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function read(\SplFileInfo $cachename) {
+		public function read(Utility\File $file) {
 			$data = null;
 
 			// Before attempting to read the cache file we have to check that
 			// it exists and is readable (permission issues).
-			if($cachename->isReadable()) {
+			if($file->isReadable()) {
 				//
-				if(!$cachename->isFile()) {
+				if(!$file->isFile()) {
 					// TODO: Write exception message.
 					throw new Ramverk\Exception();
 				}
 
 				//
-				$data = require($cachename->getPathname());
+				$data = $this->import($file);
 
 				// All of the cached configuration data is stored as an array.
 				// Hence, if we get back anything else something is wrong.
@@ -128,31 +129,42 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 					throw new Ramverk\Exception(sprintf(
 						'The cached configuration file "%s" did not return '.
 						'valid configuration data',
-						$cachename->getBasename()
+						$file->getBasename()
 					));
 				}
 			}
 			return $data;
 		}
 
+		private function import(Utility\File $file) {
+			return require($file->getPathname());
+		}
+
 		/**
 		 * Write the configuration data to the cache file.
-		 * @param SplFileInfo $cachename Cache file.
+		 * @param Me\Raatiniemi\Ramverk\Utility\File $file Cache file.
 		 * @param array $data Configuration data to be cached.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If cache directory is a file.
 		 * @throws Me\Raatiniemi\Ramverk\Exception If cache directory do not exists and can not be created.
 		 * @throws Me\Raatiniemi\Ramverk\Exception If cache directory is not writable.
 		 * @throws Me\Raatiniemi\Ramverk\Exception If cache file exists but is either not a regular file or is writable.
-		 * @throws Me\Raatiniemi\Ramverk\Exception If write cache data to file fails.
+		 * @throws Me\Raatiniemi\Ramverk\Exception If write data to cache file fails.
 		 * @return boolean True if caching was successful, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function write(\SplFileInfo $cachename, array $data) {
+		public function write(Utility\File $file, array $data) {
 			// Check if the cache directory exists. If it doesn't
 			// attempt to create it.
-			$directory = $cachename->getPathInfo();
+			$directory = $file->getPathInfo();
 			if(!$directory->isDir()) {
-				if(!$directory->isWritable() || !mkdir($directory->getRealPath(), 0777, true)) {
-					// TODO: Better specify the Exception-object.
+				// If the directory path is not an actual directory, it can be a file.
+				if($directory->isFile()) {
+					// TODO: Write exception message.
+					throw new Ramverk\Exception();
+				}
+
+				// Attempt to create the cache directory.
+				if(!$this->mkdir($directory->getRealPath(), 0777, true)) {
 					throw new Ramverk\Exception(sprintf(
 						'Cache directory "%s" do not exists and can not be created',
 						$directory->getRealPath()
@@ -160,15 +172,15 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 				}
 			}
 
-			// Now that the directory exists, we need to check that we have
-			// permission to actually write the data to the cache file.
-
+			// The directory seems to exists, but can we write to it?
 			if(!$directory->isWritable()) {
 				// TODO: Write exception message.
 				throw new Ramverk\Exception;
 			}
 
-			if($cachename->isReadable() && (!$cachename->isFile() || !$cachename->isWritable())) {
+			// If the file is readable, it also have to be an actual file and writable.
+			// Otherwise, we can't update the cache data.
+			if($file->isReadable() && (!$file->isFile() || !$file->isWritable())) {
 				// TODO: Write exception message.
 				throw new Ramverk\Exception;
 			}
@@ -177,14 +189,12 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 			// return an array with the configuration.
 			$data = sprintf('<?php return %s;', var_export($data, 1));
 
-			// The file_put_contents function returns the amount of bytes
-			// written or false on failure.
-			$file = $cachename->openFile();
-			if($file->fwrite($data) === null) {
-				// TODO: Better specify the Exception-object.
+			// The `write`-method returns the number of bytes written,
+			// or `null` on failure.
+			if($file->write($data) === null) {
 				throw new Ramverk\Exception(sprintf(
 					'Unable to write data to cache file "%s"',
-					$cachename->getBasename()
+					$file->getBasename()
 				));
 			}
 			return true;
