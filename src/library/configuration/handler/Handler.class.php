@@ -1,6 +1,5 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Configuration
-{
+namespace Me\Raatiniemi\Ramverk\Configuration {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
@@ -16,8 +15,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	abstract class Handler
-	{
+	abstract class Handler {
 		// +------------------------------------------------------------------+
 		// | Trait use-directives.                                            |
 		// +------------------------------------------------------------------+
@@ -34,8 +32,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 		 * @param Me\Raatiniemi\Ramverk\Configuration\Container $config Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct(Ramverk\Configuration $config)
-		{
+		public function __construct(Ramverk\Configuration $config) {
 			$this->config = $config;
 		}
 
@@ -44,8 +41,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration
 		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function getConfig()
-		{
+		protected function getConfig() {
 			return $this->config;
 		}
 

@@ -1,6 +1,5 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Configuration\Handler
-{
+namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
@@ -17,16 +16,14 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	class Core extends Configuration\Handler
-	{
+	class Core extends Configuration\Handler {
 		/**
 		 * Execute the configuration handler.
 		 * @param Me\Raatiniemi\Ramverk\Data\Dom\Document $document XML document with configuration data.
 		 * @return array Retrieved configuration data.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function execute(Dom\Document $document)
-		{
+		public function execute(Dom\Document $document) {
 			$data = array();
 			foreach($document->getConfigurationElements() as $configuration) {
 				// Check whether the configuration have `system_actions` defined.

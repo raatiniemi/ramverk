@@ -1,6 +1,5 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Configuration\Handler
-{
+namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
@@ -17,18 +16,16 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	class Autoload extends Configuration\Handler
-	{
+	class Autoload extends Configuration\Handler {
 		/**
 		 * Execute the configuration handler.
 		 * @param Me\Raatiniemi\Ramverk\Data\Dom\Document $document XML document with configuration data.
-		 * @throws Me\Raatiniemi\Ramverk\Exception If no autoload groups are found.
 		 * @throws Me\Raatiniemi\Ramverk\Exception If an autoload item is missing the name-attribute.
 		 * @return array Retrieved configuration data.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 * @todo If the group do not have a defined namespace, the application namespace should be used?
 		 */
-		public function execute(Dom\Document $document)
-		{
+		public function execute(Dom\Document $document) {
 			$data = array();
 			foreach($document->getConfigurationElements() as $configuration) {
 				foreach($configuration->get('autoloads') as $group) {

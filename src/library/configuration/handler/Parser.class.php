@@ -1,6 +1,5 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Configuration\Handler
-{
+namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
@@ -17,8 +16,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	class Parser
-	{
+	class Parser {
 		// +------------------------------------------------------------------+
 		// | Trait use-directives.                                            |
 		// +------------------------------------------------------------------+
@@ -61,8 +59,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @param string $context Context for the application.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct(Ramverk\Configuration $config, $profile, $context)
-		{
+		public function __construct(Ramverk\Configuration $config, $profile, $context) {
 			$this->_config = $config;
 			$this->_profile = $profile;
 			$this->_context = $context;
@@ -74,8 +71,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @return Me\Raatiniemi\Ramverk\Data\Dom\Document Parsed configuration document.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function execute(Dom\Document $document)
-		{
+		public function execute(Dom\Document $document) {
 			// Initialize/reset variables used while parsing.
 			$this->_items = array();
 			$this->_parentDocuments = array();
@@ -150,8 +146,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @return Me\Raatiniemi\Ramverk\Data\Dom\Document Parsed document.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function parse(Dom\Document $document)
-		{
+		protected function parse(Dom\Document $document) {
 			// Run some quick validation of the document. Every valid document
 			// have a configurations element as root.
 			$documentElement = $document->documentElement;
@@ -203,8 +198,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @param Me\Raatiniemi\Ramverk\Data\Dom\Document $document Current document being parsed.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function parseParentDocument(Dom\Document $document)
-		{
+		protected function parseParentDocument(Dom\Document $document) {
 			// Check if the document has a parent document.
 			$documentElement = $document->documentElement;
 			if($documentElement->hasAttribute('parent')) {
@@ -255,8 +249,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function getConfig()
-		{
+		public function getConfig() {
 			return $this->_config;
 		}
 	}

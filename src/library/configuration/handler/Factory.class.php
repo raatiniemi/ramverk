@@ -1,6 +1,5 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Configuration\Handler
-{
+namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
@@ -17,8 +16,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	class Factory
-	{
+	class Factory {
 		// +------------------------------------------------------------------+
 		// | Trait use-directives.                                            |
 		// +------------------------------------------------------------------+
@@ -61,8 +59,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @param Me\Raatiniemi\Ramverk\Configuration\Handler\Parser $parser Parser for configuration handlers.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function __construct(Configuration $config, Cache $cache, Parser $parser)
-		{
+		public function __construct(Configuration $config, Cache $cache, Parser $parser) {
 			$this->_config = $config;
 			$this->_cache = $cache;
 			$this->_parser = $parser;
@@ -74,8 +71,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @return array Parsed configuration from the handler.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function callHandler($name, $filename)
-		{
+		public function callHandler($name, $filename) {
 			// Get the absolute path for the configuration file.
 			$filename = $this->expandDirectives($filename);
 
@@ -168,8 +164,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @return void Handlers are stored within the handlers array.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function loadHandler($handler)
-		{
+		protected function loadHandler($handler) {
 			// Check that the handler class actually exists. If it isn't loaded
 			// yet the autoload functionality will attempt to include it.
 			if(!class_exists($handler)) {
@@ -207,8 +202,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @return boolean True if handler is registered, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function hasHandler($name)
-		{
+		public function hasHandler($name) {
 			return array_key_exists($name, $this->_availableHandlers)
 				&& isset($this->_availableHandlers[$name]);
 		}
@@ -219,8 +213,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @return boolean True if handler is instansiated, otherwise false.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		protected function isInstansiated($handler)
-		{
+		protected function isInstansiated($handler) {
 			return array_key_exists($handler, $this->_handlers)
 				&& isset($this->_handlers[$handler]);
 		}
@@ -233,8 +226,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @return boolean True if handler is successfully registered.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function registerHandler($name, $class)
-		{
+		public function registerHandler($name, $class) {
 			// Check that the configuration handler have not already been
 			// registered. We don't want to override existing handlers.
 			if($this->hasHandler($name)) {
@@ -254,8 +246,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler
 		 * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
 		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 		 */
-		public function getConfig()
-		{
+		public function getConfig() {
 			return $this->_config;
 		}
 	}
