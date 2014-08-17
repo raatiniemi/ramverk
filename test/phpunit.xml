@@ -1,12 +1,4 @@
-<phpunit
-	bootstrap="ramverk.php"
-	colors="true"
-	strict="false"
-	stopOnError="false"
-	stopOnFailure="false"
-	stopOnIncomplete="false"
-	stopOnSkipped="false"
-	verbose="false">
+<phpunit bootstrap="bootstrap.php" colors="true" strict="false" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false" stopOnSkipped="false" verbose="false">
 	<testsuites>
 		<testsuite name="configuration">
 			<file>library/configuration/handler/Cache.test.php</file>
