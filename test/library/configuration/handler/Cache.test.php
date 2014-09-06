@@ -431,7 +431,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler {
 			$handler = $stub->getMock();
 			$handler->method('mkdir')->willReturn(true);
 
-			$handler->write($file, array());
+			$this->assertTrue($handler->write($file, array()));
 		}
 
 		/**
