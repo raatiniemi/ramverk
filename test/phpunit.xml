@@ -1,4 +1,4 @@
-<phpunit bootstrap="bootstrap.php" colors="true" strict="false" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false" stopOnSkipped="false" verbose="false">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.2/phpunit.xsd" bootstrap="bootstrap.php" colors="true" strict="true" stopOnError="true" stopOnFailure="true" stopOnIncomplete="true" stopOnSkipped="true" verbose="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false">
 	<testsuites>
 		<testsuite name="configuration">
 			<file>library/configuration/handler/Cache.test.php</file>
@@ -6,7 +6,7 @@
 		</testsuite>
 		<testsuite name="utility">
 			<file>library/utility/File.test.php</file>
-			<!-- <file>library/utility/Filesystem.test.php</file> -->
+			<file>library/utility/Filesystem.test.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>

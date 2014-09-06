@@ -13,8 +13,44 @@ namespace Me\Raatiniemi\Ramverk\Utility {
 	 * @copyright (c) 2013-2014, Authors
 	 */
 	class Filesystem {
-		public function mkdir($pathname, $mode = 0777, $recursive = false) {
-			return mkdir($pathname, $mode, $recursive);
+		public function isDirectory($filename) {
+			return is_dir($filename);
+		}
+
+		public function isFile($filename) {
+			return is_file($filename);
+		}
+
+		public function isReadable($path) {
+			return is_readable($path);
+		}
+
+		public function isWriteable($path) {
+			return is_writeable($path);
+		}
+
+		public function makeDirectory($pathname, $mode = 0777, $recursive = false) {
+			$returnValue = true;
+
+			// Check if the directory path already exists.
+			if($this->isReadable($pathname)) {
+				// Since the path already exists, we have to verify that it's
+				// actually a directory and not a file.
+				if(!$this->isDirectory($pathname)) {
+					// TODO: Write exception message.
+					throw new Ramverk\Exception();
+				}
+
+				// TODO: Check permissions, and attempt to fix if incorrect.
+			} else {
+				// Attempt to create the directory.
+				if(!($returnValue = mkdir($pathname, $mode, $recursive))) {
+					// TODO: Write exception message.
+					throw new Ramverk\Exception();
+				}
+			}
+
+			return $returnValue;
 		}
 	}
 }
