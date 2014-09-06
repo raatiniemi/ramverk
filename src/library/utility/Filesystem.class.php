@@ -25,8 +25,8 @@ namespace Me\Raatiniemi\Ramverk\Utility {
 			return is_readable($path);
 		}
 
-		public function isWriteable($path) {
-			return is_writeable($path);
+		public function isWritable($path) {
+			return is_writable($path);
 		}
 
 		public function makeDirectory($pathname, $mode = 0777, $recursive = false) {

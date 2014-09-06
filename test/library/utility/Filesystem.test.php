@@ -29,9 +29,9 @@ namespace Me\Raatiniemi\Ramverk\Utility {
 		}
 	}
 
-	function is_writeable($filename) {
-		if(Utility\Filesystem::$mockIsWriteable) {
-			return Utility\Filesystem::$returnValueIsWriteable;
+	function is_writable($filename) {
+		if(Utility\Filesystem::$mockisWritable) {
+			return Utility\Filesystem::$returnValueisWritable;
 		} else {
 			return call_user_func('\\is_writable', func_get_args());
 		}
@@ -71,8 +71,8 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 		public static $mockIsReadable;
 		public static $returnValueIsReadable;
 
-		public static $mockIsWriteable;
-		public static $returnValueIsWriteable;
+		public static $mockisWritable;
+		public static $returnValueisWritable;
 
 		public static $mockMakeDirectory;
 		public static $returnValueMakeDirectory;
@@ -87,8 +87,8 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 			Filesystem::$mockIsReadable = true;
 			Filesystem::$returnValueIsReadable = true;
 
-			Filesystem::$mockIsWriteable = true;
-			Filesystem::$returnValueIsWriteable = true;
+			Filesystem::$mockisWritable = true;
+			Filesystem::$returnValueisWritable = true;
 
 			Filesystem::$mockMakeDirectory = true;
 			Filesystem::$returnValueMakeDirectory = true;
@@ -130,16 +130,16 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 			$this->assertTrue($fs->isReadable('foobar'));
 		}
 
-		public function testIsWriteableWithFailure() {
-			Filesystem::$returnValueIsWriteable = false;
+		public function testisWritableWithFailure() {
+			Filesystem::$returnValueisWritable = false;
 
 			$fs = new Utility\Filesystem;
-			$this->assertFalse($fs->isWriteable('foobar'));
+			$this->assertFalse($fs->isWritable('foobar'));
 		}
 
-		public function testIsWriteableWithSuccess() {
+		public function testisWritableWithSuccess() {
 			$fs = new Utility\Filesystem;
-			$this->assertTrue($fs->isWriteable('foobar'));
+			$this->assertTrue($fs->isWritable('foobar'));
 		}
 
 		/**
