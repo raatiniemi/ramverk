@@ -12,73 +12,146 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 	 * @copyright (c) 2013-2014, Authors
 	 */
 	class File extends \PHPUnit_Framework_TestCase {
-		private $class = 'Me\\Raatiniemi\\Ramverk\\Utility\\File';
+		private $stub;
+
+		public function setUp() {
+			$this->stub = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Utility\\File');
+		}
+
+		public function tearDown() {
+			$this->stub = null;
+		}
 
 		/**
 		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 * @expectedExceptionMessage
 		 */
 		public function testReadWithoutPermissions() {
-			$file = $this->getMock($this->class, array('isReadable'), array(__FILE__));
-			$file->method('isReadable')->willReturn(false);
+			$file = $this->stub->setConstructorArgs(array(__FILE__))
+				->setMethods(array('isReadable'))
+				->getMock();
+
+			$file->expects($this->once())
+				->method('isReadable')
+				->willReturn(false);
 
 			$file->read();
 		}
 
 		/**
 		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 * @expectedExceptionMessage
 		 */
 		public function testReadWithFailure() {
-			$file = $this->getMock($this->class, array('isReadable', 'eof', 'fgets'), array(__FILE__));
-			$file->method('isReadable')->willReturn(true);
-			$file->method('eof')->willReturn(false);
-			$file->method('fgets')->willReturn(false);
+			$file = $this->stub->setConstructorArgs(array(__FILE__))
+				->setMethods(array('isReadable', 'eof', 'fgets'))
+				->getMock();
+
+			$file->expects($this->once())
+				->method('isReadable')
+				->willReturn(true);
+
+			$file->expects($this->once())
+				->method('eof')
+				->willReturn(false);
+
+			$file->expects($this->once())
+				->method('fgets')
+				->willReturn(false);
 
 			$file->read();
 		}
 
 		public function testReadSingleLine() {
-			$file = $this->getMock($this->class, array('isReadable', 'eof', 'fgets'), array(__FILE__));
-			$file->method('isReadable')->willReturn(true);
-			$file->method('eof')->will($this->onConsecutiveCalls(false, true));
-			$file->method('fgets')->willReturn('foo');
+			$file = $this->stub->setConstructorArgs(array(__FILE__))
+				->setMethods(array('isReadable', 'eof', 'fgets'))
+				->getMock();
+
+			$file->expects($this->once())
+				->method('isReadable')
+				->willReturn(true);
+
+			$file->expects($this->exactly(2))
+				->method('eof')
+				->will($this->onConsecutiveCalls(false, true));
+
+			$file->expects($this->once())
+				->method('fgets')
+				->willReturn('foo');
 
 			$this->assertEquals('foo', $file->read());
 		}
 
 		public function testReadMultipleLines() {
-			$file = $this->getMock($this->class, array('isReadable', 'eof', 'fgets'), array(__FILE__));
-			$file->method('isReadable')->willReturn(true);
-			$file->method('eof')->will($this->onConsecutiveCalls(false, false, true));
-			$file->method('fgets')->willReturn('foo');
+			$file = $this->stub->setConstructorArgs(array(__FILE__))
+				->setMethods(array('isReadable', 'eof', 'fgets'))
+				->getMock();
 
-			$this->assertEquals('foo'.PHP_EOL.'foo', $file->read());
+			$file->expects($this->once())
+				->method('isReadable')
+				->willReturn(true);
+
+			$file->expects($this->exactly(3))
+				->method('eof')
+				->will($this->onConsecutiveCalls(false, false, true));
+
+			$file->expects($this->exactly(2))
+				->method('fgets')
+				->willReturn('foo');
+
+			$this->assertEquals(implode(PHP_EOL, array('foo', 'foo')), $file->read());
 		}
 
 		/**
 		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 * @expectedExceptionMessage
 		 */
 		public function testWriteWithoutPermissions() {
-			$file = $this->getMock($this->class, array('isWritable'), array(__FILE__));
-			$file->method('isWritable')->willReturn(false);
+			$file = $this->stub->setConstructorArgs(array(__FILE__))
+				->setMethods(array('isWritable'))
+				->getMock();
+
+			$file->expects($this->once())
+				->method('isWritable')
+				->willReturn(false);
 
 			$file->write('foo');
 		}
 
 		/**
 		 * @expectedException Me\Raatiniemi\Ramverk\Exception
+		 * @expectedExceptionMessage
 		 */
 		public function testWriteWithFailure() {
-			$file = $this->getMock($this->class, array('isWritable', 'fwrite'), array(__FILE__));
-			$file->method('isWritable')->willReturn(true);
-			$file->method('fwrite')->willReturn(null);
+			$file = $this->stub->setConstructorArgs(array(__FILE__))
+				->setMethods(array('isWritable', 'fwrite'))
+				->getMock();
+
+			$file->expects($this->once())
+				->method('isWritable')
+				->willReturn(true);
+
+			$file->expects($this->once())
+				->method('fwrite')
+				->with('foo')
+				->willReturn(null);
 
 			$file->write('foo');
 		}
 
 		public function testWrite() {
-			$file = $this->getMock($this->class, array('isWritable', 'fwrite'), array(__FILE__));
-			$file->method('isWritable')->willReturn(true);
-			$file->method('fwrite')->willReturn(1337);
+			$file = $this->stub->setConstructorArgs(array(__FILE__))
+				->setMethods(array('isWritable', 'fwrite'))
+				->getMock();
+
+			$file->expects($this->once())
+				->method('isWritable')
+				->willReturn(true);
+
+			$file->expects($this->once())
+				->method('fwrite')
+				->with('foo')
+				->willReturn(1337);
 
 			$this->assertEquals(1337, $file->write('foo'));
 		}
