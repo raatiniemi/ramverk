@@ -119,7 +119,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 					throw new Ramverk\Exception();
 				}
 
-				//
+				// Import the cached configuration data.
 				$data = $this->import($file);
 
 				// All of the cached configuration data is stored as an array.
@@ -136,7 +136,16 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 			return $data;
 		}
 
-		private function import(Utility\File $file) {
+		/**
+		 * Import the configuration data from cache file.
+		 * This method exists primarily for unit testing since we can't
+		 * override or mock the require keyword.
+		 * @param Me\Raatiniemi\Ramverk\Utility\File $file Cache file.
+		 * @return array Cached configuration data.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 * @codeCoverageIgnore
+		 */
+		protected function import(Utility\File $file) {
 			return require($file->getPathname());
 		}
 
@@ -164,7 +173,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 				}
 
 				// Attempt to create the cache directory.
-				if(!$this->mkdir($directory->getRealPath(), 0777, true)) {
+				if(!$this->makeDirectory($directory->getRealPath(), 0777, true)) {
 					throw new Ramverk\Exception(sprintf(
 						'Cache directory "%s" do not exists and can not be created',
 						$directory->getRealPath()
