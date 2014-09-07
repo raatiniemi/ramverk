@@ -61,6 +61,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 	 */
 	class Filesystem extends \PHPUnit_Framework_TestCase {
 		private $class = 'Me\\Raatiniemi\\Ramverk\\Utility\\Filesystem';
+		private $stub;
 
 		public static $mockIsDirectory;
 		public static $returnValueIsDirectory;
@@ -78,6 +79,8 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 		public static $returnValueMakeDirectory;
 
 		public function setUp() {
+			$this->stub = $this->getMockBuilder($this->class);
+
 			Filesystem::$mockIsDirectory = true;
 			Filesystem::$returnValueIsDirectory = true;
 
@@ -92,6 +95,10 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 
 			Filesystem::$mockMakeDirectory = true;
 			Filesystem::$returnValueMakeDirectory = true;
+		}
+
+		public function tearDown() {
+			$this->stub = null;
 		}
 
 		public function testIsDirectoryWithFailure() {
@@ -147,8 +154,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 		 * @expectedExceptionMessage
 		 */
 		public function testMakeDirectoryWithReadableFile() {
-			$fs = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Utility\\Filesystem')
-				->setMethods(array('isReadable', 'isDirectory'))
+			$fs = $this->stub->setMethods(array('isReadable', 'isDirectory'))
 				->getMock();
 
 			$fs->expects($this->once())
@@ -165,8 +171,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 		}
 
 		public function testMakeDirectoryWithReadableDirectory() {
-			$fs = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Utility\\Filesystem')
-				->setMethods(array('isReadable', 'isDirectory'))
+			$fs = $this->stub->setMethods(array('isReadable', 'isDirectory'))
 				->getMock();
 
 			$fs->expects($this->once())
@@ -189,8 +194,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 		public function testMakeDirectoryWithDirectoryFailure() {
 			Filesystem::$returnValueMakeDirectory = false;
 
-			$fs = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Utility\\Filesystem')
-				->setMethods(array('isReadable'))
+			$fs = $this->stub->setMethods(array('isReadable'))
 				->getMock();
 
 			$fs->expects($this->once())
@@ -202,8 +206,7 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 		}
 
 		public function testMakeDirectoryWithDirectorySuccess() {
-			$fs = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Utility\\Filesystem')
-				->setMethods(array('isReadable'))
+			$fs = $this->stub->setMethods(array('isReadable'))
 				->getMock();
 
 			$fs->expects($this->once())
