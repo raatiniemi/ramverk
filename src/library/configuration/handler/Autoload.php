@@ -34,7 +34,10 @@ class Autoload extends Configuration\Handler
             foreach ($configuration->get('autoloads') as $group) {
                 // If the autoload group has defined a namespace, then this
                 // namespace will prefix every class within the group.
-                $namespace = $group->hasAttribute('namespace') ? "{$group->getAttribute('namespace')}\\" : null;
+                $namespace = null;
+                if ($group->hasAttribute('namespace')) {
+                    $namespace = "{$group->getAttribute('namespace')}\\";
+                }
 
                 // Retrieve the autoload items from the group.
                 foreach ($group->get('autoload') as $autoload) {
