@@ -2,6 +2,7 @@
 	<testsuites>
 		<testsuite name="configuration">
 			<file>library/configuration/handler/Autoload.php</file>
+			<file>library/configuration/handler/Core.php</file>
 			<file>library/configuration/handler/Cache.test.php</file>
 			<file>library/configuration/Configuration.test.php</file>
 		</testsuite>
