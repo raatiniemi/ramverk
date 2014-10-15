@@ -25,5 +25,5 @@ namespace Me\Raatiniemi\Ramverk\Test
 
 	require_once 'src/library/exception/Exception.class.php';
 }
-// End of file: ramverk.php
-// Location: test/ramverk.php
+// End of file: bootstrap.php
+// Location: test/bootstrap.php
