@@ -48,10 +48,19 @@ class Autoload extends Configuration\Handler
                         throw new Ramverk\Exception('');
                     }
 
+                    // Every item must contain the path to the defined class.
+                    if (!$autoload->hasValue()) {
+                        // TODO: Write exception message.
+                        // TODO: Better specify the exception object.
+                        throw new Ramverk\Exception('');
+                    }
+
                     // Prepend the group namespace (if any) to the class
                     // name, and expand the class path directives.
                     $name = "{$namespace}{$autoload->getAttribute('name')}";
                     $data[$name] = $this->expandDirectives($autoload->getValue());
+
+                    // TODO: Verify that the file actually exists.
                 }
             }
         }
