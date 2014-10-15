@@ -265,5 +265,5 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 		}
 	}
 }
-// End of file: Core.test.php
-// Location: test/library/configuration/handler/Core.test.php
+// End of file: Core.php
+// Location: test/library/configuration/handler/Core.php
