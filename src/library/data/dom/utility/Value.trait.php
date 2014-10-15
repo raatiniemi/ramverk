@@ -23,7 +23,22 @@ namespace Me\Raatiniemi\Ramverk\Data\Dom\Utility
 		 */
 		public function getValue()
 		{
-			return isset($this->nodeValue) ? $this->handleTypecast($this->nodeValue) : null;
+			return $this->hasValue() ? $this->handleTypecast($this->nodeValue) : null;
+		}
+
+		/**
+		 * Check whether the DOM node has a value.
+		 * @return boolean True if the nodeValue is set, otherwise false.
+		 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+		 */
+		public function hasValue()
+		{
+			// Check that the nodeValue have been set, and that it's not an
+			// empty string. Anything else is acceptable.
+			//
+			// Unable to use the empty-function since that would evaulate zero
+			// values to be empty and that's not necessarily what we'd want.
+			return isset($this->nodeValue) && $this->nodeValue !== '';
 		}
 
 		/**
