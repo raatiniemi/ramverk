@@ -101,5 +101,5 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 		}
 	}
 }
-// End of file: Core.class.php
-// Location: library/configuration/handler/Core.class.php
+// End of file: Core.php
+// Location: library/configuration/handler/Core.php

@@ -12,7 +12,7 @@ namespace Me\Raatiniemi\Ramverk\Test
 	require_once 'src/library/configuration/Configuration.class.php';
 	require_once 'src/library/configuration/handler/Handler.class.php';
 	require_once 'src/library/configuration/handler/Autoload.php';
-	require_once 'src/library/configuration/handler/Core.class.php';
+	require_once 'src/library/configuration/handler/Core.php';
 	require_once 'src/library/configuration/handler/Module.class.php';
 	require_once 'src/library/configuration/handler/Routing.class.php';
 	require_once 'src/library/configuration/handler/Cache.class.php';
