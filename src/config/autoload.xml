@@ -32,7 +32,7 @@
 			<autoload name="Utility">%directory.core.library%/configuration/Utility.trait.php</autoload>
 
 			<autoload name="Handler">%directory.core.library%/configuration/handler/Handler.class.php</autoload>
-			<autoload name="Handler\Autoload">%directory.core.library%/configuration/handler/Autoload.class.php</autoload>
+			<autoload name="Handler\Autoload">%directory.core.library%/configuration/handler/Autoload.php</autoload>
 			<autoload name="Handler\Core">%directory.core.library%/configuration/handler/Core.class.php</autoload>
 			<autoload name="Handler\Module">%directory.core.library%/configuration/handler/Module.class.php</autoload>
 			<autoload name="Handler\Routing">%directory.core.library%/configuration/handler/Routing.class.php</autoload>

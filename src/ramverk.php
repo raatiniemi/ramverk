@@ -35,7 +35,7 @@ namespace Me\Raatiniemi\Ramverk
     require 'configuration/handler/Parser.class.php';
     require 'configuration/handler/Factory.class.php';
     require 'configuration/handler/Handler.class.php';
-    require 'configuration/handler/Autoload.class.php';
+    require 'configuration/handler/Autoload.php';
 
     // Include the extended DOM functionality.
     require 'data/dom/utility/Value.trait.php';
