@@ -9,10 +9,6 @@
 				"*.sublime-workspace",
 				"license.txt"
 			],
-			"folder_exclude_patterns":
-			[
-				"vendor"
-			],
 			"follow_symlinks": true,
 			"path": "."
 		}
