@@ -105,6 +105,25 @@ class Module extends \PHPUnit_Framework_TestCase
             )
         );
     }
+
+    public function testSettingWithCapitalizedName()
+    {
+        // Load the sample configuration to the document.
+        $document = new Dom\Document();
+        $document->loadXML(
+            '<configuration>
+                <settings>
+                    <setting name="FOO">Bar</setting>
+                </settings>
+            </configuration>'
+        );
+
+        $module = new Handler\Module($this->config->getMock());
+        $this->assertEquals(
+            $module->execute($document),
+            array('module.foo' => 'Bar')
+        );
+    }
 }
 // End of file: Module.php
 // Location: test/library/configuration/handler/Module.php

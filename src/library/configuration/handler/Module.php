@@ -41,7 +41,7 @@ class Module extends Configuration\Handler
                     }
 
                     // Retrieve the setting name and value.
-                    $name = $setting->getAttribute('name');
+                    $name = strtolower($setting->getAttribute('name'));
                     $data["module.{$name}"] = $this->expandDirectives($setting->getValue());
                 }
             }
