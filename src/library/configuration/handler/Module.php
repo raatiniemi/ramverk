@@ -45,5 +45,5 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 		}
 	}
 }
-// End of file: Module.class.php
-// Location: library/configuration/handler/Module.class.php
+// End of file: Module.php
+// Location: library/configuration/handler/Module.php

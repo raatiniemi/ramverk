@@ -87,5 +87,5 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 		}
 	}
 }
-// End of file: Module.test.php
-// Location: test/library/configuration/handler/Module.test.php
+// End of file: Module.php
+// Location: test/library/configuration/handler/Module.php
