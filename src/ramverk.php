@@ -32,7 +32,7 @@ namespace Me\Raatiniemi\Ramverk
 
     // Include the configuration handlers required by the core.
     require 'configuration/handler/Cache.class.php';
-    require 'configuration/handler/Parser.class.php';
+    require 'configuration/handler/Parser.php';
     require 'configuration/handler/Factory.class.php';
     require 'configuration/handler/Handler.class.php';
     require 'configuration/handler/Autoload.php';

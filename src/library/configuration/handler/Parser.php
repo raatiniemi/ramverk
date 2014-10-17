@@ -254,5 +254,5 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 		}
 	}
 }
-// End of file: Parser.class.php
-// Location: library/configuration/handler/Parser.class.php
+// End of file: Parser.php
+// Location: library/configuration/handler/Parser.php
