@@ -1,205 +1,227 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
-{
+namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler;
+
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Me\Raatiniemi\Ramverk\Configuration\Handler;
-	use Me\Raatiniemi\Ramverk\Data\Dom;
+use Me\Raatiniemi\Ramverk\Configuration\Handler;
+use Me\Raatiniemi\Ramverk\Data\Dom;
 
-	\Mock::generate('\\Me\\Raatiniemi\\Ramverk\\Configuration', 'MockConfig');
+/**
+ * Unit test case for the routing configuration handler.
+ *
+ * @package Ramverk
+ * @subpackage Test
+ *
+ * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ * @copyright (c) 2013-2014, Authors
+ */
+class Routing extends \PHPUnit_Framework_TestCase
+{
+    // Stores the mock builder object for the Configuration-class.
+    private $config;
 
-	/**
-	 * Unit test case for the routing configuration handler.
-	 *
-	 * @package Ramverk
-	 * @subpackage Test
-	 *
-	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-	 * @copyright (c) 2013-2014, Authors
-	 */
-	class Routing extends \UnitTestCase
-	{
-		public function testSimpleRoute()
-		{
-			$document = new Dom\Document();
-			$document->loadXML(
-				'<configuration>
-					<routes>
-						<route name="foo" pattern="^$" module="bar" action="baz" />
-					</routes>
-				</configuration>'
-			);
+    public function setUp()
+    {
+        $this->config = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration');
+    }
 
-			$config = new \MockConfig();
-			$routing = new Handler\Routing($config);
+    public function tearDown()
+    {
+        $this->config = null;
+    }
 
-			$this->assertEqual($routing->execute($document), array(
-				array(
-					'name' => 'foo',
-					'pattern' => '^$',
-					'module' => 'bar',
-					'action' => 'baz'
-				)
-			));
-		}
+    public function testSimpleRoute()
+    {
+        // Load the sample configuration to the document.
+        $document = new Dom\Document();
+        $document->loadXML(
+            '<configuration>
+                <routes>
+                    <route name="foo" pattern="^$" module="bar" action="baz" />
+                </routes>
+            </configuration>'
+        );
 
-		public function testEmptyRoutes()
-		{
-			$document = new Dom\Document();
-			$document->loadXML(
-				'<configuration>
-					<routes>
-					</routes>
-				</configuration>'
-			);
+        $autoload = new Handler\Routing($this->config->getMock());
+        $this->assertEquals(
+            $autoload->execute($document),
+            array(
+                array(
+                    'name' => 'foo',
+                    'pattern' => '^$',
+                    'module' => 'bar',
+                    'action' => 'baz'
+                )
+            )
+        );
+    }
 
-			$config = new \MockConfig();
-			$routing = new Handler\Routing($config);
+    public function testEmptySection()
+    {
+        // Load the sample configuration to the document.
+        $document = new Dom\Document();
+        $document->loadXML(
+            '<configuration>
+                <routes>
+                </routes>
+            </configuration>'
+        );
 
-			$this->assertEqual($routing->execute($document), array());
-		}
+        $autoload = new Handler\Routing($this->config->getMock());
+        $this->assertEquals(
+            $autoload->execute($document),
+            array()
+        );
+    }
 
-		public function testRouteWithoutName()
-		{
-			$document = new Dom\Document();
-			$document->loadXML(
-				'<configuration>
-					<routes>
-						<route pattern="^$" module="foo" action="bar" />
-					</routes>
-				</configuration>'
-			);
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
+     */
+    public function testRouteWithoutName()
+    {
+        // Load the sample configuration to the document.
+        $document = new Dom\Document();
+        $document->loadXML(
+            '<configuration>
+                <routes>
+                    <route pattern="^$" module="bar" action="baz" />
+                </routes>
+            </configuration>'
+        );
 
-			$config = new \MockConfig();
-			$routing = new Handler\Routing($config);
+        $autoload = new Handler\Routing($this->config->getMock());
+        $autoload->execute($document);
+    }
 
-			$this->expectException();
-			$routing->execute($document);
-		}
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
+     */
+    public function testRouteWithoutPattern()
+    {
+        // Load the sample configuration to the document.
+        $document = new Dom\Document();
+        $document->loadXML(
+            '<configuration>
+                <routes>
+                    <route name="foo" module="bar" action="baz" />
+                </routes>
+            </configuration>'
+        );
 
-		public function testRouteWithoutPattern()
-		{
-			$document = new Dom\Document();
-			$document->loadXML(
-				'<configuration>
-					<routes>
-						<route name="foo" module="bar" action="baz" />
-					</routes>
-				</configuration>'
-			);
+        $autoload = new Handler\Routing($this->config->getMock());
+        $autoload->execute($document);
+    }
 
-			$config = new \MockConfig();
-			$routing = new Handler\Routing($config);
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
+     */
+    public function testRouteWithoutModule()
+    {
+        // Load the sample configuration to the document.
+        $document = new Dom\Document();
+        $document->loadXML(
+            '<configuration>
+                <routes>
+                    <route name="foo" pattern="^$" action="baz" />
+                </routes>
+            </configuration>'
+        );
 
-			$this->expectException();
-			$routing->execute($document);
-		}
+        $autoload = new Handler\Routing($this->config->getMock());
+        $autoload->execute($document);
+    }
 
-		public function testRouteWithoutModule()
-		{
-			$document = new Dom\Document();
-			$document->loadXML(
-				'<configuration>
-					<routes>
-						<route name="foo" pattern="^$" action="bar" />
-					</routes>
-				</configuration>'
-			);
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
+     */
+    public function testRouteWithoutAction()
+    {
+        // Load the sample configuration to the document.
+        $document = new Dom\Document();
+        $document->loadXML(
+            '<configuration>
+                <routes>
+                    <route name="foo" pattern="^$" module="bar" />
+                </routes>
+            </configuration>'
+        );
 
-			$config = new \MockConfig();
-			$routing = new Handler\Routing($config);
+        $autoload = new Handler\Routing($this->config->getMock());
+        $autoload->execute($document);
+    }
 
-			$this->expectException();
-			$routing->execute($document);
-		}
+    public function testNestedRoute()
+    {
+        // Load the sample configuration to the document.
+        $document = new Dom\Document();
+        $document->loadXML(
+            '<configuration>
+                <routes>
+                    <route name="foo" pattern="^bar" module="baz">
+                        <route name=".qux" pattern="/{id:\d+}$" action="quux" />
+                    </route>
+                </routes>
+            </configuration>'
+        );
 
-		public function testRouteWithoutAction()
-		{
-			$document = new Dom\Document();
-			$document->loadXML(
-				'<configuration>
-					<routes>
-						<route name="foo" pattern="bar" module="baz" />
-					</routes>
-				</configuration>'
-			);
+        $autoload = new Handler\Routing($this->config->getMock());
+        $this->assertEquals(
+            $autoload->execute($document),
+            array(
+                array(
+                    'name' => 'foo.qux',
+                    'pattern' => '^bar/{id:\d+}$',
+                    'module' => 'baz',
+                    'action' => 'quux'
+                )
+            )
+        );
+    }
 
-			$config = new \MockConfig();
-			$routing = new Handler\Routing($config);
+    public function testNestedRoutes()
+    {
+        // Load the sample configuration to the document.
+        $document = new Dom\Document();
+        $document->loadXML(
+            '<configuration>
+                <routes>
+                    <route name="foo" pattern="^bar" module="baz">
+                        <route name=".qux" pattern="/{id:\d+}$" action="quux" />
+                        <route name=".corge" pattern="/{name:\w+}$" action="grault" />
+                    </route>
+                    <route name="waldo" module="fred">
+                        <route name=".xyzzy" pattern="^{id:\d+}$" action="thud" />
+                    </route>
+                </routes>
+            </configuration>'
+        );
 
-			$this->expectException();
-			$routing->execute($document);
-		}
-
-		public function testNestedRoute()
-		{
-			$document = new Dom\Document();
-			$document->loadXML(
-				'<configuration>
-					<routes>
-						<route name="foo" pattern="^bar" module="baz">
-							<route name=".qux" pattern="/{id:\d+}$" action="quux" />
-						</route>
-					</routes>
-				</configuration>'
-			);
-
-			$config = new \MockConfig();
-			$routing = new Handler\Routing($config);
-
-			$route = array(
-				'name' => 'foo.qux',
-				'pattern' => '^bar/{id:\d+}$',
-				'module' => 'baz',
-				'action' => 'quux'
-			);
-			$this->assertEqual($routing->execute($document), array($route));
-		}
-
-		public function testNestedRoutes()
-		{
-			$document = new Dom\Document();
-			$document->loadXML(
-				'<configuration>
-					<routes>
-						<route name="foo" pattern="^bar" module="baz">
-							<route name=".qux" pattern="/{id:\d+}$" action="quux" />
-							<route name=".corge" pattern="/{name:\w+}$" action="grault" />
-						</route>
-						<route name="waldo" module="fred">
-							<route name=".xyzzy" pattern="^{id:\d+}$" action="thud" />
-						</route>
-					</routes>
-				</configuration>'
-			);
-
-			$config = new \MockConfig();
-			$routing = new Handler\Routing($config);
-
-			$routes = array(
-				array(
-					'name' => 'foo.qux',
-					'pattern' => '^bar/{id:\d+}$',
-					'module' => 'baz',
-					'action' => 'quux'
-				),
-				array(
-					'name' => 'foo.corge',
-					'pattern' => '^bar/{name:\w+}$',
-					'module' => 'baz',
-					'action' => 'grault'
-				),
-				array(
-					'name' => 'waldo.xyzzy',
-					'pattern' => '^{id:\d+}$',
-					'module' => 'fred',
-					'action' => 'thud'
-				)
-			);
-			$this->assertEqual($routing->execute($document), $routes);
-		}
-	}
+        $autoload = new Handler\Routing($this->config->getMock());
+        $this->assertEquals(
+            $autoload->execute($document),
+            array(
+                array(
+                    'name' => 'foo.qux',
+                    'pattern' => '^bar/{id:\d+}$',
+                    'module' => 'baz',
+                    'action' => 'quux'
+                ),
+                array(
+                    'name' => 'foo.corge',
+                    'pattern' => '^bar/{name:\w+}$',
+                    'module' => 'baz',
+                    'action' => 'grault'
+                ),
+                array(
+                    'name' => 'waldo.xyzzy',
+                    'pattern' => '^{id:\d+}$',
+                    'module' => 'fred',
+                    'action' => 'thud'
+                )
+            )
+        );
+    }
 }
 // End of file: Routing.php
 // Location: test/library/configuration/handler/Routing.php
