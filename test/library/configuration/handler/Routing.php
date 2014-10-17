@@ -201,5 +201,5 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler
 		}
 	}
 }
-// End of file: Routing.test.php
-// Location: test/library/configuration/handler/Routing.test.php
+// End of file: Routing.php
+// Location: test/library/configuration/handler/Routing.php

@@ -127,5 +127,5 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 		}
 	}
 }
-// End of file: Routing.class.php
-// Location: library/configuration/handler/Routing.class.php
+// End of file: Routing.php
+// Location: library/configuration/handler/Routing.php
