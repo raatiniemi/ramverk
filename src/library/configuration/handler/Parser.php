@@ -7,6 +7,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler;
 use Me\Raatiniemi\Ramverk;
 use Me\Raatiniemi\Ramverk\Configuration;
 use Me\Raatiniemi\Ramverk\Data\Dom;
+use Me\Raatiniemi\Ramverk\Utility;
 
 /**
  * Handles parsing of data from configuration handlers.
@@ -17,7 +18,7 @@ use Me\Raatiniemi\Ramverk\Data\Dom;
  * @author Tobias Raatiniemi <raatiniemi@gmail.com>
  * @copyright (c) 2013-2014, Authors
  */
-class Parser
+class Parser extends Utility\Filesystem
 {
     // +------------------------------------------------------------------+
     // | Trait use-directives.                                            |
@@ -223,7 +224,7 @@ class Parser
             }
 
             // Check that the parent document actually exists, and is readable.
-            if (!file_exists($parent) || !is_readable($parent)) {
+            if (!$this->isReadable($parent) || !$this->isFile($parent)) {
                 // TODO: Better specify the Exception-object.
                 throw new Ramverk\Exception(sprintf(
                     'Parent configuration file "%s" do not exists.',
@@ -254,6 +255,7 @@ class Parser
      * Get the configuration container, used by Utility-trait.
      * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
      * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+     * @codeCoverageIgnore
      */
     public function getConfig()
     {
