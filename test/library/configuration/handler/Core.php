@@ -50,9 +50,9 @@ class Core extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Core($this->config->getMock());
+        $core = new Handler\Core($this->config->getMock());
         $this->assertEquals(
-            $autoload->execute($document),
+            $core->execute($document),
             array(
                 'actions.default_module' => 'Index',
                 'actions.default_action' => 'Index',
@@ -76,8 +76,8 @@ class Core extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Core($this->config->getMock());
-        $autoload->execute($document);
+        $core = new Handler\Core($this->config->getMock());
+        $core->execute($document);
     }
 
     /**
@@ -98,8 +98,8 @@ class Core extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Core($this->config->getMock());
-        $autoload->execute($document);
+        $core = new Handler\Core($this->config->getMock());
+        $core->execute($document);
     }
 
     /**
@@ -120,8 +120,8 @@ class Core extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Core($this->config->getMock());
-        $autoload->execute($document);
+        $core = new Handler\Core($this->config->getMock());
+        $core->execute($document);
     }
 
     /**
@@ -142,8 +142,8 @@ class Core extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Core($this->config->getMock());
-        $autoload->execute($document);
+        $core = new Handler\Core($this->config->getMock());
+        $core->execute($document);
     }
 
     /**
@@ -163,8 +163,8 @@ class Core extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Core($this->config->getMock());
-        $autoload->execute($document);
+        $core = new Handler\Core($this->config->getMock());
+        $core->execute($document);
     }
 
     /**
@@ -185,8 +185,8 @@ class Core extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Core($this->config->getMock());
-        $autoload->execute($document);
+        $core = new Handler\Core($this->config->getMock());
+        $core->execute($document);
     }
 
     /**
@@ -206,8 +206,8 @@ class Core extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Core($this->config->getMock());
-        $autoload->execute($document);
+        $core = new Handler\Core($this->config->getMock());
+        $core->execute($document);
     }
 
     /**
@@ -228,8 +228,8 @@ class Core extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Core($this->config->getMock());
-        $autoload->execute($document);
+        $core = new Handler\Core($this->config->getMock());
+        $core->execute($document);
     }
 
     public function testBasicSettings()
@@ -254,9 +254,9 @@ class Core extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Core($this->config->getMock());
+        $core = new Handler\Core($this->config->getMock());
         $this->assertEquals(
-            $autoload->execute($document),
+            $core->execute($document),
             array(
                 'actions.default_module' => 'Index',
                 'actions.default_action' => 'Index',
@@ -292,8 +292,8 @@ class Core extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Core($this->config->getMock());
-        $autoload->execute($document);
+        $core = new Handler\Core($this->config->getMock());
+        $core->execute($document);
     }
 }
 // End of file: Core.php

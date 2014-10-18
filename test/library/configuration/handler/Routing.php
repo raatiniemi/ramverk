@@ -43,9 +43,9 @@ class Routing extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Routing($this->config->getMock());
+        $routing = new Handler\Routing($this->config->getMock());
         $this->assertEquals(
-            $autoload->execute($document),
+            $routing->execute($document),
             array(
                 array(
                     'name' => 'foo',
@@ -68,9 +68,9 @@ class Routing extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Routing($this->config->getMock());
+        $routing = new Handler\Routing($this->config->getMock());
         $this->assertEquals(
-            $autoload->execute($document),
+            $routing->execute($document),
             array()
         );
     }
@@ -90,8 +90,8 @@ class Routing extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Routing($this->config->getMock());
-        $autoload->execute($document);
+        $routing = new Handler\Routing($this->config->getMock());
+        $routing->execute($document);
     }
 
     /**
@@ -109,8 +109,8 @@ class Routing extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Routing($this->config->getMock());
-        $autoload->execute($document);
+        $routing = new Handler\Routing($this->config->getMock());
+        $routing->execute($document);
     }
 
     /**
@@ -128,8 +128,8 @@ class Routing extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Routing($this->config->getMock());
-        $autoload->execute($document);
+        $routing = new Handler\Routing($this->config->getMock());
+        $routing->execute($document);
     }
 
     /**
@@ -147,8 +147,8 @@ class Routing extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Routing($this->config->getMock());
-        $autoload->execute($document);
+        $routing = new Handler\Routing($this->config->getMock());
+        $routing->execute($document);
     }
 
     public function testNestedRoute()
@@ -165,9 +165,9 @@ class Routing extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Routing($this->config->getMock());
+        $routing = new Handler\Routing($this->config->getMock());
         $this->assertEquals(
-            $autoload->execute($document),
+            $routing->execute($document),
             array(
                 array(
                     'name' => 'foo.qux',
@@ -197,9 +197,9 @@ class Routing extends \PHPUnit_Framework_TestCase
             </configuration>'
         );
 
-        $autoload = new Handler\Routing($this->config->getMock());
+        $routing = new Handler\Routing($this->config->getMock());
         $this->assertEquals(
-            $autoload->execute($document),
+            $routing->execute($document),
             array(
                 array(
                     'name' => 'foo.qux',
