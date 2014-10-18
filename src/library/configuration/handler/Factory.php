@@ -251,5 +251,5 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 		}
 	}
 }
-// End of file: Factory.class.php
-// Location: library/configuration/handler/Factory.class.php
+// End of file: Factory.php
+// Location: library/configuration/handler/Factory.php
