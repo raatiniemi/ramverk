@@ -49,6 +49,48 @@ class Factory extends \PHPUnit_Framework_TestCase
         $this->parser = null;
     }
 
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
+     * @expectedExceptionMessage The configuration handler "foobar" do not exists.
+     */
+    public function testLoadNonExistingHandler()
+    {
+        $factory = new Handler\Factory($this->config, $this->cache, $this->parser);
+
+        $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
+
+        $loadHandler = $reflection->getMethod('loadHandler');
+        $loadHandler->setAccessible(true);
+        $loadHandler->invokeArgs($factory, array('foobar'));
+    }
+
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
+     * @expectedExceptionMessage /^The configuration handler \"([\w\\]+)\" do not extend the base configuration handler\.$/
+     */
+    public function testLoadHandlerWithIncorrectSuperClass()
+    {
+        $factory = new Handler\Factory($this->config, $this->cache, $this->parser);
+
+        $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
+
+        $loadHandler = $reflection->getMethod('loadHandler');
+        $loadHandler->setAccessible(true);
+        $loadHandler->invokeArgs($factory, array(get_class($factory)));
+    }
+
+    public function testLoadHandler()
+    {
+        $factory = new Handler\Factory($this->config, $this->cache, $this->parser);
+        $handler = 'Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Core';
+
+        $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
+
+        $loadHandler = $reflection->getMethod('loadHandler');
+        $loadHandler->setAccessible(true);
+        $this->assertNull($loadHandler->invokeArgs($factory, array($handler)));
+    }
+
     public function testHasRegisteredHandler()
     {
         $factory = new Handler\Factory($this->config, $this->cache, $this->parser);
