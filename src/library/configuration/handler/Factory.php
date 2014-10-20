@@ -7,6 +7,7 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler;
 use Me\Raatiniemi\Ramverk;
 use Me\Raatiniemi\Ramverk\Configuration;
 use Me\Raatiniemi\Ramverk\Data\Dom;
+use Me\Raatiniemi\Ramverk\Utility;
 
 /**
  * Factory for instansiating configuration handlers.
@@ -17,7 +18,7 @@ use Me\Raatiniemi\Ramverk\Data\Dom;
  * @author Tobias Raatiniemi <raatiniemi@gmail.com>
  * @copyright (c) 2013-2014, Authors
  */
-class Factory
+class Factory extends Utility\Filesystem
 {
     // +------------------------------------------------------------------+
     // | Trait use-directives.                                            |
@@ -80,16 +81,16 @@ class Factory
         $filename = $this->expandDirectives($filename);
 
         // Check that the configuration directory exists.
-        if (!is_dir(dirname($filename))) {
+        if (!$this->isDir(dirname($filename))) {
             // TODO: Better specify the Exception-object.
             throw new Ramverk\Exception(sprintf(
-                'Configuration "%s" directory do not exists.',
+                'Configuration directory "%s" do not exists.',
                 dirname($filename)
             ));
         }
 
         // Check that the configuration file do exists and is readable.
-        if (!file_exists($filename) || !is_readable($filename)) {
+        if (!$this->isReadable($filename) || !$this->isFile($filename)) {
             // TODO: Better specify the Exception-object.
             throw new Ramverk\Exception(sprintf(
                 'The specified configuration file "%s" do not exists.',
@@ -138,7 +139,7 @@ class Factory
             // of possible parent documents, retrieval of configuration
             // connected to the correct application profile and context.
             $document = $this->parser->execute($document);
-            $arguments = array($document, $this->_config);
+            $arguments = array($document, $this->config);
 
             // Call the execute-method on the handler. The execute-method will
             // retrieve all of the configuration data within one array.
