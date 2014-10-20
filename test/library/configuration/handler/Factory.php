@@ -30,16 +30,13 @@ class Factory extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->config = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->disableOriginalConstructor();
 
         $this->cache = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Cache')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->disableOriginalConstructor();
 
         $this->parser = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Parser')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->disableOriginalConstructor();
     }
 
     public function tearDown()
@@ -51,11 +48,87 @@ class Factory extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Me\Raatiniemi\Ramverk\Exception
+     * @expectedExceptionMessage Configuration directory "/var/www" do not exists.
+     */
+    public function testCallHandlerWithoutValidPath()
+    {
+        $factory = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory')
+            ->disableOriginalConstructor()
+            ->setMethods(array('isDir'))
+            ->getMock();
+
+        $factory->expects($this->once())
+            ->method('isDir')
+            ->with('/var/www')
+            ->willReturn(false);
+
+        $factory->callHandler('foo', '/var/www/configuration.xml');
+    }
+
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
+     * @expectedExceptionMessage The specified configuration file "configuration.xml" do not exists.
+     */
+    public function testCallHandlerWithoutReadableConfigurationFile()
+    {
+        $factory = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory')
+            ->disableOriginalConstructor()
+            ->setMethods(array('isDir', 'isReadable'))
+            ->getMock();
+
+        $factory->expects($this->once())
+            ->method('isDir')
+            ->with('/var/www')
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isReadable')
+            ->with('/var/www/configuration.xml')
+            ->willReturn(false);
+
+        $factory->callHandler('foo', '/var/www/configuration.xml');
+    }
+
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
+     * @expectedExceptionMessage The specified configuration file "configuration.xml" do not exists.
+     */
+    public function testCallHandlerWithoutRegularFileAsConfigurationFile()
+    {
+        $factory = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory')
+            ->disableOriginalConstructor()
+            ->setMethods(array('isDir', 'isReadable', 'isFile'))
+            ->getMock();
+
+        $factory->expects($this->once())
+            ->method('isDir')
+            ->with('/var/www')
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isReadable')
+            ->with('/var/www/configuration.xml')
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isReadable')
+            ->with('/var/www/configuration.xml')
+            ->willReturn(false);
+
+        $factory->callHandler('foo', '/var/www/configuration.xml');
+    }
+
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
      * @expectedExceptionMessage The configuration handler "foobar" do not exists.
      */
     public function testLoadNonExistingHandler()
     {
-        $factory = new Handler\Factory($this->config, $this->cache, $this->parser);
+        $factory = new Handler\Factory(
+            $this->config->getMock(),
+            $this->cache->getMock(),
+            $this->parser->getMock()
+        );
 
         $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
 
@@ -70,7 +143,11 @@ class Factory extends \PHPUnit_Framework_TestCase
      */
     public function testLoadHandlerWithIncorrectSuperClass()
     {
-        $factory = new Handler\Factory($this->config, $this->cache, $this->parser);
+        $factory = new Handler\Factory(
+            $this->config->getMock(),
+            $this->cache->getMock(),
+            $this->parser->getMock()
+        );
 
         $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
 
@@ -81,7 +158,11 @@ class Factory extends \PHPUnit_Framework_TestCase
 
     public function testLoadHandler()
     {
-        $factory = new Handler\Factory($this->config, $this->cache, $this->parser);
+        $factory = new Handler\Factory(
+            $this->config->getMock(),
+            $this->cache->getMock(),
+            $this->parser->getMock()
+        );
         $handler = 'Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Core';
 
         $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
@@ -93,7 +174,11 @@ class Factory extends \PHPUnit_Framework_TestCase
 
     public function testHasRegisteredHandler()
     {
-        $factory = new Handler\Factory($this->config, $this->cache, $this->parser);
+        $factory = new Handler\Factory(
+            $this->config->getMock(),
+            $this->cache->getMock(),
+            $this->parser->getMock()
+        );
 
         $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
 
@@ -106,13 +191,22 @@ class Factory extends \PHPUnit_Framework_TestCase
 
     public function testHasNoneRegisteredHandler()
     {
-        $factory = new Handler\Factory($this->config, $this->cache, $this->parser);
+        $factory = new Handler\Factory(
+            $this->config->getMock(),
+            $this->cache->getMock(),
+            $this->parser->getMock()
+        );
+
         $this->assertFalse($factory->hasHandler('foo'));
     }
 
     public function testHasInstansiatedHandlers()
     {
-        $factory = new Handler\Factory($this->config, $this->cache, $this->parser);
+        $factory = new Handler\Factory(
+            $this->config->getMock(),
+            $this->cache->getMock(),
+            $this->parser->getMock()
+        );
 
         $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
 
@@ -127,7 +221,11 @@ class Factory extends \PHPUnit_Framework_TestCase
 
     public function testNoHasInstansiatedHandlers()
     {
-        $factory = new Handler\Factory($this->config, $this->cache, $this->parser);
+        $factory = new Handler\Factory(
+            $this->config->getMock(),
+            $this->cache->getMock(),
+            $this->parser->getMock()
+        );
 
         $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
 
