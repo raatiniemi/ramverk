@@ -218,5 +218,5 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 		}
 	}
 }
-// End of file: Filesystem.test.php
-// Location: test/library/utility/Filesystem.test.php
+// End of file: Filesystem.php
+// Location: test/library/utility/Filesystem.php
