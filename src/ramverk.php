@@ -28,7 +28,7 @@ namespace Me\Raatiniemi\Ramverk
 
     // Include framework utilities, needed by configuration, etc.
     require 'utility/File.class.php';
-    require 'utility/Filesystem.class.php';
+    require 'utility/Filesystem.php';
 
     // Include the configuration handlers required by the core.
     require 'configuration/handler/Cache.class.php';

@@ -54,5 +54,5 @@ namespace Me\Raatiniemi\Ramverk\Utility {
 		}
 	}
 }
-// End of file: Filesystem.class.php
-// Location: library/utility/Filesystem.class.php
+// End of file: Filesystem.php
+// Location: library/utility/Filesystem.php

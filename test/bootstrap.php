@@ -6,7 +6,7 @@ namespace Me\Raatiniemi\Ramverk\Test
 	set_include_path($path . PATH_SEPARATOR . get_include_path());
 
 	require_once 'src/library/utility/File.class.php';
-	require_once 'src/library/utility/Filesystem.class.php';
+	require_once 'src/library/utility/Filesystem.php';
 
 	require_once 'src/library/configuration/Utility.trait.php';
 	require_once 'src/library/configuration/Configuration.php';
