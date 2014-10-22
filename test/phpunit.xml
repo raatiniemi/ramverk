@@ -8,7 +8,7 @@
 			<file>library/configuration/handler/Module.php</file>
 			<file>library/configuration/handler/Parser.php</file>
 			<file>library/configuration/handler/Routing.php</file>
-			<file>library/configuration/Configuration.test.php</file>
+			<file>library/configuration/Configuration.php</file>
 		</testsuite>
 		<testsuite name="utility">
 			<file>library/utility/File.test.php</file>
