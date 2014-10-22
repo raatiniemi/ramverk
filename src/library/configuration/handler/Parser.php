@@ -18,12 +18,13 @@ use Me\Raatiniemi\Ramverk\Utility;
  * @author Tobias Raatiniemi <raatiniemi@gmail.com>
  * @copyright (c) 2013-2014, Authors
  */
-class Parser extends Utility\Filesystem
+class Parser
 {
     // +------------------------------------------------------------------+
     // | Trait use-directives.                                            |
     // +------------------------------------------------------------------+
     use Configuration\Utility;
+    use Utility\Filesystem;
 
     /**
      * Configuration container.

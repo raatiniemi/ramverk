@@ -18,12 +18,13 @@ use Me\Raatiniemi\Ramverk\Utility;
  * @author Tobias Raatiniemi <raatiniemi@gmail.com>
  * @copyright (c) 2013-2014, Authors
  */
-class Factory extends Utility\Filesystem
+class Factory
 {
     // +------------------------------------------------------------------+
     // | Trait use-directives.                                            |
     // +------------------------------------------------------------------+
     use Configuration\Utility;
+    use Utility\Filesystem;
 
     /**
      * Stores the available configuration handlers.

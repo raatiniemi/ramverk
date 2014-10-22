@@ -1,222 +1,274 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Utility {
+namespace Me\Raatiniemi\Ramverk\Utility;
+
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Me\Raatiniemi\Ramverk\Test\Utility;
+use Me\Raatiniemi\Ramverk\Test\Utility;
 
-	function is_dir($filename) {
-		if(Utility\Filesystem::$mockIsDirectory) {
-			return Utility\Filesystem::$returnValueIsDirectory;
-		} else {
-			return call_user_func('\\is_dir', func_get_args());
-		}
-	}
-
-	function is_file($filename) {
-		if(Utility\Filesystem::$mockIsFile) {
-			return Utility\Filesystem::$returnValueIsFile;
-		} else {
-			return call_user_func('\\is_file', func_get_args());
-		}
-	}
-
-	function is_readable($filename) {
-		if(Utility\Filesystem::$mockIsReadable) {
-			return Utility\Filesystem::$returnValueIsReadable;
-		} else {
-			return call_user_func('\\is_readable', func_get_args());
-		}
-	}
-
-	function is_writable($filename) {
-		if(Utility\Filesystem::$mockisWritable) {
-			return Utility\Filesystem::$returnValueisWritable;
-		} else {
-			return call_user_func('\\is_writable', func_get_args());
-		}
-	}
-
-	function mkdir($pathname, $mode = 0777, $recursive = false) {
-		if(Utility\Filesystem::$mockMakeDirectory) {
-			return Utility\Filesystem::$returnValueMakeDirectory;
-		} else {
-			return call_user_func('\\mkdir', func_get_args());
-		}
-	}
+function is_dir()
+{
+    if (Utility\Filesystem::$mockIsDirectory) {
+        return Utility\Filesystem::$valueIsDirectory;
+    } else {
+        return call_user_func('\\is_dir', func_get_args());
+    }
 }
 
-namespace Me\Raatiniemi\Ramverk\Test\Utility {
+function is_file()
+{
+    if (Utility\Filesystem::$mockIsFile) {
+        return Utility\Filesystem::$valueIsFile;
+    } else {
+        return call_user_func('\\is_file', func_get_args());
+    }
+}
+
+function is_readable()
+{
+    if (Utility\Filesystem::$mockIsReadable) {
+        return Utility\Filesystem::$valueIsReadable;
+    } else {
+        return call_user_func('\\is_readable', func_get_args());
+    }
+}
+
+function is_writable()
+{
+    if (Utility\Filesystem::$mockisWritable) {
+        return Utility\Filesystem::$valueisWritable;
+    } else {
+        return call_user_func('\\is_writable', func_get_args());
+    }
+}
+
+function mkdir()
+{
+    if (Utility\Filesystem::$mockMakeDirectory) {
+        return Utility\Filesystem::$valueMakeDirectory;
+    } else {
+        return call_user_func('\\mkdir', func_get_args());
+    }
+}
+
+namespace Me\Raatiniemi\Ramverk\Test\Utility;
+
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
-	use Me\Raatiniemi\Ramverk\Utility;
+use Me\Raatiniemi\Ramverk\Utility;
 
-	/**
-	 * @package Ramverk
-	 * @subpackage Test
-	 *
-	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-	 * @copyright (c) 2013-2014, Authors
-	 */
-	class Filesystem extends \PHPUnit_Framework_TestCase {
-		private $class = 'Me\\Raatiniemi\\Ramverk\\Utility\\Filesystem';
-		private $stub;
+/**
+ * @package Ramverk
+ * @subpackage Test
+ *
+ * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ * @copyright (c) 2013-2014, Authors
+ */
+class Filesystem extends \PHPUnit_Framework_TestCase
+{
+    private $trait = 'Me\\Raatiniemi\\Ramverk\\Utility\\Filesystem';
 
-		public static $mockIsDirectory;
-		public static $returnValueIsDirectory;
+    public static $mockIsDirectory;
+    public static $valueIsDirectory;
 
-		public static $mockIsFile;
-		public static $returnValueIsFile;
+    public static $mockIsFile;
+    public static $valueIsFile;
 
-		public static $mockIsReadable;
-		public static $returnValueIsReadable;
+    public static $mockIsReadable;
+    public static $valueIsReadable;
 
-		public static $mockisWritable;
-		public static $returnValueisWritable;
+    public static $mockisWritable;
+    public static $valueisWritable;
 
-		public static $mockMakeDirectory;
-		public static $returnValueMakeDirectory;
+    public static $mockMakeDirectory;
+    public static $valueMakeDirectory;
 
-		public function setUp() {
-			$this->stub = $this->getMockBuilder($this->class);
+    public function setUp()
+    {
+        Filesystem::$mockIsDirectory = true;
+        Filesystem::$valueIsDirectory = true;
 
-			Filesystem::$mockIsDirectory = true;
-			Filesystem::$returnValueIsDirectory = true;
+        Filesystem::$mockIsFile = true;
+        Filesystem::$valueIsFile = true;
 
-			Filesystem::$mockIsFile = true;
-			Filesystem::$returnValueIsFile = true;
+        Filesystem::$mockIsReadable = true;
+        Filesystem::$valueIsReadable = true;
 
-			Filesystem::$mockIsReadable = true;
-			Filesystem::$returnValueIsReadable = true;
+        Filesystem::$mockisWritable = true;
+        Filesystem::$valueisWritable = true;
 
-			Filesystem::$mockisWritable = true;
-			Filesystem::$returnValueisWritable = true;
+        Filesystem::$mockMakeDirectory = true;
+        Filesystem::$valueMakeDirectory = true;
+    }
 
-			Filesystem::$mockMakeDirectory = true;
-			Filesystem::$returnValueMakeDirectory = true;
-		}
+    public function testIsDirectoryWithFailure()
+    {
+        Filesystem::$valueIsDirectory = false;
 
-		public function tearDown() {
-			$this->stub = null;
-		}
+        $stub = $this->getMockForTrait($this->trait);
+        $this->assertFalse($stub->isDirectory('foobar'));
+    }
 
-		public function testIsDirectoryWithFailure() {
-			Filesystem::$returnValueIsDirectory = false;
+    public function testIsDirectoryWithSuccess()
+    {
+        $stub = $this->getMockForTrait($this->trait);
+        $this->assertTrue($stub->isDirectory('foobar'));
+    }
 
-			$fs = new Utility\Filesystem;
-			$this->assertFalse($fs->isDirectory('foobar'));
-		}
+    public function testIsFileWithFailure()
+    {
+        Filesystem::$valueIsFile = false;
 
-		public function testIsDirectoryWithSuccess() {
-			$fs = new Utility\Filesystem;
-			$this->assertTrue($fs->isDirectory('foobar'));
-		}
+        $stub = $this->getMockForTrait($this->trait);
+        $this->assertFalse($stub->isFile('foobar'));
+    }
 
-		public function testIsFileWithFailure() {
-			Filesystem::$returnValueIsFile = false;
+    public function testIsFileWithSuccess()
+    {
+        $stub = $this->getMockForTrait($this->trait);
+        $this->assertTrue($stub->isFile('foobar'));
+    }
 
-			$fs = new Utility\Filesystem;
-			$this->assertFalse($fs->isFile('foobar'));
-		}
+    public function testIsReadableWithFailure()
+    {
+        Filesystem::$valueIsReadable = false;
 
-		public function testIsFileWithSuccess() {
-			$fs = new Utility\Filesystem;
-			$this->assertTrue($fs->isFile('foobar'));
-		}
+        $stub = $this->getMockForTrait($this->trait);
+        $this->assertFalse($stub->isReadable('foobar'));
+    }
 
-		public function testIsReadableWithFailure() {
-			Filesystem::$returnValueIsReadable = false;
+    public function testIsReadableWithSuccess()
+    {
+        $stub = $this->getMockForTrait($this->trait);
+        $this->assertTrue($stub->isReadable('foobar'));
+    }
 
-			$fs = new Utility\Filesystem;
-			$this->assertFalse($fs->isReadable('foobar'));
-		}
+    public function testisWritableWithFailure()
+    {
+        Filesystem::$valueisWritable = false;
 
-		public function testIsReadableWithSuccess() {
-			$fs = new Utility\Filesystem;
-			$this->assertTrue($fs->isReadable('foobar'));
-		}
+        $stub = $this->getMockForTrait($this->trait);
+        $this->assertFalse($stub->isWritable('foobar'));
+    }
 
-		public function testisWritableWithFailure() {
-			Filesystem::$returnValueisWritable = false;
+    public function testisWritableWithSuccess()
+    {
+        $stub = $this->getMockForTrait($this->trait);
+        $this->assertTrue($stub->isWritable('foobar'));
+    }
 
-			$fs = new Utility\Filesystem;
-			$this->assertFalse($fs->isWritable('foobar'));
-		}
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
+     * @expectedExceptionMessage
+     */
+    public function testMakeDirectoryWithReadableFile()
+    {
+        // Since traits only mock abstract methods by default we have to supply
+        // the mocked methods to the `getMockForTrait`-method, arguments is:
+        // 1: Trait name
+        // 2: Arguments
+        // 3: Mock class name
+        // 4: Call original constructor
+        // 5: Call original clone
+        // 6: Call autoload
+        // 7: Mocked methods
+        // 8: Clone arguments
+        $methods = array('isReadable', 'isDirectory');
+        $stub = $this->getMockForTrait($this->trait, array(), '', true, true, true, $methods);
 
-		public function testisWritableWithSuccess() {
-			$fs = new Utility\Filesystem;
-			$this->assertTrue($fs->isWritable('foobar'));
-		}
+        $stub->expects($this->once())
+            ->method('isReadable')
+            ->with('foobar')
+            ->willReturn(true);
 
-		/**
-		 * @expectedException Me\Raatiniemi\Ramverk\Exception
-		 * @expectedExceptionMessage
-		 */
-		public function testMakeDirectoryWithReadableFile() {
-			$fs = $this->stub->setMethods(array('isReadable', 'isDirectory'))
-				->getMock();
+        $stub->expects($this->once())
+            ->method('isDirectory')
+            ->with('foobar')
+            ->willReturn(false);
 
-			$fs->expects($this->once())
-				->method('isReadable')
-				->with('foobar')
-				->willReturn(true);
+        $stub->makeDirectory('foobar');
+    }
 
-			$fs->expects($this->once())
-				->method('isDirectory')
-				->with('foobar')
-				->willReturn(false);
+    public function testMakeDirectoryWithReadableDirectory()
+    {
+        // Since traits only mock abstract methods by default we have to supply
+        // the mocked methods to the `getMockForTrait`-method, arguments is:
+        // 1: Trait name
+        // 2: Arguments
+        // 3: Mock class name
+        // 4: Call original constructor
+        // 5: Call original clone
+        // 6: Call autoload
+        // 7: Mocked methods
+        // 8: Clone arguments
+        $methods = array('isReadable', 'isDirectory');
+        $stub = $this->getMockForTrait($this->trait, array(), '', true, true, true, $methods);
 
-			$fs->makeDirectory('foobar');
-		}
+        $stub->expects($this->once())
+            ->method('isReadable')
+            ->with('foobar')
+            ->willReturn(true);
 
-		public function testMakeDirectoryWithReadableDirectory() {
-			$fs = $this->stub->setMethods(array('isReadable', 'isDirectory'))
-				->getMock();
+        $stub->expects($this->once())
+            ->method('isDirectory')
+            ->with('foobar')
+            ->willReturn(true);
 
-			$fs->expects($this->once())
-				->method('isReadable')
-				->with('foobar')
-				->willReturn(true);
+        $this->assertTrue($stub->makeDirectory('foobar'));
+    }
 
-			$fs->expects($this->once())
-				->method('isDirectory')
-				->with('foobar')
-				->willReturn(true);
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
+     * @expectedExceptionMessage
+     */
+    public function testMakeDirectoryWithDirectoryFailure()
+    {
+        Filesystem::$valueMakeDirectory = false;
 
-			$this->assertTrue($fs->makeDirectory('foobar'));
-		}
+        // Since traits only mock abstract methods by default we have to supply
+        // the mocked methods to the `getMockForTrait`-method, arguments is:
+        // 1: Trait name
+        // 2: Arguments
+        // 3: Mock class name
+        // 4: Call original constructor
+        // 5: Call original clone
+        // 6: Call autoload
+        // 7: Mocked methods
+        // 8: Clone arguments
+        $methods = array('isReadable');
+        $stub = $this->getMockForTrait($this->trait, array(), '', true, true, true, $methods);
 
-		/**
-		 * @expectedException Me\Raatiniemi\Ramverk\Exception
-		 * @expectedExceptionMessage
-		 */
-		public function testMakeDirectoryWithDirectoryFailure() {
-			Filesystem::$returnValueMakeDirectory = false;
+        $stub->expects($this->once())
+            ->method('isReadable')
+            ->with('foobar')
+            ->willReturn(false);
 
-			$fs = $this->stub->setMethods(array('isReadable'))
-				->getMock();
+        $stub->makeDirectory('foobar');
+    }
 
-			$fs->expects($this->once())
-				->method('isReadable')
-				->with('foobar')
-				->willReturn(false);
+    public function testMakeDirectoryWithDirectorySuccess()
+    {
+        // Since traits only mock abstract methods by default we have to supply
+        // the mocked methods to the `getMockForTrait`-method, arguments is:
+        // 1: Trait name
+        // 2: Arguments
+        // 3: Mock class name
+        // 4: Call original constructor
+        // 5: Call original clone
+        // 6: Call autoload
+        // 7: Mocked methods
+        // 8: Clone arguments
+        $methods = array('isReadable');
+        $stub = $this->getMockForTrait($this->trait, array(), '', true, true, true, $methods);
 
-			$fs->makeDirectory('foobar');
-		}
+        $stub->expects($this->once())
+            ->method('isReadable')
+            ->with('foobar')
+            ->willReturn(false);
 
-		public function testMakeDirectoryWithDirectorySuccess() {
-			$fs = $this->stub->setMethods(array('isReadable'))
-				->getMock();
-
-			$fs->expects($this->once())
-				->method('isReadable')
-				->with('foobar')
-				->willReturn(false);
-
-			$this->assertTrue($fs->makeDirectory('foobar'));
-		}
-	}
+        $this->assertTrue($stub->makeDirectory('foobar'));
+    }
 }
 // End of file: Filesystem.php
 // Location: test/library/utility/Filesystem.php

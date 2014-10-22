@@ -13,7 +13,7 @@ use Me\Raatiniemi\Ramverk;
  * @author Tobias Raatiniemi <raatiniemi@gmail.com>
  * @copyright (c) 2013-2014, Authors
  */
-class Filesystem
+trait Filesystem
 {
     public function isDirectory($filename)
     {

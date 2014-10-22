@@ -15,7 +15,9 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 	 * @author Tobias Raatiniemi <raatiniemi@gmail.com>
 	 * @copyright (c) 2013-2014, Authors
 	 */
-	class Cache extends Utility\Filesystem {
+	class Cache {
+		use Utility\Filesystem;
+
 		/**
 		 * Profile name for the application.
 		 * @var string
