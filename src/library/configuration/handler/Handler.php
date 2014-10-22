@@ -54,5 +54,5 @@ namespace Me\Raatiniemi\Ramverk\Configuration {
 		abstract public function execute(Dom\Document $document);
 	}
 }
-// End of file: Handler.class.php
-// Location: library/configuration/handler/Handler.class.php
+// End of file: Handler.php
+// Location: library/configuration/handler/Handler.php

@@ -10,7 +10,7 @@ namespace Me\Raatiniemi\Ramverk\Test
 
 	require_once 'src/library/configuration/Utility.trait.php';
 	require_once 'src/library/configuration/Configuration.class.php';
-	require_once 'src/library/configuration/handler/Handler.class.php';
+	require_once 'src/library/configuration/handler/Handler.php';
 	require_once 'src/library/configuration/handler/Autoload.php';
 	require_once 'src/library/configuration/handler/Core.php';
 	require_once 'src/library/configuration/handler/Factory.php';
