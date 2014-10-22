@@ -34,12 +34,12 @@
 			<autoload name="Handler">%directory.core.library%/configuration/handler/Handler.php</autoload>
 			<autoload name="Handler\Autoload">%directory.core.library%/configuration/handler/Autoload.php</autoload>
 			<autoload name="Handler\Core">%directory.core.library%/configuration/handler/Core.php</autoload>
-			<autoload name="Handler\Module">%directory.core.library%/configuration/handler/Module.class.php</autoload>
-			<autoload name="Handler\Routing">%directory.core.library%/configuration/handler/Routing.class.php</autoload>
+			<autoload name="Handler\Module">%directory.core.library%/configuration/handler/Module.php</autoload>
+			<autoload name="Handler\Routing">%directory.core.library%/configuration/handler/Routing.php</autoload>
 
 			<autoload name="Handler\Cache">%directory.core.library%/configuration/handler/Cache.class.php</autoload>
-			<autoload name="Handler\Parser">%directory.core.library%/configuration/handler/Parser.class.php</autoload>
-			<autoload name="Handler\Factory">%directory.core.library%/configuration/handler/Factory.class.php</autoload>
+			<autoload name="Handler\Parser">%directory.core.library%/configuration/handler/Parser.php</autoload>
+			<autoload name="Handler\Factory">%directory.core.library%/configuration/handler/Factory.php</autoload>
 		</autoloads>
 		<autoloads namespace="Me\Raatiniemi\Ramverk\Data">
 			<autoload name="Dom\Utility\Value">%directory.core.library%/data/dom/utility/Value.trait.php</autoload>
