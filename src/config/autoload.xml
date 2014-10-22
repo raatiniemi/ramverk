@@ -3,7 +3,7 @@
 		<autoloads namespace="Me\Raatiniemi\Ramverk">
 			<autoload name="Action">%directory.core.library%/action/Action.class.php</autoload>
 
-			<autoload name="Configuration">%directory.core.library%/configuration/Configuration.class.php</autoload>
+			<autoload name="Configuration">%directory.core.library%/configuration/Configuration.php</autoload>
 
 			<autoload name="Controller">%directory.core.library%/controller/Controller.class.php</autoload>
 

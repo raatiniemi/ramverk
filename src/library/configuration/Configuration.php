@@ -170,5 +170,5 @@ namespace Me\Raatiniemi\Ramverk {
 		}
 	}
 }
-// End of file: Configuration.class.php
-// Location: library/configuration/Configuration.class.php
+// End of file: Configuration.php
+// Location: library/configuration/Configuration.php
