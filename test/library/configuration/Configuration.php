@@ -193,5 +193,5 @@ namespace Me\Raatiniemi\Ramverk\Test {
 		}
 	}
 }
-// End of file: Configuration.test.php
-// Location: test/library/configuration/Configuration.test.php
+// End of file: Configuration.php
+// Location: test/library/configuration/Configuration.php
