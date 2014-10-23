@@ -31,8 +31,7 @@ class File extends \SplFileInfo
             throw new Ramverk\Exception('');
         }
 
-        // Open the file with the read flag. 'r' also rewinds the file to the
-        // beginning of the file, no need to rewind.
+        // Open the file with the readable-flag.
         $file = $this->openFile('r');
 
         // Iterate through the rows of the file until eof is reached.
@@ -71,7 +70,10 @@ class File extends \SplFileInfo
             throw new Ramverk\Exception('');
         }
 
-        $file = $this->openFile('w+');
+        // Open the file with the writable-flag.
+        $file = $this->openFile('w');
+
+        // Attempt to write the data to the file.
         if (($bytes = $file->fwrite($data)) === null) {
             // TODO: Write exception message.
             // TODO: Better specify the exception object.

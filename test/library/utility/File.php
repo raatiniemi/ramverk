@@ -178,7 +178,7 @@ class File extends \PHPUnit_Framework_TestCase
 
         $file->expects($this->once())
             ->method('openFile')
-            ->with('w+')
+            ->with('w')
             ->willReturn($object);
 
         $object->expects($this->once())
@@ -206,7 +206,7 @@ class File extends \PHPUnit_Framework_TestCase
 
         $file->expects($this->once())
             ->method('openFile')
-            ->with('w+')
+            ->with('w')
             ->willReturn($object);
 
         $object->expects($this->once())
