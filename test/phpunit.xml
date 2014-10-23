@@ -11,7 +11,7 @@
 			<file>library/configuration/Configuration.php</file>
 		</testsuite>
 		<testsuite name="utility">
-			<file>library/utility/File.test.php</file>
+			<file>library/utility/File.php</file>
 			<file>library/utility/Filesystem.php</file>
 		</testsuite>
 	</testsuites>

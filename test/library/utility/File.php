@@ -157,5 +157,5 @@ namespace Me\Raatiniemi\Ramverk\Test\Utility {
 		}
 	}
 }
-// End of file: File.test.php
-// Location: test/library/utility/File.test.php
+// End of file: File.php
+// Location: test/library/utility/File.php
