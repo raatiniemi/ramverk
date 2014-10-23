@@ -1,18 +1,18 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.2/phpunit.xsd" bootstrap="bootstrap.php" colors="true" strict="true" stopOnError="true" stopOnFailure="true" stopOnIncomplete="true" stopOnSkipped="true" verbose="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false">
-	<testsuites>
-		<testsuite name="configuration">
-			<file>library/configuration/handler/Autoload.php</file>
-			<file>library/configuration/handler/Core.php</file>
-			<file>library/configuration/handler/Cache.test.php</file>
-			<file>library/configuration/handler/Factory.php</file>
-			<file>library/configuration/handler/Module.php</file>
-			<file>library/configuration/handler/Parser.php</file>
-			<file>library/configuration/handler/Routing.php</file>
-			<file>library/configuration/Configuration.php</file>
-		</testsuite>
-		<testsuite name="utility">
-			<file>library/utility/File.php</file>
-			<file>library/utility/Filesystem.php</file>
-		</testsuite>
-	</testsuites>
+    <testsuites>
+        <testsuite name="configuration">
+            <file>library/configuration/handler/Autoload.php</file>
+            <file>library/configuration/handler/Core.php</file>
+            <file>library/configuration/handler/Cache.test.php</file>
+            <file>library/configuration/handler/Factory.php</file>
+            <file>library/configuration/handler/Module.php</file>
+            <file>library/configuration/handler/Parser.php</file>
+            <file>library/configuration/handler/Routing.php</file>
+            <file>library/configuration/Configuration.php</file>
+        </testsuite>
+        <testsuite name="utility">
+            <file>library/utility/File.php</file>
+            <file>library/utility/Filesystem.php</file>
+        </testsuite>
+    </testsuites>
 </phpunit>
