@@ -18,6 +18,8 @@ use Me\Raatiniemi\Ramverk\Data\Dom;
  */
 class Factory extends \PHPUnit_Framework_TestCase
 {
+    private $class = 'Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory';
+
     // Stores the mock builder object for the Configuration-class.
     private $config;
 
@@ -52,7 +54,7 @@ class Factory extends \PHPUnit_Framework_TestCase
      */
     public function testCallHandlerWithoutValidPath()
     {
-        $factory = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory')
+        $factory = $this->getMockBuilder($this->class)
             ->disableOriginalConstructor()
             ->setMethods(array('isDir'))
             ->getMock();
@@ -71,7 +73,7 @@ class Factory extends \PHPUnit_Framework_TestCase
      */
     public function testCallHandlerWithoutReadableConfigurationFile()
     {
-        $factory = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory')
+        $factory = $this->getMockBuilder($this->class)
             ->disableOriginalConstructor()
             ->setMethods(array('isDir', 'isReadable'))
             ->getMock();
@@ -95,7 +97,7 @@ class Factory extends \PHPUnit_Framework_TestCase
      */
     public function testCallHandlerWithoutRegularFileAsConfigurationFile()
     {
-        $factory = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory')
+        $factory = $this->getMockBuilder($this->class)
             ->disableOriginalConstructor()
             ->setMethods(array('isDir', 'isReadable', 'isFile'))
             ->getMock();
@@ -118,6 +120,60 @@ class Factory extends \PHPUnit_Framework_TestCase
         $factory->callHandler('foo', '/var/www/configuration.xml');
     }
 
+    public function testCallHandlerWithoutModifiedConfigurationFile()
+    {
+        $cache = $this->cache->setMethods(array('generateName', 'isModified', 'read'))
+            ->getMock();
+
+        $cache->expects($this->once())
+            ->method('generateName')
+            ->with('/var/www/configuration.xml')
+            ->willReturn('cache.php');
+
+        $cache->expects($this->once())
+            ->method('isModified')
+            ->with('/var/www/configuration.xml', '')
+            ->willReturn(false);
+
+        $factory = $this->getMockBuilder($this->class)
+            ->setConstructorArgs(
+                array(
+                    $this->config->getMock(),
+                    $cache,
+                    $this->parser->getMock()
+                )
+            )
+            ->setMethods(array('expandDirectives', 'isDir', 'isReadable', 'isFile'))
+            ->getMock();
+
+        $factory->expects($this->at(0))
+            ->method('expandDirectives')
+            ->with('/var/www/configuration.xml')
+            ->willReturn('/var/www/configuration.xml');
+
+        $factory->expects($this->once())
+            ->method('isDir')
+            ->with('/var/www')
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isReadable')
+            ->with('/var/www/configuration.xml')
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isFile')
+            ->with('/var/www/configuration.xml')
+            ->willReturn(true);
+
+        $factory->expects($this->at(1))
+            ->method('expandDirectives')
+            ->with('%directory.application.cache%/cache.php')
+            ->willReturn('/var/www/cache.php');
+
+        $factory->callHandler('foo', '/var/www/configuration.xml');
+    }
+
     /**
      * @expectedException Me\Raatiniemi\Ramverk\Exception
      * @expectedExceptionMessage The configuration handler "foobar" do not exists.
@@ -130,7 +186,7 @@ class Factory extends \PHPUnit_Framework_TestCase
             $this->parser->getMock()
         );
 
-        $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
+        $reflection = new \ReflectionClass($this->class);
 
         $loadHandler = $reflection->getMethod('loadHandler');
         $loadHandler->setAccessible(true);
@@ -149,7 +205,7 @@ class Factory extends \PHPUnit_Framework_TestCase
             $this->parser->getMock()
         );
 
-        $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
+        $reflection = new \ReflectionClass($this->class);
 
         $loadHandler = $reflection->getMethod('loadHandler');
         $loadHandler->setAccessible(true);
@@ -165,7 +221,7 @@ class Factory extends \PHPUnit_Framework_TestCase
         );
         $handler = 'Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Core';
 
-        $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
+        $reflection = new \ReflectionClass($this->class);
 
         $loadHandler = $reflection->getMethod('loadHandler');
         $loadHandler->setAccessible(true);
@@ -180,7 +236,7 @@ class Factory extends \PHPUnit_Framework_TestCase
             $this->parser->getMock()
         );
 
-        $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
+        $reflection = new \ReflectionClass($this->class);
 
         $availableHandlers = $reflection->getProperty('availableHandlers');
         $availableHandlers->setAccessible(true);
@@ -208,7 +264,7 @@ class Factory extends \PHPUnit_Framework_TestCase
             $this->parser->getMock()
         );
 
-        $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
+        $reflection = new \ReflectionClass($this->class);
 
         $handlers = $reflection->getProperty('handlers');
         $handlers->setAccessible(true);
@@ -227,7 +283,7 @@ class Factory extends \PHPUnit_Framework_TestCase
             $this->parser->getMock()
         );
 
-        $reflection = new \ReflectionClass('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory');
+        $reflection = new \ReflectionClass($this->class);
 
         $isInstansiated = $reflection->getMethod('isInstansiated');
         $isInstansiated->setAccessible(true);
@@ -240,7 +296,7 @@ class Factory extends \PHPUnit_Framework_TestCase
      */
     public function testAlreadyRegisteredHandler()
     {
-        $factory = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory')
+        $factory = $this->getMockBuilder($this->class)
             ->disableOriginalConstructor()
             ->setMethods(array('hasHandler'))
             ->getMock();
@@ -255,7 +311,7 @@ class Factory extends \PHPUnit_Framework_TestCase
 
     public function testRegisterHandler()
     {
-        $factory = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Factory')
+        $factory = $this->getMockBuilder($this->class)
             ->disableOriginalConstructor()
             ->setMethods(array('hasHandler'))
             ->getMock();
