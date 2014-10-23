@@ -71,5 +71,5 @@ namespace Me\Raatiniemi\Ramverk\Utility {
 		}
 	}
 }
-// End of file: File.class.php
-// Location: library/utility/File.class.php
+// End of file: File.php
+// Location: library/utility/File.php
