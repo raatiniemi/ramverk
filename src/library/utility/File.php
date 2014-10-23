@@ -13,7 +13,7 @@ use Me\Raatiniemi\Ramverk;
  * @author Tobias Raatiniemi <raatiniemi@gmail.com>
  * @copyright (c) 2013-2014, Authors
  */
-class File extends \SplFileObject
+class File extends \SplFileInfo
 {
     /**
      * Read the contents of the file.
@@ -27,22 +27,25 @@ class File extends \SplFileObject
         // Check that the file is readable.
         if (!$this->isReadable()) {
             // TODO: Write exception message.
-            throw new Ramverk\Exception();
+            // TODO: Better specify the exception object.
+            throw new Ramverk\Exception('');
         }
 
-        // Rewind the file pointer to the begining of the file.
-        $this->rewind();
+        // Open the file with the read flag. 'r' also rewinds the file to the
+        // beginning of the file, no need to rewind.
+        $file = $this->openFile('r');
 
         // Iterate through the rows of the file until eof is reached.
         $rows = array();
-        while (!$this->eof()) {
+        while (!$file->eof()) {
             // Retrieve the row from the file. If the row failed to read
             // the `fgets`-method will return false. The `fgets`-method
             // internally increment the row for the next iteration.
-            $row = $this->fgets();
+            $row = $file->fgets();
             if ($row === false) {
                 // TODO: Write exception message.
-                throw new Ramverk\Exception();
+                // TODO: Better specify the exception object.
+                throw new Ramverk\Exception('');
             }
 
             $rows[] = $row;
@@ -64,12 +67,15 @@ class File extends \SplFileObject
         // Check that the file is writable.
         if (!$this->isWritable()) {
             // TODO: Write exception message.
-            throw new Ramverk\Exception();
+            // TODO: Better specify the exception object.
+            throw new Ramverk\Exception('');
         }
 
-        if (($bytes = $this->fwrite($data)) === null) {
+        $file = $this->openFile('w+');
+        if (($bytes = $file->fwrite($data)) === null) {
             // TODO: Write exception message.
-            throw new Ramverk\Exception();
+            // TODO: Better specify the exception object.
+            throw new Ramverk\Exception('');
         }
 
         return $bytes;

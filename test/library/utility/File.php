@@ -50,18 +50,28 @@ class File extends \PHPUnit_Framework_TestCase
     public function testReadWithFailure()
     {
         $file = $this->stub->setConstructorArgs(array(__FILE__))
-            ->setMethods(array('isReadable', 'eof', 'fgets'))
+            ->setMethods(array('isReadable', 'openFile'))
             ->getMock();
 
         $file->expects($this->once())
             ->method('isReadable')
             ->willReturn(true);
 
+        $object = $this->getMockBuilder('SplFileObject')
+            ->setConstructorArgs(array(__FILE__))
+            ->setMethods(array('eof', 'fgets'))
+            ->getMock();
+
         $file->expects($this->once())
+            ->method('openFile')
+            ->with('r')
+            ->willReturn($object);
+
+        $object->expects($this->once())
             ->method('eof')
             ->willReturn(false);
 
-        $file->expects($this->once())
+        $object->expects($this->once())
             ->method('fgets')
             ->willReturn(false);
 
@@ -71,18 +81,28 @@ class File extends \PHPUnit_Framework_TestCase
     public function testReadSingleLine()
     {
         $file = $this->stub->setConstructorArgs(array(__FILE__))
-            ->setMethods(array('isReadable', 'eof', 'fgets'))
+            ->setMethods(array('isReadable', 'openFile'))
             ->getMock();
 
         $file->expects($this->once())
             ->method('isReadable')
             ->willReturn(true);
 
-        $file->expects($this->exactly(2))
+        $object = $this->getMockBuilder('SplFileObject')
+            ->setConstructorArgs(array(__FILE__))
+            ->setMethods(array('eof', 'fgets'))
+            ->getMock();
+
+        $file->expects($this->once())
+            ->method('openFile')
+            ->with('r')
+            ->willReturn($object);
+
+        $object->expects($this->exactly(2))
             ->method('eof')
             ->will($this->onConsecutiveCalls(false, true));
 
-        $file->expects($this->once())
+        $object->expects($this->once())
             ->method('fgets')
             ->willReturn('foo');
 
@@ -92,18 +112,28 @@ class File extends \PHPUnit_Framework_TestCase
     public function testReadMultipleLines()
     {
         $file = $this->stub->setConstructorArgs(array(__FILE__))
-            ->setMethods(array('isReadable', 'eof', 'fgets'))
+            ->setMethods(array('isReadable', 'openFile'))
             ->getMock();
 
         $file->expects($this->once())
             ->method('isReadable')
             ->willReturn(true);
 
-        $file->expects($this->exactly(3))
+        $object = $this->getMockBuilder('SplFileObject')
+            ->setConstructorArgs(array(__FILE__))
+            ->setMethods(array('eof', 'fgets'))
+            ->getMock();
+
+        $file->expects($this->once())
+            ->method('openFile')
+            ->with('r')
+            ->willReturn($object);
+
+        $object->expects($this->exactly(3))
             ->method('eof')
             ->will($this->onConsecutiveCalls(false, false, true));
 
-        $file->expects($this->exactly(2))
+        $object->expects($this->exactly(2))
             ->method('fgets')
             ->willReturn('foo');
 
@@ -134,14 +164,24 @@ class File extends \PHPUnit_Framework_TestCase
     public function testWriteWithFailure()
     {
         $file = $this->stub->setConstructorArgs(array(__FILE__))
-            ->setMethods(array('isWritable', 'fwrite'))
+            ->setMethods(array('isWritable', 'openFile'))
             ->getMock();
 
         $file->expects($this->once())
             ->method('isWritable')
             ->willReturn(true);
 
+        $object = $this->getMockBuilder('SplFileObject')
+            ->setConstructorArgs(array(__FILE__))
+            ->setMethods(array('fwrite'))
+            ->getMock();
+
         $file->expects($this->once())
+            ->method('openFile')
+            ->with('w+')
+            ->willReturn($object);
+
+        $object->expects($this->once())
             ->method('fwrite')
             ->with('foo')
             ->willReturn(null);
@@ -152,14 +192,24 @@ class File extends \PHPUnit_Framework_TestCase
     public function testWrite()
     {
         $file = $this->stub->setConstructorArgs(array(__FILE__))
-            ->setMethods(array('isWritable', 'fwrite'))
+            ->setMethods(array('isWritable', 'openFile'))
             ->getMock();
 
         $file->expects($this->once())
             ->method('isWritable')
             ->willReturn(true);
 
+        $object = $this->getMockBuilder('SplFileObject')
+            ->setConstructorArgs(array(__FILE__))
+            ->setMethods(array('fwrite'))
+            ->getMock();
+
         $file->expects($this->once())
+            ->method('openFile')
+            ->with('w+')
+            ->willReturn($object);
+
+        $object->expects($this->once())
             ->method('fwrite')
             ->with('foo')
             ->willReturn(1337);
