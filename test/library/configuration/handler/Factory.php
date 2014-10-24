@@ -174,6 +174,75 @@ class Factory extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Me\Raatiniemi\Ramverk\Exception
+     * @expectedExceptionMessage The configuration handler "foo" is not registered.
+     */
+    public function testCallHandlerWithModifiedConfigurationFileWithoutHandler()
+    {
+        $cache = $this->cache->setMethods(array('generateName', 'isModified'))
+            ->getMock();
+
+        $cache->expects($this->once())
+            ->method('generateName')
+            ->willReturn('cache.php');
+
+        $cache->expects($this->once())
+            ->method('isModified')
+            ->willReturn(true);
+
+        $factory = $this->getMockBuilder($this->class)
+            ->setConstructorArgs(
+                array(
+                    $this->config->getMock(),
+                    $cache,
+                    $this->parser->getMock()
+                )
+            )
+            ->setMethods(
+                array(
+                    'expandDirectives',
+                    'isDirectory',
+                    'isReadable',
+                    'isFile',
+                    'hasHandler'
+                )
+            )
+            ->getMock();
+
+        $factory->expects($this->at(0))
+            ->method('expandDirectives')
+            ->with('/var/www/configuration.xml')
+            ->willReturn('/var/www/configuration.xml');
+
+        $factory->expects($this->once())
+            ->method('isDirectory')
+            ->with('/var/www')
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isReadable')
+            ->with('/var/www/configuration.xml')
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isFile')
+            ->with('/var/www/configuration.xml')
+            ->willReturn(true);
+
+        $factory->expects($this->at(4))
+            ->method('expandDirectives')
+            ->with('%directory.application.cache%/cache.php')
+            ->willReturn('/var/www/cache.php');
+
+        $factory->expects($this->once())
+            ->method('hasHandler')
+            ->with('foo')
+            ->willReturn(false);
+
+        $factory->callHandler('foo', '/var/www/configuration.xml');
+    }
+
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
      * @expectedExceptionMessage The configuration handler "foobar" do not exists.
      */
     public function testLoadNonExistingHandler()
