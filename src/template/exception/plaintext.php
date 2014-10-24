@@ -21,11 +21,10 @@ $length = strlen($className);
 printf('===========%s%s', str_repeat('=', $length), PHP_EOL);
 printf('Exception: %s%s', $className, PHP_EOL);
 printf('===========%s%s', str_repeat('=', $length), PHP_EOL);
-//var_dump($e->getTrace());
 
-if($e instanceof Exception) :
+if ($e instanceof Exception) {
     printf('%1$sThis is an internal Ramverk exception.%1$s%1$s', PHP_EOL);
-endif;
+}
 
 $message = sprintf(
     'An exception of type "%s" was thrown, but did not get caught during the '.
@@ -34,11 +33,33 @@ $message = sprintf(
 );
 echo wordwrap($message, 80, PHP_EOL), PHP_EOL;
 
-if(!empty($e->getMessage())) :
+if (!empty($e->getMessage())) {
     printf('%1$sMessage%1$s', PHP_EOL);
     echo '=========', PHP_EOL;
     echo wordwrap(html_entity_decode($e->getMessage()), 80, PHP_EOL), PHP_EOL;
-endif;
+}
+
+if (!empty($e->getTrace())) {
+    printf('%1$sStack trace%1$s', PHP_EOL);
+    echo '=============';
+
+    foreach ($e->getTrace() as $index => $trace) {
+        $file = isset($trace['file']) ? $trace['file'] : null;
+        $line = isset($trace['line']) ? $trace['line'] : null;
+
+        if (isset($file, $line)) {
+            printf('%4$s#%1$d %2$s:%3$s%4$s', $index, $file, $line, PHP_EOL);
+        }
+
+        $class = isset($trace['class']) ? $trace['class'] : null;
+        $function = isset($trace['function']) ? $trace['function'] : null;
+        $type = isset($trace['type']) ? $trace['type'] : null;
+
+        if (isset($class, $function, $type)) {
+            printf('   %s%s%s%s', $class, $type, $function, PHP_EOL);
+        }
+    }
+}
 
 printf('%1$sVersion Information%1$s', PHP_EOL);
 echo '=====================', PHP_EOL;
