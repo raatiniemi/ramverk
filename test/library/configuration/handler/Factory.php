@@ -56,11 +56,11 @@ class Factory extends \PHPUnit_Framework_TestCase
     {
         $factory = $this->getMockBuilder($this->class)
             ->disableOriginalConstructor()
-            ->setMethods(array('isDir'))
+            ->setMethods(array('isDirectory'))
             ->getMock();
 
         $factory->expects($this->once())
-            ->method('isDir')
+            ->method('isDirectory')
             ->with('/var/www')
             ->willReturn(false);
 
@@ -75,11 +75,11 @@ class Factory extends \PHPUnit_Framework_TestCase
     {
         $factory = $this->getMockBuilder($this->class)
             ->disableOriginalConstructor()
-            ->setMethods(array('isDir', 'isReadable'))
+            ->setMethods(array('isDirectory', 'isReadable'))
             ->getMock();
 
         $factory->expects($this->once())
-            ->method('isDir')
+            ->method('isDirectory')
             ->with('/var/www')
             ->willReturn(true);
 
@@ -99,11 +99,11 @@ class Factory extends \PHPUnit_Framework_TestCase
     {
         $factory = $this->getMockBuilder($this->class)
             ->disableOriginalConstructor()
-            ->setMethods(array('isDir', 'isReadable', 'isFile'))
+            ->setMethods(array('isDirectory', 'isReadable', 'isFile'))
             ->getMock();
 
         $factory->expects($this->once())
-            ->method('isDir')
+            ->method('isDirectory')
             ->with('/var/www')
             ->willReturn(true);
 
@@ -141,7 +141,7 @@ class Factory extends \PHPUnit_Framework_TestCase
                     $this->parser->getMock()
                 )
             )
-            ->setMethods(array('expandDirectives', 'isDir', 'isReadable', 'isFile'))
+            ->setMethods(array('expandDirectives', 'isDirectory', 'isReadable', 'isFile'))
             ->getMock();
 
         $factory->expects($this->at(0))
@@ -150,7 +150,7 @@ class Factory extends \PHPUnit_Framework_TestCase
             ->willReturn('/var/www/configuration.xml');
 
         $factory->expects($this->once())
-            ->method('isDir')
+            ->method('isDirectory')
             ->with('/var/www')
             ->willReturn(true);
 

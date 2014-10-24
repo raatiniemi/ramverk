@@ -83,7 +83,7 @@ class Factory
         $filename = $this->expandDirectives($filename);
 
         // Check that the configuration directory exists.
-        if (!$this->isDir(dirname($filename))) {
+        if (!$this->isDirectory(dirname($filename))) {
             // TODO: Better specify the Exception-object.
             throw new Ramverk\Exception(sprintf(
                 'Configuration directory "%s" do not exists.',
