@@ -63,8 +63,8 @@ class File extends \SplFileInfo
      */
     public function write($data)
     {
-        // Check that the file is writable.
-        if (!$this->isWritable()) {
+        // If the file exists, check that the file is writable.
+        if ($this->isFile() && !$this->isWritable()) {
             // TODO: Write exception message.
             // TODO: Better specify the exception object.
             throw new Ramverk\Exception('');

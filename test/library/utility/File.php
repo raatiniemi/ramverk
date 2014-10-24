@@ -147,8 +147,12 @@ class File extends \PHPUnit_Framework_TestCase
     public function testWriteWithoutPermissions()
     {
         $file = $this->stub->setConstructorArgs(array(__FILE__))
-            ->setMethods(array('isWritable'))
+            ->setMethods(array('isFile', 'isWritable'))
             ->getMock();
+
+        $file->expects($this->once())
+            ->method('isFile')
+            ->willReturn(true);
 
         $file->expects($this->once())
             ->method('isWritable')
@@ -164,8 +168,12 @@ class File extends \PHPUnit_Framework_TestCase
     public function testWriteWithFailure()
     {
         $file = $this->stub->setConstructorArgs(array(__FILE__))
-            ->setMethods(array('isWritable', 'openFile'))
+            ->setMethods(array('isFile', 'isWritable', 'openFile'))
             ->getMock();
+
+        $file->expects($this->once())
+            ->method('isFile')
+            ->willReturn(true);
 
         $file->expects($this->once())
             ->method('isWritable')
@@ -192,12 +200,48 @@ class File extends \PHPUnit_Framework_TestCase
     public function testWrite()
     {
         $file = $this->stub->setConstructorArgs(array(__FILE__))
-            ->setMethods(array('isWritable', 'openFile'))
+            ->setMethods(array('isFile', 'isWritable', 'openFile'))
             ->getMock();
+
+        $file->expects($this->once())
+            ->method('isFile')
+            ->willReturn(true);
 
         $file->expects($this->once())
             ->method('isWritable')
             ->willReturn(true);
+
+        $object = $this->getMockBuilder('SplFileObject')
+            ->setConstructorArgs(array(__FILE__))
+            ->setMethods(array('fwrite'))
+            ->getMock();
+
+        $file->expects($this->once())
+            ->method('openFile')
+            ->with('w')
+            ->willReturn($object);
+
+        $object->expects($this->once())
+            ->method('fwrite')
+            ->with('foo')
+            ->willReturn(1337);
+
+        $this->assertEquals(1337, $file->write('foo'));
+    }
+
+    public function testWriteWithoutRegularFile()
+    {
+        $file = $this->stub->setConstructorArgs(array(__FILE__))
+            ->setMethods(array('isFile', 'isWritable', 'openFile'))
+            ->getMock();
+
+        $file->expects($this->once())
+            ->method('isFile')
+            ->willReturn(false);
+
+        $file->expects($this->exactly(0))
+            ->method('isWritable')
+            ->willReturn(false);
 
         $object = $this->getMockBuilder('SplFileObject')
             ->setConstructorArgs(array(__FILE__))
