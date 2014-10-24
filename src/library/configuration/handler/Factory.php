@@ -75,6 +75,7 @@ class Factory
      * @param string $name Name of the configuration handler.
      * @return array Parsed configuration from the handler.
      * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+     * @todo Find a better way to mock the $file and $cache objects.
      */
     public function callHandler($name, $filename)
     {
@@ -99,17 +100,23 @@ class Factory
             ));
         }
 
+        // Instansiate the configuration file with the filename.
+        $file = new Utility\File($filename);
+
         // Generate the cachename, and prepend the absolute cache directory.
         $cachename = $this->expandDirectives(sprintf(
             '%s/%s',
             '%directory.application.cache%',
-            $this->cache->generateName($filename)
+            $this->cache->generateName($file)
         ));
+
+        // Instansiate the cache file with the generated cachename.
+        $cache = new Utility\File($cachename);
 
         // Check if the configuration file is available from the cache.
         // There's no need to load and instansiate the configuration handler
         // if we don't really need to.
-        if ($this->cache->isModified($filename, $cachename)) {
+        if ($this->cache->isModified($file, $cache)) {
             // Check if the specified handler is available.
             if (!$this->hasHandler($name)) {
                 // TODO: Better specify the Exception-object.
@@ -134,7 +141,7 @@ class Factory
 
             // Setup the arguments for the handlers execute-method.
             $document = new Dom\Document('1.0', 'UTF-8');
-            $document->load($filename);
+            $document->load($file->getPathname());
 
             // Parse the configuration document. Parsing includes inclusion
             // of possible parent documents, retrieval of configuration
@@ -154,10 +161,10 @@ class Factory
             }
 
             // Cache the retrieved configuration data.
-            $this->cache->write($cachename, $data);
+            $this->cache->write($cache, $data);
         } else {
             // Retrieve the cached configuration data.
-            $data = $this->cache->read($cachename);
+            $data = $this->cache->read($cache);
         }
 
         // Return the retrieved configuration data.

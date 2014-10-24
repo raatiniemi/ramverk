@@ -127,12 +127,10 @@ class Factory extends \PHPUnit_Framework_TestCase
 
         $cache->expects($this->once())
             ->method('generateName')
-            ->with('/var/www/configuration.xml')
             ->willReturn('cache.php');
 
         $cache->expects($this->once())
             ->method('isModified')
-            ->with('/var/www/configuration.xml', '')
             ->willReturn(false);
 
         $factory = $this->getMockBuilder($this->class)
@@ -166,7 +164,7 @@ class Factory extends \PHPUnit_Framework_TestCase
             ->with('/var/www/configuration.xml')
             ->willReturn(true);
 
-        $factory->expects($this->at(1))
+        $factory->expects($this->at(4))
             ->method('expandDirectives')
             ->with('%directory.application.cache%/cache.php')
             ->willReturn('/var/www/cache.php');
