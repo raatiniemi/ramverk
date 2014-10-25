@@ -45,7 +45,7 @@ require 'data/dom/Element.class.php';
 require 'data/dom/Node.class.php';
 
 // Include exceptions.
-require 'exception/Exception.class.php';
+require 'exception/Exception.php';
 
 // End of file: ramverk.php
 // Location: ramverk.php

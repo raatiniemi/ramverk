@@ -37,7 +37,7 @@ require_once 'src/library/data/dom/Document.class.php';
 require_once 'src/library/data/dom/Element.class.php';
 require_once 'src/library/data/dom/Node.class.php';
 
-require_once 'src/library/exception/Exception.class.php';
+require_once 'src/library/exception/Exception.php';
 
 // End of file: bootstrap.php
 // Location: test/bootstrap.php
