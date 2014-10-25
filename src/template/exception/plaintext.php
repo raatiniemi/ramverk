@@ -44,11 +44,14 @@ if (!empty($e->getTrace())) {
     echo '=============';
 
     foreach ($e->getTrace() as $index => $trace) {
+        $prefix = sprintf('%1$s#%2$d', PHP_EOL, $index);
+
         $file = isset($trace['file']) ? $trace['file'] : null;
         $line = isset($trace['line']) ? $trace['line'] : null;
 
         if (isset($file, $line)) {
-            printf('%4$s#%1$d %2$s:%3$s%4$s', $index, $file, $line, PHP_EOL);
+            printf('%1$s %2$s:%3$s%4$s', $prefix, $file, $line, PHP_EOL);
+            $prefix = null;
         }
 
         $class = isset($trace['class']) ? $trace['class'] : null;
@@ -56,7 +59,17 @@ if (!empty($e->getTrace())) {
         $type = isset($trace['type']) ? $trace['type'] : null;
 
         if (isset($class, $function, $type)) {
-            printf('   %s%s%s%s', $class, $type, $function, PHP_EOL);
+            $prefix = isset($prefix) ? $prefix : '  ';
+            printf('%1$s %2$s%3$s%4$s%5$s', $prefix, $class, $type, $function, PHP_EOL);
+        } elseif (isset($function)) {
+            $prefix = isset($prefix) ? $prefix : '  ';
+            printf('%1$s %2$s%3$s', $prefix, $function, PHP_EOL);
+        }
+
+        $arguments = !empty($trace['args']) ? $trace['args'] : null;
+
+        if (isset($function) && $arguments) {
+            printf('      %1$s%2$s', implode(sprintf(',%s', PHP_EOL), $arguments), PHP_EOL);
         }
     }
 }
