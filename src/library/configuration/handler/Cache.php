@@ -212,5 +212,5 @@ namespace Me\Raatiniemi\Ramverk\Configuration\Handler {
 		}
 	}
 }
-// End of file: Cache.class.php
-// Location: library/configuration/handler/Cache.class.php
+// End of file: Cache.php
+// Location: library/configuration/handler/Cache.php
