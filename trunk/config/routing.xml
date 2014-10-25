@@ -1,17 +1,17 @@
 <configurations>
-	<configuration>
-		<routes>
-			<route name="user" pattern="^user" module="User">
-				<route name=".login" pattern="/login$" action="Login" />
-				<route name=".logout" pattern="/logout$" action="Logout" />
+    <configuration>
+        <routes>
+            <route name="user" pattern="^user" module="User">
+                <route name=".login" pattern="/login$" action="Login" />
+                <route name=".logout" pattern="/logout$" action="Logout" />
 
-				<route name=".profile" action="Profile">
-					<route pattern="/{id:\d+}$" />
-					<route pattern="/{name:[a-z0-9]+}$" />
-				</route>
-			</route>
+                <route name=".profile" action="Profile">
+                    <route pattern="/{id:\d+}$" />
+                    <route pattern="/{name:[a-z0-9]+}$" />
+                </route>
+            </route>
 
-			<route name="index" pattern="^$" module="Index" action="Index" />
-		</routes>
-	</configuration>
+            <route name="index" pattern="^$" module="Index" action="Index" />
+        </routes>
+    </configuration>
 </configurations>
