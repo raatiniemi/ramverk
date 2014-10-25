@@ -148,11 +148,10 @@ class Factory
             // of possible parent documents, retrieval of configuration
             // connected to the correct application profile and context.
             $document = $this->parser->execute($document);
-            $arguments = array($document, $this->config);
 
             // Call the execute-method on the handler. The execute-method will
             // retrieve all of the configuration data within one array.
-            $data = call_user_func_array(array($instance, 'execute'), $arguments);
+            $data = call_user_func_array(array($instance, 'execute'), array($document));
             if (!is_array($data)) {
                 // TODO: Better specify the Exception-object.
                 throw new Ramverk\Exception(sprintf(

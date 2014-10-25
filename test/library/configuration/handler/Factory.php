@@ -353,7 +353,7 @@ class Factory extends \PHPUnit_Framework_TestCase
 
         $handler->expects($this->once())
             ->method('execute')
-            ->with($document, $config)
+            ->with($document)
             ->willReturn(array());
 
         $factory->callHandler('foo', $path);
@@ -477,7 +477,7 @@ class Factory extends \PHPUnit_Framework_TestCase
 
         $handler->expects($this->once())
             ->method('execute')
-            ->with($document, $config)
+            ->with($document)
             ->willReturn(array());
 
         $factory->callHandler('foo', $path);
@@ -601,7 +601,7 @@ class Factory extends \PHPUnit_Framework_TestCase
 
         $handler->expects($this->once())
             ->method('execute')
-            ->with($document, $config)
+            ->with($document)
             ->willReturn(null);
 
         $factory->callHandler('foo', $path);
