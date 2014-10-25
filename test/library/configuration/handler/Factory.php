@@ -241,6 +241,469 @@ class Factory extends \PHPUnit_Framework_TestCase
         $factory->callHandler('foo', '/var/www/configuration.xml');
     }
 
+    public function testCallHandlerWithModifiedConfigurationFileAndInstansiatedHandler()
+    {
+        $path = realpath(__DIR__ . '/../../../phpunit.xml');
+        $directory = dirname($path);
+
+        $config = $this->config->getMock();
+
+        $cache = $this->cache
+            ->setMethods(
+                array(
+                    'generateName',
+                    'isModified',
+                    'write'
+                )
+            )
+            ->getMock();
+
+        $cache->expects($this->once())
+            ->method('generateName')
+            ->willReturn('cache.php');
+
+        $cache->expects($this->once())
+            ->method('isModified')
+            ->willReturn(true);
+
+        $cache->expects($this->once())
+            ->method('write')
+            ->willReturn(null);
+
+        $parser = $this->parser->disableOriginalConstructor()
+            ->setMethods(array('execute'))
+            ->getMock();
+
+        $factory = $this->getMockBuilder($this->class)
+            ->setConstructorArgs(
+                array(
+                    $config,
+                    $cache,
+                    $parser
+                )
+            )
+            ->setMethods(
+                array(
+                    'expandDirectives',
+                    'isDirectory',
+                    'isReadable',
+                    'isFile',
+                    'hasHandler',
+                    'isInstansiated'
+                )
+            )
+            ->getMock();
+
+        $factory->expects($this->at(0))
+            ->method('expandDirectives')
+            ->with($path)
+            ->willReturn($path);
+
+        $factory->expects($this->once())
+            ->method('isDirectory')
+            ->with($directory)
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isReadable')
+            ->with($path)
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isFile')
+            ->with($path)
+            ->willReturn(true);
+
+        $factory->expects($this->at(4))
+            ->method('expandDirectives')
+            ->with('%directory.application.cache%/cache.php')
+            ->willReturn('/var/www/cache.php');
+
+        $factory->expects($this->once())
+            ->method('hasHandler')
+            ->with('foo')
+            ->willReturn(true);
+
+        $reflection = new \ReflectionClass($this->class);
+
+        $availableHandlers = $reflection->getProperty('availableHandlers');
+        $availableHandlers->setAccessible(true);
+        $availableHandlers->setValue($factory, array('foo' => 'bar'));
+
+        $factory->expects($this->once())
+            ->method('isInstansiated')
+            ->with('bar')
+            ->willReturn(true);
+
+        $handler = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler')
+            ->setConstructorArgs(array($config))
+            ->getMock();
+
+        $handlers = $reflection->getProperty('handlers');
+        $handlers->setAccessible(true);
+        $handlers->setValue($factory, array('bar' => $handler));
+
+        $document = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Data\\Dom\\Document')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $parser->expects($this->once())
+            ->method('execute')
+            ->willReturn($document);
+
+        $handler->expects($this->once())
+            ->method('execute')
+            ->with($document, $config)
+            ->willReturn(array());
+
+        $factory->callHandler('foo', $path);
+    }
+
+    public function testCallHandlerWithModifiedConfigurationFileAndWithoutInstansiatedHandler()
+    {
+        $path = realpath(__DIR__ . '/../../../phpunit.xml');
+        $directory = dirname($path);
+
+        $config = $this->config->getMock();
+
+        $cache = $this->cache
+            ->setMethods(
+                array(
+                    'generateName',
+                    'isModified',
+                    'write'
+                )
+            )
+            ->getMock();
+
+        $cache->expects($this->once())
+            ->method('generateName')
+            ->willReturn('cache.php');
+
+        $cache->expects($this->once())
+            ->method('isModified')
+            ->willReturn(true);
+
+        $cache->expects($this->once())
+            ->method('write')
+            ->willReturn(null);
+
+        $parser = $this->parser->disableOriginalConstructor()
+            ->setMethods(array('execute'))
+            ->getMock();
+
+        $factory = $this->getMockBuilder($this->class)
+            ->setConstructorArgs(
+                array(
+                    $config,
+                    $cache,
+                    $parser
+                )
+            )
+            ->setMethods(
+                array(
+                    'expandDirectives',
+                    'isDirectory',
+                    'isReadable',
+                    'isFile',
+                    'hasHandler',
+                    'isInstansiated',
+                    'loadHandler'
+                )
+            )
+            ->getMock();
+
+        $factory->expects($this->at(0))
+            ->method('expandDirectives')
+            ->with($path)
+            ->willReturn($path);
+
+        $factory->expects($this->once())
+            ->method('isDirectory')
+            ->with($directory)
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isReadable')
+            ->with($path)
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isFile')
+            ->with($path)
+            ->willReturn(true);
+
+        $factory->expects($this->at(4))
+            ->method('expandDirectives')
+            ->with('%directory.application.cache%/cache.php')
+            ->willReturn('/var/www/cache.php');
+
+        $factory->expects($this->once())
+            ->method('hasHandler')
+            ->with('foo')
+            ->willReturn(true);
+
+        $reflection = new \ReflectionClass($this->class);
+
+        $availableHandlers = $reflection->getProperty('availableHandlers');
+        $availableHandlers->setAccessible(true);
+        $availableHandlers->setValue($factory, array('foo' => 'bar'));
+
+        $factory->expects($this->once())
+            ->method('isInstansiated')
+            ->with('bar')
+            ->willReturn(false);
+
+        $factory->expects($this->once())
+            ->method('loadhandler')
+            ->with('bar')
+            ->willReturn(null);
+
+        $handler = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler')
+            ->setConstructorArgs(array($config))
+            ->getMock();
+
+        $handlers = $reflection->getProperty('handlers');
+        $handlers->setAccessible(true);
+        $handlers->setValue($factory, array('bar' => $handler));
+
+        $document = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Data\\Dom\\Document')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $parser->expects($this->once())
+            ->method('execute')
+            ->willReturn($document);
+
+        $handler->expects($this->once())
+            ->method('execute')
+            ->with($document, $config)
+            ->willReturn(array());
+
+        $factory->callHandler('foo', $path);
+    }
+
+    /**
+     * @expectedException Me\Raatiniemi\Ramverk\Exception
+     * @expectedExceptionMessage The configuration handler "bar" did not return an array.
+     */
+    public function testCallHandlerWithoutValidConfigurationReturned()
+    {
+        $path = realpath(__DIR__ . '/../../../phpunit.xml');
+        $directory = dirname($path);
+
+        $config = $this->config->getMock();
+
+        $cache = $this->cache
+            ->setMethods(
+                array(
+                    'generateName',
+                    'isModified',
+                    'write'
+                )
+            )
+            ->getMock();
+
+        $cache->expects($this->once())
+            ->method('generateName')
+            ->willReturn('cache.php');
+
+        $cache->expects($this->once())
+            ->method('isModified')
+            ->willReturn(true);
+
+        $parser = $this->parser->disableOriginalConstructor()
+            ->setMethods(array('execute'))
+            ->getMock();
+
+        $factory = $this->getMockBuilder($this->class)
+            ->setConstructorArgs(
+                array(
+                    $config,
+                    $cache,
+                    $parser
+                )
+            )
+            ->setMethods(
+                array(
+                    'expandDirectives',
+                    'isDirectory',
+                    'isReadable',
+                    'isFile',
+                    'hasHandler',
+                    'isInstansiated',
+                    'loadHandler'
+                )
+            )
+            ->getMock();
+
+        $factory->expects($this->at(0))
+            ->method('expandDirectives')
+            ->with($path)
+            ->willReturn($path);
+
+        $factory->expects($this->once())
+            ->method('isDirectory')
+            ->with($directory)
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isReadable')
+            ->with($path)
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isFile')
+            ->with($path)
+            ->willReturn(true);
+
+        $factory->expects($this->at(4))
+            ->method('expandDirectives')
+            ->with('%directory.application.cache%/cache.php')
+            ->willReturn('/var/www/cache.php');
+
+        $factory->expects($this->once())
+            ->method('hasHandler')
+            ->with('foo')
+            ->willReturn(true);
+
+        $reflection = new \ReflectionClass($this->class);
+
+        $availableHandlers = $reflection->getProperty('availableHandlers');
+        $availableHandlers->setAccessible(true);
+        $availableHandlers->setValue($factory, array('foo' => 'bar'));
+
+        $factory->expects($this->once())
+            ->method('isInstansiated')
+            ->with('bar')
+            ->willReturn(false);
+
+        $factory->expects($this->once())
+            ->method('loadhandler')
+            ->with('bar')
+            ->willReturn(null);
+
+        $handler = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler')
+            ->setConstructorArgs(array($config))
+            ->getMock();
+
+        $handlers = $reflection->getProperty('handlers');
+        $handlers->setAccessible(true);
+        $handlers->setValue($factory, array('bar' => $handler));
+
+        $document = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Data\\Dom\\Document')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $parser->expects($this->once())
+            ->method('execute')
+            ->willReturn($document);
+
+        $handler->expects($this->once())
+            ->method('execute')
+            ->with($document, $config)
+            ->willReturn(null);
+
+        $factory->callHandler('foo', $path);
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error_Warning
+     * @expectedExceptionMessage
+     */
+    public function testCallHandlerWithoutValidXmlConfigurationFile()
+    {
+        $config = $this->config->getMock();
+
+        $cache = $this->cache
+            ->setMethods(
+                array(
+                    'generateName',
+                    'isModified'
+                )
+            )
+            ->getMock();
+
+        $cache->expects($this->once())
+            ->method('generateName')
+            ->willReturn('cache.php');
+
+        $cache->expects($this->once())
+            ->method('isModified')
+            ->willReturn(true);
+
+        $factory = $this->getMockBuilder($this->class)
+            ->setConstructorArgs(
+                array(
+                    $config,
+                    $cache,
+                    $this->parser->getMock()
+                )
+            )
+            ->setMethods(
+                array(
+                    'expandDirectives',
+                    'isDirectory',
+                    'isReadable',
+                    'isFile',
+                    'hasHandler',
+                    'isInstansiated'
+                )
+            )
+            ->getMock();
+
+        $factory->expects($this->at(0))
+            ->method('expandDirectives')
+            ->with('/var/www/configuration.xml')
+            ->willReturn('/var/www/configuration.xml');
+
+        $factory->expects($this->once())
+            ->method('isDirectory')
+            ->with('/var/www')
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isReadable')
+            ->with('/var/www/configuration.xml')
+            ->willReturn(true);
+
+        $factory->expects($this->once())
+            ->method('isFile')
+            ->with('/var/www/configuration.xml')
+            ->willReturn(true);
+
+        $factory->expects($this->at(4))
+            ->method('expandDirectives')
+            ->with('%directory.application.cache%/cache.php')
+            ->willReturn('/var/www/cache.php');
+
+        $factory->expects($this->once())
+            ->method('hasHandler')
+            ->with('foo')
+            ->willReturn(true);
+
+        $reflection = new \ReflectionClass($this->class);
+
+        $availableHandlers = $reflection->getProperty('availableHandlers');
+        $availableHandlers->setAccessible(true);
+        $availableHandlers->setValue($factory, array('foo' => 'bar'));
+
+        $factory->expects($this->once())
+            ->method('isInstansiated')
+            ->with('bar')
+            ->willReturn(true);
+
+        $handler = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler')
+            ->setConstructorArgs(array($config))
+            ->getMock();
+
+        $handlers = $reflection->getProperty('handlers');
+        $handlers->setAccessible(true);
+        $handlers->setValue($factory, array('bar' => $handler));
+
+        $factory->callHandler('foo', '/var/www/configuration.xml');
+    }
+
     /**
      * @expectedException Me\Raatiniemi\Ramverk\Exception
      * @expectedExceptionMessage The configuration handler "foobar" do not exists.

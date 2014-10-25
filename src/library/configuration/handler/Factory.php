@@ -140,6 +140,7 @@ class Factory
             $instance = $this->handlers[$handler];
 
             // Setup the arguments for the handlers execute-method.
+            // TODO: Check the return value from the `load`-method.
             $document = new Dom\Document('1.0', 'UTF-8');
             $document->load($file->getPathname());
 
