@@ -164,6 +164,7 @@ class Configuration
      * @param string $value String with configuration directives to expand.
      * @return string String with configuration directives expanded.
      * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+     * @codeCoverageIgnore
      */
     public function expand($value)
     {
@@ -174,6 +175,7 @@ class Configuration
      * Get the configuration container, used by Utility-trait.
      * @return Me\Raatiniemi\Ramverk\Configuration Configuration container.
      * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+     * @codeCoverageIgnore
      */
     protected function getConfig()
     {
