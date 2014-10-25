@@ -107,5 +107,5 @@ namespace Me\Raatiniemi\Ramverk\Core
 		}
 	}
 }
-// End of file: Context.class.php
-// Location: library/core/Context.class.php
+// End of file: Context.php
+// Location: library/core/Context.php

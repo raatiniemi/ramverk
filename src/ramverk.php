@@ -24,7 +24,7 @@ require 'configuration/Utility.trait.php';
 require 'configuration/Configuration.php';
 require 'core/context/Handler.trait.php';
 require 'core/Core.php';
-require 'core/Context.class.php';
+require 'core/Context.php';
 
 // Include framework utilities, needed by configuration, etc.
 require 'utility/File.php';
