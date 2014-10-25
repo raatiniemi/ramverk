@@ -65,5 +65,5 @@ namespace Me\Raatiniemi\Ramverk
 		}
 	}
 }
-// End of file: Exception.class.php
-// Location: library/exception/Exception.class.php
+// End of file: Exception.php
+// Location: library/exception/Exception.php
