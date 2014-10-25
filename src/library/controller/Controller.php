@@ -260,5 +260,5 @@ namespace Me\Raatiniemi\Ramverk
 		}
 	}
 }
-// End of file: Controller.class.php
-// Location: library/controller/Controller.class.php
+// End of file: Controller.php
+// Location: library/controller/Controller.php
