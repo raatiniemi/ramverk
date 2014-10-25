@@ -5,7 +5,7 @@
 
             <autoload name="Configuration">%directory.core.library%/configuration/Configuration.php</autoload>
 
-            <autoload name="Controller">%directory.core.library%/controller/Controller.class.php</autoload>
+            <autoload name="Controller">%directory.core.library%/controller/Controller.php</autoload>
 
             <autoload name="Core">%directory.core.library%/core/Core.php</autoload>
             <autoload name="Core\Context">%directory.core.library%/core/Context.php</autoload>
