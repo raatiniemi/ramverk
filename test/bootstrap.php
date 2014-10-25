@@ -29,7 +29,7 @@ require_once 'src/library/configuration/handler/Factory.php';
 require_once 'src/library/configuration/handler/Module.php';
 require_once 'src/library/configuration/handler/Parser.php';
 require_once 'src/library/configuration/handler/Routing.php';
-require_once 'src/library/configuration/handler/Cache.class.php';
+require_once 'src/library/configuration/handler/Cache.php';
 
 require_once 'src/library/data/dom/utility/Value.trait.php';
 require_once 'src/library/data/dom/Attribute.class.php';

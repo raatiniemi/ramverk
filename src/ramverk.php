@@ -31,7 +31,7 @@ require 'utility/File.php';
 require 'utility/Filesystem.php';
 
 // Include the configuration handlers required by the core.
-require 'configuration/handler/Cache.class.php';
+require 'configuration/handler/Cache.php';
 require 'configuration/handler/Parser.php';
 require 'configuration/handler/Factory.php';
 require 'configuration/handler/Handler.php';

@@ -37,7 +37,7 @@
             <autoload name="Handler\Module">%directory.core.library%/configuration/handler/Module.php</autoload>
             <autoload name="Handler\Routing">%directory.core.library%/configuration/handler/Routing.php</autoload>
 
-            <autoload name="Handler\Cache">%directory.core.library%/configuration/handler/Cache.class.php</autoload>
+            <autoload name="Handler\Cache">%directory.core.library%/configuration/handler/Cache.php</autoload>
             <autoload name="Handler\Parser">%directory.core.library%/configuration/handler/Parser.php</autoload>
             <autoload name="Handler\Factory">%directory.core.library%/configuration/handler/Factory.php</autoload>
         </autoloads>
