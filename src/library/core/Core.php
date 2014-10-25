@@ -162,5 +162,5 @@ namespace Me\Raatiniemi\Ramverk
 		}
 	}
 }
-// End of file: Core.class.php
-// Location: library/core/Core.class.php
+// End of file: Core.php
+// Location: library/core/Core.php

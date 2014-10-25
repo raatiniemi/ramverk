@@ -7,7 +7,7 @@
 
             <autoload name="Controller">%directory.core.library%/controller/Controller.class.php</autoload>
 
-            <autoload name="Core">%directory.core.library%/core/Core.class.php</autoload>
+            <autoload name="Core">%directory.core.library%/core/Core.php</autoload>
             <autoload name="Core\Context">%directory.core.library%/core/Context.class.php</autoload>
             <autoload name="Core\Context\Handler">%directory.core.library%/core/context/Handler.trait.php</autoload>
 

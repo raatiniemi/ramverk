@@ -23,7 +23,7 @@ require 'loader/Autoload.trait.php';
 require 'configuration/Utility.trait.php';
 require 'configuration/Configuration.php';
 require 'core/context/Handler.trait.php';
-require 'core/Core.class.php';
+require 'core/Core.php';
 require 'core/Context.class.php';
 
 // Include framework utilities, needed by configuration, etc.
