@@ -13,7 +13,7 @@
 
             <autoload name="Exception">%directory.core.library%/exception/Exception.php</autoload>
 
-            <autoload name="Loader\Autoload">%directory.core.library%/loader/Autoload.trait.php</autoload>
+            <autoload name="Loader\Autoload">%directory.core.library%/loader/Autoload.php</autoload>
 
             <autoload name="Request">%directory.core.library%/request/Request.class.php</autoload>
             <autoload name="Request\Data">%directory.core.library%/request/Data.class.php</autoload>

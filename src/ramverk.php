@@ -19,7 +19,7 @@ set_include_path($path . PATH_SEPARATOR . get_include_path());
 
 // Require the absolute core classes needed to bootstrap the framework.
 // With these included the autoload functionality can handle the rest.
-require 'loader/Autoload.trait.php';
+require 'loader/Autoload.php';
 require 'configuration/Utility.php';
 require 'configuration/Configuration.php';
 require 'core/context/Handler.trait.php';
