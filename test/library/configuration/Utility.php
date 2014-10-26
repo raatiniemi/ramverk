@@ -49,5 +49,5 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration
 		}
 	}
 }
-// End of file: Utility.test.php
-// Location: test/library/configuration/Utility.test.php
+// End of file: Utility.php
+// Location: test/library/configuration/Utility.php
