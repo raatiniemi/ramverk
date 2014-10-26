@@ -69,7 +69,7 @@ if (!empty($e->getTrace())) {
         $arguments = !empty($trace['args']) ? $trace['args'] : null;
 
         if (isset($function) && $arguments) {
-            printf('      %1$s%2$s', implode(sprintf(',%s', PHP_EOL), $arguments), PHP_EOL);
+            printf('      %1$s%2$s', implode(sprintf(',%s      ', PHP_EOL), $arguments), PHP_EOL);
         }
     }
 }
