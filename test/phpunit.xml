@@ -9,6 +9,7 @@
             <file>library/configuration/handler/Parser.php</file>
             <file>library/configuration/handler/Routing.php</file>
             <file>library/configuration/Configuration.php</file>
+            <file>library/configuration/Utility.php</file>
         </testsuite>
         <testsuite name="utility">
             <file>library/utility/File.php</file>
