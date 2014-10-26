@@ -20,7 +20,7 @@ set_include_path($path . PATH_SEPARATOR . get_include_path());
 require_once 'src/library/utility/File.php';
 require_once 'src/library/utility/Filesystem.php';
 
-require_once 'src/library/configuration/Utility.trait.php';
+require_once 'src/library/configuration/Utility.php';
 require_once 'src/library/configuration/Configuration.php';
 require_once 'src/library/configuration/handler/Handler.php';
 require_once 'src/library/configuration/handler/Autoload.php';

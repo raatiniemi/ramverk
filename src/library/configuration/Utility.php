@@ -60,5 +60,5 @@ namespace Me\Raatiniemi\Ramverk\Configuration {
 		abstract protected function getConfig();
 	}
 }
-// End of file: Utility.trait.php
-// Location: library/configuration/Utility.trait.php
+// End of file: Utility.php
+// Location: library/configuration/Utility.php
