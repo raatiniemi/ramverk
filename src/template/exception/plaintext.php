@@ -69,7 +69,18 @@ if (!empty($e->getTrace())) {
         $arguments = !empty($trace['args']) ? $trace['args'] : null;
 
         if (isset($function) && $arguments) {
-            printf('      %1$s%2$s', implode(sprintf(',%s      ', PHP_EOL), $arguments), PHP_EOL);
+            $parameters = array();
+            foreach ($arguments as $argument) {
+                $value = $argument;
+                if (is_object($argument)) {
+                    $value = 'instanceof '. get_class($argument);
+                }
+                $parameters[] = "      {$value}";
+            }
+            $glue = sprintf(',%s', PHP_EOL);
+            $parameters = implode($glue, $parameters);
+
+            printf('%1$s%2$s', $parameters, PHP_EOL);
         }
     }
 }
