@@ -25,7 +25,7 @@ class Utility extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Config\Utility::expand($config, '%foo%'), 'bar');
     }
 
-    public function testExpandDirectives()
+    public function testExpandMultipleDirectives()
     {
         $config = new Config();
         $config->set('foo', 'bar');
