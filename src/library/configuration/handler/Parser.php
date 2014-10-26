@@ -23,7 +23,6 @@ class Parser
     // +------------------------------------------------------------------+
     // | Trait use-directives.                                            |
     // +------------------------------------------------------------------+
-    use Configuration\Utility;
     use Utility\Filesystem;
 
     /**
@@ -211,7 +210,10 @@ class Parser
         $documentElement = $document->documentElement;
         if ($documentElement->hasAttribute('parent')) {
             // Attempt to expand the parent document URI.
-            $parent = $this->expandDirectives($documentElement->getAttribute('parent'));
+            $parent = Configuration\Utility::expand(
+                $this->config,
+                $documentElement->getAttribute('parent')
+            );
 
             // To prevent infinite loops of parent document we haven to
             // check if the new parent document already have been included.
@@ -250,17 +252,6 @@ class Parser
             // Parse the parent document and retrieve the items.
             $this->parse($parentDocument);
         }
-    }
-
-    /**
-     * Get the configuration container, used by Utility-trait.
-     * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
-     * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-     * @codeCoverageIgnore
-     */
-    public function getConfig()
-    {
-        return $this->config;
     }
 }
 // End of file: Parser.php

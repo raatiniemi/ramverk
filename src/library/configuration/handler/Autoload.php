@@ -58,7 +58,10 @@ class Autoload extends Configuration\Handler
                     // Prepend the group namespace (if any) to the class
                     // name, and expand the class path directives.
                     $name = "{$namespace}{$autoload->getAttribute('name')}";
-                    $data[$name] = $this->expandDirectives($autoload->getValue());
+                    $data[$name] = Configuration\Utility::expand(
+                        $this->getConfig(),
+                        $autoload->getValue()
+                    );
 
                     // TODO: Verify that the file actually exists.
                 }

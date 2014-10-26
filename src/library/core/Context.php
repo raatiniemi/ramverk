@@ -19,11 +19,6 @@ use Me\Raatiniemi\Ramverk\Configuration\Handler;
  */
 class Context
 {
-    // +------------------------------------------------------------------+
-    // | Trait use-directives.                                            |
-    // +------------------------------------------------------------------+
-    use Configuration\Utility;
-
     /**
      * Configuration container.
      * @var Me\Raatiniemi\Ramverk\Configuration.
@@ -72,8 +67,10 @@ class Context
             // When application is running with a development profile the
             // cache should be cleared every request.
             if (preg_match('/(development(\.[a-z0-9]+)?)/i', $profile)) {
-                $directory = $this->getConfig()->get('directory.application.cache');
-                $directory = $this->expandDirectives($directory);
+                $directory = Configuration\Utility::expand(
+                    $this->getConfig(),
+                    $this->getConfig()->get('directory.application.cache')
+                );
 
                 // Loop though each of the files within the cache directory.
                 foreach (new \DirectoryIterator($directory) as $file) {

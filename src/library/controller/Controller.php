@@ -226,7 +226,7 @@ final class Controller
         $config->set('directory.module.view', '%directory.module%/view');
 
         // Check that the module directory exists and is readable.
-        $directory = $config->expand('%directory.module%');
+        $directory = Configuration\Utility::expand($config, '%directory.module%');
         if (!is_dir($directory) || !is_readable($directory)) {
             throw new Exception(sprintf(
                 'The directory for the module "%s" do not exists or is '.
@@ -237,14 +237,16 @@ final class Controller
         }
 
         // Import the module specific configuration if available.
-        $module = $config->expand('%directory.module.config%/module.xml');
+        $module = '%directory.module.config%/module.xml';
+        $module = Configuration\Utility::expand($config, $module);
         if (is_readable($module)) {
             $factory = $this->getConfigurationHandlerFactory();
             $config->fromArray($factory->callHandler('Module', $module));
         }
 
         // Check if module specific autoload configuration is available.
-        $autoload = $config->expand('%directory.module.config%/autoload.xml');
+        $autoload = '%directory.module.config%/autoload.xml';
+        $autoload = Configuration\Utility::expand($config, $autoload);
         if (is_readable($autoload)) {
             $this->setAutoloadFile($autoload);
             spl_autoload_register(array($this, 'autoload'), true, true);

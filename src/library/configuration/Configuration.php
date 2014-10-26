@@ -16,11 +16,6 @@ namespace Me\Raatiniemi\Ramverk;
  */
 class Configuration
 {
-    // +------------------------------------------------------------------+
-    // | Trait use-directives.                                            |
-    // +------------------------------------------------------------------+
-    use Configuration\Utility;
-
     /**
      * Stores the configuration items with their values.
      * @var array
@@ -153,33 +148,6 @@ class Configuration
     public function toArray()
     {
         return (array)$this->config;
-    }
-
-    /**
-     * Expands configuration directives.
-     *
-     * Directive names between precentage signs, e.g. %application.name%
-     * will be replaced with the value of the directive.
-     *
-     * @param string $value String with configuration directives to expand.
-     * @return string String with configuration directives expanded.
-     * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-     * @codeCoverageIgnore
-     */
-    public function expand($value)
-    {
-        return $this->expandDirectives($value);
-    }
-
-    /**
-     * Get the configuration container, used by Utility-trait.
-     * @return Me\Raatiniemi\Ramverk\Configuration Configuration container.
-     * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-     * @codeCoverageIgnore
-     */
-    protected function getConfig()
-    {
-        return $this;
     }
 }
 // End of file: Configuration.php

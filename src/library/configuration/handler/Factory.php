@@ -23,7 +23,6 @@ class Factory
     // +------------------------------------------------------------------+
     // | Trait use-directives.                                            |
     // +------------------------------------------------------------------+
-    use Configuration\Utility;
     use Utility\Filesystem;
 
     /**
@@ -80,7 +79,7 @@ class Factory
     public function callHandler($name, $filename)
     {
         // Get the absolute path for the configuration file.
-        $filename = $this->expandDirectives($filename);
+        $filename = Configuration\Utility::expand($this->config, $filename);
 
         // Check that the configuration directory exists.
         if (!$this->isDirectory(dirname($filename))) {
@@ -104,11 +103,8 @@ class Factory
         $file = new Utility\File($filename);
 
         // Generate the cachename, and prepend the absolute cache directory.
-        $cachename = $this->expandDirectives(sprintf(
-            '%s/%s',
-            '%directory.application.cache%',
-            $this->cache->generateName($file)
-        ));
+        $cachename = "%directory.application.cache%/{$this->cache->generateName($file)}";
+        $cachename = Configuration\Utility::expand($this->config, $cachename);
 
         // Instansiate the cache file with the generated cachename.
         $cache = new Utility\File($cachename);

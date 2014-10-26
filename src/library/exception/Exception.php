@@ -34,12 +34,12 @@ class Exception extends \Exception
         $template = $config->get('exception.template.default');
         $template = $config->get('exception.template', $template);
         $template = $config->get('core.exception.template', $template);
-        $template = $config->expandDirectives($template);
+        $template = Configuration\Utility::expand($config, $template);
 
         // Check that the specified template is readable.
         if (!is_readable($template)) {
             $template = $config->get('exception.template.default');
-            $template = $config->expandDirectives($template);
+            $template = Configuration\Utility::expand($config, $template);
         }
 
         // Since it's possible to override the default template we have to

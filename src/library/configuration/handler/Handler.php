@@ -18,16 +18,11 @@ use Me\Raatiniemi\Ramverk\Data\Dom;
  */
 abstract class Handler
 {
-    // +------------------------------------------------------------------+
-    // | Trait use-directives.                                            |
-    // +------------------------------------------------------------------+
-    use Utility;
-
     /**
      * Configuration container.
      * @var Me\Raatiniemi\Ramverk\Configuration\Container
      */
-    protected $config;
+    private $config;
 
     /**
      * Initialize the configuration handler.
@@ -39,12 +34,6 @@ abstract class Handler
         $this->config = $config;
     }
 
-    /**
-     * Get the configuration container, used by Utility-trait.
-     * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
-     * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-     * @codeCoverageIgnore
-     */
     protected function getConfig()
     {
         return $this->config;
