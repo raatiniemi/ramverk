@@ -244,13 +244,13 @@ class Parser extends \PHPUnit_Framework_TestCase
     public function testParseDocumentWithoutParent()
     {
         $parser = $this->getMockBuilder('Me\\Raatiniemi\\Ramverk\\Configuration\\Handler\\Parser')
-            ->setMethods(array('expandDirectives'))
+            ->setMethods(array('parse'))
             ->disableOriginalConstructor()
             ->getMock();
 
-        // If the `expandDirectives`-method is called we've detected a parent document.
+        // If the `parse`-method is called we've detected a parent document.
         $parser->expects($this->exactly(0))
-            ->method('expandDirectives');
+            ->method('parse');
 
         $document = new Dom\Document();
         $document->loadXML(

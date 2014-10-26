@@ -55,7 +55,13 @@ class Factory extends \PHPUnit_Framework_TestCase
     public function testCallHandlerWithoutValidPath()
     {
         $factory = $this->getMockBuilder($this->class)
-            ->disableOriginalConstructor()
+            ->setConstructorArgs(
+                array(
+                    $this->config->getMock(),
+                    $this->cache->getMock(),
+                    $this->parser->getMock()
+                )
+            )
             ->setMethods(array('isDirectory'))
             ->getMock();
 
@@ -74,7 +80,13 @@ class Factory extends \PHPUnit_Framework_TestCase
     public function testCallHandlerWithoutReadableConfigurationFile()
     {
         $factory = $this->getMockBuilder($this->class)
-            ->disableOriginalConstructor()
+            ->setConstructorArgs(
+                array(
+                    $this->config->getMock(),
+                    $this->cache->getMock(),
+                    $this->parser->getMock()
+                )
+            )
             ->setMethods(array('isDirectory', 'isReadable'))
             ->getMock();
 
@@ -98,7 +110,13 @@ class Factory extends \PHPUnit_Framework_TestCase
     public function testCallHandlerWithoutRegularFileAsConfigurationFile()
     {
         $factory = $this->getMockBuilder($this->class)
-            ->disableOriginalConstructor()
+            ->setConstructorArgs(
+                array(
+                    $this->config->getMock(),
+                    $this->cache->getMock(),
+                    $this->parser->getMock()
+                )
+            )
             ->setMethods(array('isDirectory', 'isReadable', 'isFile'))
             ->getMock();
 
@@ -141,13 +159,8 @@ class Factory extends \PHPUnit_Framework_TestCase
                     $this->parser->getMock()
                 )
             )
-            ->setMethods(array('expandDirectives', 'isDirectory', 'isReadable', 'isFile'))
+            ->setMethods(array('isDirectory', 'isReadable', 'isFile'))
             ->getMock();
-
-        $factory->expects($this->at(0))
-            ->method('expandDirectives')
-            ->with('/var/www/configuration.xml')
-            ->willReturn('/var/www/configuration.xml');
 
         $factory->expects($this->once())
             ->method('isDirectory')
@@ -163,11 +176,6 @@ class Factory extends \PHPUnit_Framework_TestCase
             ->method('isFile')
             ->with('/var/www/configuration.xml')
             ->willReturn(true);
-
-        $factory->expects($this->at(4))
-            ->method('expandDirectives')
-            ->with('%directory.application.cache%/cache.php')
-            ->willReturn('/var/www/cache.php');
 
         $factory->callHandler('foo', '/var/www/configuration.xml');
     }
@@ -199,7 +207,6 @@ class Factory extends \PHPUnit_Framework_TestCase
             )
             ->setMethods(
                 array(
-                    'expandDirectives',
                     'isDirectory',
                     'isReadable',
                     'isFile',
@@ -207,11 +214,6 @@ class Factory extends \PHPUnit_Framework_TestCase
                 )
             )
             ->getMock();
-
-        $factory->expects($this->at(0))
-            ->method('expandDirectives')
-            ->with('/var/www/configuration.xml')
-            ->willReturn('/var/www/configuration.xml');
 
         $factory->expects($this->once())
             ->method('isDirectory')
@@ -227,11 +229,6 @@ class Factory extends \PHPUnit_Framework_TestCase
             ->method('isFile')
             ->with('/var/www/configuration.xml')
             ->willReturn(true);
-
-        $factory->expects($this->at(4))
-            ->method('expandDirectives')
-            ->with('%directory.application.cache%/cache.php')
-            ->willReturn('/var/www/cache.php');
 
         $factory->expects($this->once())
             ->method('hasHandler')
@@ -284,7 +281,6 @@ class Factory extends \PHPUnit_Framework_TestCase
             )
             ->setMethods(
                 array(
-                    'expandDirectives',
                     'isDirectory',
                     'isReadable',
                     'isFile',
@@ -293,11 +289,6 @@ class Factory extends \PHPUnit_Framework_TestCase
                 )
             )
             ->getMock();
-
-        $factory->expects($this->at(0))
-            ->method('expandDirectives')
-            ->with($path)
-            ->willReturn($path);
 
         $factory->expects($this->once())
             ->method('isDirectory')
@@ -313,11 +304,6 @@ class Factory extends \PHPUnit_Framework_TestCase
             ->method('isFile')
             ->with($path)
             ->willReturn(true);
-
-        $factory->expects($this->at(4))
-            ->method('expandDirectives')
-            ->with('%directory.application.cache%/cache.php')
-            ->willReturn('/var/www/cache.php');
 
         $factory->expects($this->once())
             ->method('hasHandler')
@@ -402,7 +388,6 @@ class Factory extends \PHPUnit_Framework_TestCase
             )
             ->setMethods(
                 array(
-                    'expandDirectives',
                     'isDirectory',
                     'isReadable',
                     'isFile',
@@ -412,11 +397,6 @@ class Factory extends \PHPUnit_Framework_TestCase
                 )
             )
             ->getMock();
-
-        $factory->expects($this->at(0))
-            ->method('expandDirectives')
-            ->with($path)
-            ->willReturn($path);
 
         $factory->expects($this->once())
             ->method('isDirectory')
@@ -432,11 +412,6 @@ class Factory extends \PHPUnit_Framework_TestCase
             ->method('isFile')
             ->with($path)
             ->willReturn(true);
-
-        $factory->expects($this->at(4))
-            ->method('expandDirectives')
-            ->with('%directory.application.cache%/cache.php')
-            ->willReturn('/var/www/cache.php');
 
         $factory->expects($this->once())
             ->method('hasHandler')
@@ -526,7 +501,6 @@ class Factory extends \PHPUnit_Framework_TestCase
             )
             ->setMethods(
                 array(
-                    'expandDirectives',
                     'isDirectory',
                     'isReadable',
                     'isFile',
@@ -536,11 +510,6 @@ class Factory extends \PHPUnit_Framework_TestCase
                 )
             )
             ->getMock();
-
-        $factory->expects($this->at(0))
-            ->method('expandDirectives')
-            ->with($path)
-            ->willReturn($path);
 
         $factory->expects($this->once())
             ->method('isDirectory')
@@ -556,11 +525,6 @@ class Factory extends \PHPUnit_Framework_TestCase
             ->method('isFile')
             ->with($path)
             ->willReturn(true);
-
-        $factory->expects($this->at(4))
-            ->method('expandDirectives')
-            ->with('%directory.application.cache%/cache.php')
-            ->willReturn('/var/www/cache.php');
 
         $factory->expects($this->once())
             ->method('hasHandler')
@@ -642,7 +606,6 @@ class Factory extends \PHPUnit_Framework_TestCase
             )
             ->setMethods(
                 array(
-                    'expandDirectives',
                     'isDirectory',
                     'isReadable',
                     'isFile',
@@ -651,11 +614,6 @@ class Factory extends \PHPUnit_Framework_TestCase
                 )
             )
             ->getMock();
-
-        $factory->expects($this->at(0))
-            ->method('expandDirectives')
-            ->with('/var/www/configuration.xml')
-            ->willReturn('/var/www/configuration.xml');
 
         $factory->expects($this->once())
             ->method('isDirectory')
@@ -671,11 +629,6 @@ class Factory extends \PHPUnit_Framework_TestCase
             ->method('isFile')
             ->with('/var/www/configuration.xml')
             ->willReturn(true);
-
-        $factory->expects($this->at(4))
-            ->method('expandDirectives')
-            ->with('%directory.application.cache%/cache.php')
-            ->willReturn('/var/www/cache.php');
 
         $factory->expects($this->once())
             ->method('hasHandler')
