@@ -73,12 +73,12 @@ final class Core
         // TODO: Implement support for custom core context classes?
         $this->setContext(new Core\Context($config));
 
-        // Register the framework autoload handler.
-        $this->setAutoloadFile('%directory.application.config%/autoload.xml');
-        spl_autoload_register(array($this, 'autoload'), true, true);
-
         // Register the configuration handlers.
         $this->registerConfigurationHandlers();
+
+        // Register the framework autoload handler.
+        $factory = $this->getConfigurationHandlerFactory();
+        $this->initializeAutoload($factory, '%directory.application.config%/autoload.xml');
     }
 
     /**

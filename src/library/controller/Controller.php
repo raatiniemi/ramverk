@@ -236,11 +236,12 @@ final class Controller
             ));
         }
 
+        $factory = $this->getConfigurationHandlerFactory();
+
         // Import the module specific configuration if available.
         $module = '%directory.module.config%/module.xml';
         $module = Configuration\Utility::expand($config, $module);
         if (is_readable($module)) {
-            $factory = $this->getConfigurationHandlerFactory();
             $config->fromArray($factory->callHandler('Module', $module));
         }
 
@@ -248,8 +249,7 @@ final class Controller
         $autoload = '%directory.module.config%/autoload.xml';
         $autoload = Configuration\Utility::expand($config, $autoload);
         if (is_readable($autoload)) {
-            $this->setAutoloadFile($autoload);
-            spl_autoload_register(array($this, 'autoload'), true, true);
+            $this->initializeAutoload($factory, $autoload);
         }
     }
 
