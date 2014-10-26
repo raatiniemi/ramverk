@@ -126,5 +126,5 @@ namespace Me\Raatiniemi\Ramverk\Loader
 		abstract public function getConfigurationHandlerFactory();
 	}
 }
-// End of file: Autoload.trait.php
-// Location: library/loader/Autoload.trait.php
+// End of file: Autoload.php
+// Location: library/loader/Autoload.php
