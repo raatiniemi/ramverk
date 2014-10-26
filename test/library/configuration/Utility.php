@@ -22,7 +22,8 @@ class Utility extends \PHPUnit_Framework_TestCase
         $config = new Config();
         $config->set('foo', 'bar');
 
-        $this->assertEquals(Config\Utility::expand($config, '%foo%'), 'bar');
+        $value = Config\Utility::expand($config, '%foo%');
+        $this->assertEquals($value, 'bar');
     }
 
     public function testExpandMultipleDirectives()
@@ -31,21 +32,68 @@ class Utility extends \PHPUnit_Framework_TestCase
         $config->set('foo', 'bar');
         $config->set('baz', 'qux');
 
-        $this->assertEquals(Config\Utility::expand($config, '%foo%%baz%'), 'barqux');
+        $value = Config\Utility::expand($config, '%foo%%baz%');
+        $this->assertEquals($value, 'barqux');
     }
 
     public function testExpandDirectiveWithoutDirectives()
     {
         $config = new Config();
 
-        $this->assertEquals(Config\Utility::expand($config, '%foo%'), '%foo%');
+        $value = Config\Utility::expand($config, '%foo%');
+        $this->assertEquals($value, '%foo%');
     }
 
     public function testExpandDirectiveWithoutReference()
     {
         $config = new Config();
 
-        $this->assertEquals(Config\Utility::expand($config, 'foo'), 'foo');
+        $value = Config\Utility::expand($config, 'foo');
+        $this->assertEquals($value, 'foo');
+    }
+
+    public function testExpandDirectiveWithNullValue()
+    {
+        $config = new Config();
+
+        $value = Config\Utility::expand($config, null);
+        $this->assertNull($value);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage The value with configuration directives is of type "integer" and not a string.
+     */
+    public function testExpandDirectiveWithIntegerValue()
+    {
+        $config = new Config();
+
+        $value = Config\Utility::expand($config, 1);
+        $this->assertEquals($value, 1);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage The value with configuration directives is of type "double" and not a string.
+     */
+    public function testExpandDirectiveWithFloatValue()
+    {
+        $config = new Config();
+
+        $value = Config\Utility::expand($config, 1.2);
+        $this->assertEquals($value, 1.2);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage The value with configuration directives is of type "object" and not a string.
+     */
+    public function testExpandDirectiveWithObjectValue()
+    {
+        $config = new Config();
+
+        $value = Config\Utility::expand($config, new \stdClass);
+        $this->assertEquals($value, new \stdClass);
     }
 }
 // End of file: Utility.php

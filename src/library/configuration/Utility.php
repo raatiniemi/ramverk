@@ -39,7 +39,7 @@ class Utility
         // is null, so we have to allow null values.
         if (!is_string($value) && !is_null($value)) {
             throw new \InvalidArgumentException(sprintf(
-                'The value with configuration directives is of type "%s" and not a string',
+                'The value with configuration directives is of type "%s" and not a string.',
                 gettype($value)
             ));
         }
