@@ -18,5 +18,5 @@ namespace Me\Raatiniemi\Ramverk\Sample\Application\Index\Action
 		}
 	}
 }
-// End of file: Action.class.php
-// Location: sample/application/module/Index/action/Index.class.php
+// End of file: Index.php
+// Location: sample/application/module/Index/action/Index.php
