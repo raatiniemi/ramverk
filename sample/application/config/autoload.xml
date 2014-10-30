@@ -1,8 +1,8 @@
 <configurations parent="%directory.core.config%/autoload.xml">
-	<configuration>
-		<autoloads namespace="Me\Raatiniemi\Ramverk\Sample\Application">
-			<autoload name="Action">%directory.application.library%/action/Action.php</autoload>
-			<autoload name="View">%directory.application.library%/view/View.php</autoload>
-		</autoloads>
-	</configuration>
+    <configuration>
+        <autoloads namespace="Me\Raatiniemi\Ramverk\Sample\Application">
+            <autoload name="Action">%directory.application.library%/action/Action.php</autoload>
+            <autoload name="View">%directory.application.library%/view/View.php</autoload>
+        </autoloads>
+    </configuration>
 </configurations>
