@@ -14,5 +14,5 @@ namespace Me\Raatiniemi\Ramverk\Sample\Application\Index\View
 	{
 	}
 }
-// End of file: IndexSuccess.class.php
-// Location: sample/application/module/Index/view/IndexSuccess.class.php
+// End of file: IndexSuccess.php
+// Location: sample/application/module/Index/view/IndexSuccess.php
