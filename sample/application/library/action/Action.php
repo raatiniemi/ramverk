@@ -15,5 +15,5 @@ class Action extends Ramverk\Action
 {
 }
 
-// End of file: Action.class.php
-// Location: sample/application/library/action/Action.class.php
+// End of file: Action.php
+// Location: sample/application/library/action/Action.php
