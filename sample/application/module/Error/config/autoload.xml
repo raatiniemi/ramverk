@@ -1,0 +1,8 @@
+<configurations>
+    <configuration>
+        <autoloads namespace="Me\Raatiniemi\Ramverk\Sample\Application\Error">
+            <autoload name="Action\NotFound">%directory.application.module%/Error/action/NotFound.php</autoload>
+            <autoload name="View\NotFoundSuccess">%directory.application.module%/Error/view/NotFoundSuccess.php</autoload>
+        </autoloads>
+    </configuration>
+</configurations>

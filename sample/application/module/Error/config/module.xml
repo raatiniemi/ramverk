@@ -1,0 +1,7 @@
+<configurations>
+    <configuration>
+        <settings>
+            <setting name="namespace">Me\Raatiniemi\Ramverk\Sample\Application\Error</setting>
+        </settings>
+    </configuration>
+</configurations>
