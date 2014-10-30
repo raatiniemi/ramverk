@@ -18,5 +18,5 @@ namespace Me\Raatiniemi\Ramverk
 	{
 	}
 }
-// End of file: Action.class.php
-// Location: library/action/Action.class.php
+// End of file: Action.php
+// Location: library/action/Action.php
