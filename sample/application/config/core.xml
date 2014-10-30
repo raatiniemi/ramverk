@@ -14,7 +14,7 @@
 
         <settings>
             <setting name="namespace.enabled">true</setting>
-            <setting name="namespace">Me\Raatiniemi\Ramverk\Sample</setting>
+            <setting name="namespace">Me\Raatiniemi\Ramverk\Sample\Application</setting>
 
             <!-- Index used to retrieve the URI, ?index=URI -->
             <setting name="uri_index">uri</setting>
