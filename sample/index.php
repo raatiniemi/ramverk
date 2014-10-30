@@ -5,7 +5,6 @@ namespace Me\Raatiniemi\Ramverk\Sample;
 // | Namespace use-directives.                                                |
 // +--------------------------------------------------------------------------+
 use Me\Raatiniemi\Ramverk;
-use Me\Raatiniemi\Ramverk\Configuration;
 
 try {
     // Enable full error reporting.
@@ -17,17 +16,20 @@ try {
     require "{$directory}/src/ramverk.php";
 
     // Setup the basic application directory configurations.
-    $config = new Configuration\Container();
+    $config = new Ramverk\Configuration();
 
-    // Absolute path for the core framework.
+    // To improve performance, use a non-development profile.
+    // A development profile is formatted as: 'development(\..*)'
+    // E.g. 'development' or 'development.developer'.
+    // $config->set('profile', 'production');
+
+    // Set the absolute path for the framework core and the application.
     $config->set('directory.core', "{$directory}/src", false, true);
-
-    // Absolute path for the application.
-    $config->set('directory.application', "{$directory}/sample/application", false, true);
+    $config->set('directory.application', "{$directory}/trunk", false, true);
 
     // Initialize the framework core.
     $core = new Ramverk\Core($config);
-    $core->getContext()->getController()->dispatch();
+    $core->getController()->dispatch();
 } catch (\Exception $e) {
     // Render thrown exceptions with the specified template.
     Ramverk\Exception::render($e, $config);
