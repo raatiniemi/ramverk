@@ -25,7 +25,7 @@ try {
 
     // Set the absolute path for the framework core and the application.
     $config->set('directory.core', "{$directory}/src", false, true);
-    $config->set('directory.application', "{$directory}/trunk", false, true);
+    $config->set('directory.application', "{$directory}/sample/application", false, true);
 
     // Initialize the framework core.
     $core = new Ramverk\Core($config);
