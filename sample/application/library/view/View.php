@@ -15,5 +15,5 @@ class View extends Ramverk\View
 {
 }
 
-// End of file: View.class.php
-// Location: sample/application/library/view/View.class.php
+// End of file: View.php
+// Location: sample/application/library/view/View.php
