@@ -24,22 +24,31 @@ trait Autoload
      */
     private $autoload;
 
+    /**
+     * Initialize the autoload functionality.
+     * @param Me\Raatiniemi\Ramverk\Configuration\Handler\Factory $factory Configuration factory.
+     * @param string $filename Autoload configuration file.
+     * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+     */
     public function initializeAutoload(Handler\Factory $factory, $filename)
     {
+        // Check if the autoload already have been initialized.
         if (!empty($this->autoload)) {
             // TODO: Write exception message.
             // TODO: Better specify the exception object.
             throw new Ramverk\Exception('');
         }
 
+        // Attempt to retrieve the autoload configuration.
         $autoload = $factory->callHandler('Autoload', $filename);
         if (empty($autoload)) {
             // TODO: Write exception message.
             // TODO: Better specify the exception object.
             throw new Ramverk\Exception('');
         }
-
         $this->autoload = $autoload;
+
+        // Register the class as an autoloader, prepend the autoloader to the queue.
         spl_autoload_register(array($this, 'autoload'), true, true);
     }
 
