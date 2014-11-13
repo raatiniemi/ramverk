@@ -29,19 +29,19 @@ class Parser
      * Configuration container.
      * @var Me\Raatiniemi\Ramverk\Configuration\Container
      */
-    protected $config;
+    private $config;
 
     /**
      * Profile for the application.
      * @var string
      */
-    protected $profile;
+    private $profile;
 
     /**
      * Context for the application.
      * @var string
      */
-    protected $context;
+    private $context;
 
     /**
      * Configuration items found that match current context and profile.
@@ -183,13 +183,13 @@ class Parser
                 // values matches the respective values, the item will be
                 // included. Any other scenario the item will be ignored.
                 if ($node->hasAttribute('profile')) {
-                    if ($node->getAttribute('profile') !== $this->profile) {
+                    if ($node->getAttribute('profile') !== $this->getProfile()) {
                         continue;
                     }
                 }
 
                 if ($node->hasAttribute('context')) {
-                    if ($node->getAttribute('context') !== $this->context) {
+                    if ($node->getAttribute('context') !== $this->getContext()) {
                         continue;
                     }
                 }
@@ -211,7 +211,7 @@ class Parser
         if ($documentElement->hasAttribute('parent')) {
             // Attempt to expand the parent document URI.
             $parent = Configuration\Utility::expand(
-                $this->config,
+                $this->getConfig(),
                 $documentElement->getAttribute('parent')
             );
 
@@ -252,6 +252,37 @@ class Parser
             // Parse the parent document and retrieve the items.
             $this->parse($parentDocument);
         }
+    }
+
+    /**
+     * Retrieve the configuration container.
+     * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
+     * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+     * @codeCoverageIgnore
+     */
+    protected function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * Retrieve the application profile.
+     * @return string Application profile.
+     * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+     */
+    protected function getProfile()
+    {
+        return $this->profile;
+    }
+
+    /**
+     * Retrieve the application context.
+     * @return string Application context.
+     * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+     */
+    protected function getContext()
+    {
+        return $this->context;
     }
 }
 // End of file: Parser.php
