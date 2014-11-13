@@ -79,7 +79,7 @@ class Factory
     public function callHandler($name, $filename)
     {
         // Get the absolute path for the configuration file.
-        $filename = Configuration\Utility::expand($this->config, $filename);
+        $filename = Configuration\Utility::expand($this->getConfig(), $filename);
 
         // Check that the configuration directory exists.
         if (!$this->isDirectory(dirname($filename))) {
@@ -103,8 +103,8 @@ class Factory
         $file = new Utility\File($filename);
 
         // Generate the cachename, and prepend the absolute cache directory.
-        $cachename = "%directory.application.cache%/{$this->cache->generateName($file)}";
-        $cachename = Configuration\Utility::expand($this->config, $cachename);
+        $cachename = "%directory.application.cache%/{$this->getCache()->generateName($file)}";
+        $cachename = Configuration\Utility::expand($this->getConfig(), $cachename);
 
         // Instansiate the cache file with the generated cachename.
         $cache = new Utility\File($cachename);
@@ -112,7 +112,7 @@ class Factory
         // Check if the configuration file is available from the cache.
         // There's no need to load and instansiate the configuration handler
         // if we don't really need to.
-        if ($this->cache->isModified($file, $cache)) {
+        if ($this->getCache()->isModified($file, $cache)) {
             // Check if the specified handler is available.
             if (!$this->hasHandler($name)) {
                 // TODO: Better specify the Exception-object.
@@ -143,7 +143,7 @@ class Factory
             // Parse the configuration document. Parsing includes inclusion
             // of possible parent documents, retrieval of configuration
             // connected to the correct application profile and context.
-            $document = $this->parser->execute($document);
+            $document = $this->getParser()->execute($document);
 
             // Call the execute-method on the handler. The execute-method will
             // retrieve all of the configuration data within one array.
@@ -157,10 +157,10 @@ class Factory
             }
 
             // Cache the retrieved configuration data.
-            $this->cache->write($cache, $data);
+            $this->getCache()->write($cache, $data);
         } else {
             // Retrieve the cached configuration data.
-            $data = $this->cache->read($cache);
+            $data = $this->getCache()->read($cache);
         }
 
         // Return the retrieved configuration data.
@@ -260,9 +260,29 @@ class Factory
      * @author Tobias Raatiniemi <raatiniemi@gmail.com>
      * @codeCoverageIgnore
      */
-    public function getConfig()
+    protected function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * Get the handler for the configuration cache.
+     * @return Me\Raatiniemi\Ramverk\Configuration\Cache Handler for configuration cache.
+     * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+     */
+    protected function getCache()
+    {
+        return $this->cache;
+    }
+
+    /**
+     * Get the parser for the configuration files.
+     * @return Me\Raatiniemi\Ramverk\Configuration\Parser Parser for configuration files.
+     * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+     */
+    protected function getParser()
+    {
+        return $this->parser;
     }
 }
 // End of file: Factory.php
