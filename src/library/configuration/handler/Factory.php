@@ -255,7 +255,7 @@ class Factory
     }
 
     /**
-     * Get the configuration container, used by Utility-trait.
+     * Retrieve the configuration container.
      * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
      * @author Tobias Raatiniemi <raatiniemi@gmail.com>
      * @codeCoverageIgnore

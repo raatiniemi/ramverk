@@ -34,6 +34,11 @@ abstract class Handler
         $this->config = $config;
     }
 
+    /**
+     * Retrieve the configuration container.
+     * @return Me\Raatiniemi\Ramverk\Configuration\Container Configuration container.
+     * @author Tobias Raatiniemi <raatiniemi@gmail.com>
+     */
     protected function getConfig()
     {
         return $this->config;
