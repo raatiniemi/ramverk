@@ -1,0 +1,14 @@
+#!/usr/bin/php
+<?php
+try {
+    $path = realpath(__DIR__ . '/..');
+    $filename = "ramverk.phar";
+    $flags = FilesystemIterator::CURRENT_AS_FILEINFO|FilesystemIterator::KEY_AS_FILENAME;
+
+    $phar = new Phar("{$path}/build/{$filename}", $flags, $filename);
+    $phar->buildFromDirectory("{$path}/src");
+    $phar->setStub($phar->createDefaultStub('ramverk.php'));
+} catch (Exception $e) {
+    echo "{$e->getMessage()}\n";
+    exit($e->getCode());
+}
