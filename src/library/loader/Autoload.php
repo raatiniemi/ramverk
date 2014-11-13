@@ -67,7 +67,7 @@ trait Autoload
             if (!file_exists($this->autoload[$name])) {
                 // TODO: Better specify the Exception-object.
                 throw new Ramverk\Exception(sprintf(
-                    'Class "%s" is specified within autoload '.
+                    'Class "%s" is specified within the autoload '.
                     'configuration but do not exists.',
                     $name
                 ));
