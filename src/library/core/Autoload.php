@@ -1,5 +1,5 @@
 <?php
-namespace Me\Raatiniemi\Ramverk\Loader;
+namespace Me\Raatiniemi\Ramverk\Core;
 
 // +--------------------------------------------------------------------------+
 // | Namespace use-directives.                                                |
@@ -11,7 +11,7 @@ use Me\Raatiniemi\Ramverk\Configuration\Handler;
  * Handles autoloading of classes, interfaces and traits.
  *
  * @package Ramverk
- * @subpackage Loader
+ * @subpackage Core
  *
  * @author Tobias Raatiniemi <raatiniemi@gmail.com>
  * @copyright (c) 2013-2014, Authors
@@ -90,4 +90,4 @@ trait Autoload
     }
 }
 // End of file: Autoload.php
-// Location: library/loader/Autoload.php
+// Location: library/core/Autoload.php

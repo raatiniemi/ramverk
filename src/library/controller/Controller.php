@@ -20,7 +20,7 @@ final class Controller
     // | Trait use-directives.                                            |
     // +------------------------------------------------------------------+
     use Core\Context\Handler;
-    use Loader\Autoload;
+    use Core\Autoload;
 
     /**
      * Registered classes with their name.

@@ -20,7 +20,7 @@ final class Core
     // | Trait use-directives.                                            |
     // +------------------------------------------------------------------+
     use Core\Context\Handler;
-    use Loader\Autoload;
+    use Core\Autoload;
 
     /**
      * Application controller.
