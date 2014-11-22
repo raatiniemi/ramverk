@@ -665,5 +665,5 @@ namespace Me\Raatiniemi\Ramverk\Test\Configuration\Handler {
 		}
 	}
 }
-// End of file: Cache.test.php
-// Location: test/library/configuration/handler/Cache.test.php
+// End of file: Cache.php
+// Location: test/library/configuration/handler/Cache.php

@@ -3,7 +3,7 @@
         <testsuite name="configuration">
             <file>library/configuration/handler/Autoload.php</file>
             <file>library/configuration/handler/Core.php</file>
-            <file>library/configuration/handler/Cache.test.php</file>
+            <file>library/configuration/handler/Cache.php</file>
             <file>library/configuration/handler/Factory.php</file>
             <file>library/configuration/handler/Module.php</file>
             <file>library/configuration/handler/Parser.php</file>
