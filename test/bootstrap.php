@@ -31,11 +31,11 @@ require_once 'src/library/configuration/handler/Parser.php';
 require_once 'src/library/configuration/handler/Routing.php';
 require_once 'src/library/configuration/handler/Cache.php';
 
-require_once 'src/library/data/dom/utility/Value.trait.php';
-require_once 'src/library/data/dom/Attribute.class.php';
-require_once 'src/library/data/dom/Document.class.php';
-require_once 'src/library/data/dom/Element.class.php';
-require_once 'src/library/data/dom/Node.class.php';
+require_once 'src/library/data/dom/utility/Value.php';
+require_once 'src/library/data/dom/Attribute.php';
+require_once 'src/library/data/dom/Document.php';
+require_once 'src/library/data/dom/Element.php';
+require_once 'src/library/data/dom/Node.php';
 
 require_once 'src/library/exception/Exception.php';
 

@@ -34,11 +34,11 @@ require 'configuration/handler/Handler.php';
 require 'configuration/handler/Autoload.php';
 
 // Include the extended DOM functionality.
-require 'data/dom/utility/Value.trait.php';
-require 'data/dom/Attribute.class.php';
-require 'data/dom/Document.class.php';
-require 'data/dom/Element.class.php';
-require 'data/dom/Node.class.php';
+require 'data/dom/utility/Value.php';
+require 'data/dom/Attribute.php';
+require 'data/dom/Document.php';
+require 'data/dom/Element.php';
+require 'data/dom/Node.php';
 
 // Include exceptions.
 require 'exception/Exception.php';
