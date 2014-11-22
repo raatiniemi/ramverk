@@ -1,31 +1,9 @@
 <configurations>
     <configuration>
         <autoloads namespace="Me\Raatiniemi\Ramverk">
-            <autoload name="Action">%directory.core.library%/action/Action.php</autoload>
-
             <autoload name="Configuration">%directory.core.library%/configuration/Configuration.php</autoload>
 
-            <autoload name="Controller">%directory.core.library%/controller/Controller.php</autoload>
-
-            <autoload name="Core">%directory.core.library%/core/Core.php</autoload>
-            <autoload name="Core\Autoload">%directory.core.library%/core/Autoload.php</autoload>
-            <autoload name="Core\Context">%directory.core.library%/core/Context.php</autoload>
-            <autoload name="Core\Context\Handler">%directory.core.library%/core/context/Handler.trait.php</autoload>
-
             <autoload name="Exception">%directory.core.library%/exception/Exception.php</autoload>
-
-            <autoload name="Request">%directory.core.library%/request/Request.class.php</autoload>
-            <autoload name="Request\Data">%directory.core.library%/request/Data.class.php</autoload>
-            <autoload name="Request\Web">%directory.core.library%/request/web/Web.class.php</autoload>
-            <autoload name="Request\Web\Data">%directory.core.library%/request/web/Data.class.php</autoload>
-
-            <autoload name="Response">%directory.core.library%/response/Response.class.php</autoload>
-            <autoload name="Response\Web">%directory.core.library%/response/Web.class.php</autoload>
-
-            <autoload name="Routing">%directory.core.library%/routing/Routing.class.php</autoload>
-            <autoload name="Routing\Web">%directory.core.library%/routing/web/Web.class.php</autoload>
-
-            <autoload name="View">%directory.core.library%/view/View.class.php</autoload>
         </autoloads>
         <autoloads namespace="Me\Raatiniemi\Ramverk\Configuration">
             <autoload name="Utility">%directory.core.library%/configuration/Utility.php</autoload>

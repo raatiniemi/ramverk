@@ -1,7 +1,0 @@
-<configurations>
-    <configuration>
-        <routes>
-            <route name="index" pattern="^$" module="Index" action="Index" />
-        </routes>
-    </configuration>
-</configurations>

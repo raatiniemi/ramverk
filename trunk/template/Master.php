@@ -1,2 +1,0 @@
-Master Template<br />
-<?=$inner; ?>
