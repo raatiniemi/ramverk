@@ -11,6 +11,9 @@
             <file>library/configuration/Configuration.php</file>
             <file>library/configuration/Utility.php</file>
         </testsuite>
+        <testsuite name="data">
+            <file>library/data/dom/utility/Value.php</file>
+        </testsuite>
         <testsuite name="utility">
             <file>library/utility/File.php</file>
             <file>library/utility/Filesystem.php</file>
