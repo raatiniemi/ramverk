@@ -121,7 +121,7 @@ class Cache
         // Before attempting to read the cache file we have to check that
         // it exists and is readable (permission issues).
         if ($file->isReadable()) {
-            //
+            // Verify that the file actually is a regular file.
             if (!$file->isFile()) {
                 // TODO: Write exception message.
                 throw new Ramverk\Exception();
