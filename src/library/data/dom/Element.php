@@ -21,16 +21,6 @@ class Element extends \DOMElement
     use Utility\Value;
 
     /**
-     * Retrieve the name of the element.
-     * @return string Name of the element.
-     * @author Tobias Raatiniemi <raatiniemi@gmail.com>
-     */
-    public function getName()
-    {
-        return $this->nodeName;
-    }
-
-    /**
      * Retrieve child elements with specified name.
      * @param string $name Name of the children to retrieve.
      * @return DOMNodeList List with the DOM nodes.
